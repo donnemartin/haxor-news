@@ -21,7 +21,7 @@ setup(
         ],
     },
     entry_points={
-        'console_scripts': 'onion = onion.onion:OnionCli.cli'
+        'console_scripts': 'onion = onion.onion_cli:OnionCli.cli'
     },
     packages=find_packages(),
     scripts=[],
