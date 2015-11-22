@@ -20,3 +20,10 @@ hacker-news-onion
 
 > ![Imgur](http://i.imgur.com/KUMg4Si.png)
 
+## Installing Onion
+
+[![PyPI version](https://badge.fury.io/py/onion.svg)](http://badge.fury.io/py/onion) [![PyPI](https://img.shields.io/pypi/pyversions/onion.svg)](https://pypi.python.org/pypi/onion/)
+
+Install `onion` from [PyPI](https://pypi.python.org/pypi/onion):
+
+    $ pip install onion
