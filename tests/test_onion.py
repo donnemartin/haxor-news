@@ -55,3 +55,8 @@ class OnionTest(unittest.TestCase):
         self.onion.CONFIG = 'foo bar'
         next_lol_index = self.onion.generate_next_index(default_index)
         assert next_lol_index == 0
+
+    def test_random_index(self):
+        len_lulz = len(lulz)
+        lol_index = self.onion.random_index(len_lulz-1)
+        assert lol_index >= 0 and lol_index < len_lulz

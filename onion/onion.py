@@ -17,6 +17,7 @@ from __future__ import print_function
 from __future__ import division
 
 import os
+import random
 try:
     # Python 3
     import configparser
@@ -97,6 +98,17 @@ class Onion(object):
             # Either the file didn't exist or we didn't have the correct
             # permissions
             return default_index
+
+    def random_index(self, upper):
+        """Gets a random index from 0 to the input upper.
+
+        Args:
+            * upper: An int that specifies the upper bound, inclusive.
+
+        Returns:
+            A random int from the range 0 to the upper bound, inclusive.
+        """
+        return random.randint(0, upper)
 
     def save_last_index(self):
         """Saves the last shown lol index to the config file.
