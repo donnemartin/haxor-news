@@ -41,3 +41,18 @@ Specific headline:
 RNG:
 
     $ onion -r
+
+## Contributing to Onion
+
+[![Build Status](https://travis-ci.org/donnemartin/saws.svg?branch=master)](https://travis-ci.org/donnemartin/saws) [![Codecov](https://img.shields.io/codecov/c/github/donnemartin/saws.svg)](https://codecov.io/github/donnemartin/saws/saws) [![Documentation Status](https://readthedocs.org/projects/saws/badge/?version=latest)](http://saws.readthedocs.org/en/latest/?badge=latest)
+
+For bug reports or requests [submit an issue](https://github.com/donnemartin/saws/issues).
+
+    $ git clone https://github.com/donnemartin/hacker-news-onion.git
+    $ pip install -e .
+    $ pip install -r requirements-dev.txt
+    $ onion
+
+Run tests:
+
+    $ tox
