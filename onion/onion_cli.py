@@ -18,6 +18,7 @@ from __future__ import division
 
 import click
 
+from .lulz import lulz
 from .onion import Onion
 
 
@@ -39,3 +40,8 @@ class OnionCli(object):
             None.
         """
         onion = Onion()
+        lol_index = onion.generate_next_index()
+        lol_troll = onion.generate_lol_troll(lol_index)
+        click.echo(lol_troll)
+        click.echo(str(onion.last_index) + '/' + str(len(lulz)-1))
+        onion.save_last_index()

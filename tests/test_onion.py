@@ -27,6 +27,7 @@ from click.testing import CliRunner
 
 from onion.lulz import lulz
 from onion.onion import Onion
+from onion.onion_cli import OnionCli
 from data import expected_lol_troll
 
 
@@ -73,3 +74,9 @@ class OnionTest(unittest.TestCase):
         expected = '-----'
         result = self.onion.repeat('-', 5)
         assert result == expected
+
+    def test_onion_cli(self):
+        runner = CliRunner()
+        onion_cli = OnionCli()
+        result = runner.invoke(onion_cli.cli)
+        assert result.exit_code == 0
