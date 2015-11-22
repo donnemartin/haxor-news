@@ -56,3 +56,9 @@ For bug reports or requests [submit an issue](https://github.com/donnemartin/saw
 Run tests:
 
     $ tox
+
+## Credits
+
+* [@HackerNewsOnion](https://twitter.com/HackerNewsOnion)
+* [click](https://github.com/mitsuhiko/click) by [mitsuhiko](https://github.com/mitsuhiko)
+* [img2txt](https://github.com/hit9/img2txt) by [hit9](https://github.com/hit9)
