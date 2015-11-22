@@ -27,3 +27,17 @@ hacker-news-onion
 Install `onion` from [PyPI](https://pypi.python.org/pypi/onion):
 
     $ pip install onion
+
+## Using Onion
+
+Cycle through the top 40+ headlines:
+
+    $ onion
+
+Specific headline:
+
+    $ onion [#]
+
+RNG:
+
+    $ onion -r
