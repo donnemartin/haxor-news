@@ -8,7 +8,7 @@ setup(
     description='Hacker News lulz from the command line.',
     author='Donne Martin',
     url='https://github.com/donnemartin/hacker-news-onion',
-    download_url='https://github.com/donnemartin/hacker-news-onion/archive/master.zip',
+    download_url='https://pypi.python.org/pypi/onion',
     author_email='donne.martin@gmail.com',
     version=__version__,
     license='Apache License 2.0',
