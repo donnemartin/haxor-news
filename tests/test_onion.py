@@ -96,3 +96,9 @@ class OnionTest(unittest.TestCase):
         expected = u'Expected int arg from 0 to ' + str(len(lulz))
         assert expected in result.output
         assert result.exit_code == 0
+
+    def test_onion_cli_random(self):
+        runner = CliRunner()
+        onion_cli = OnionCli()
+        result = runner.invoke(onion_cli.cli, ['-r'])
+        assert result.exit_code == 0

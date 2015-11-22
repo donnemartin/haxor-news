@@ -31,11 +31,14 @@ class OnionCli(object):
 
     @click.command()
     @click.argument('headline', required=False)
-    def cli(headline):
+    @click.option('-r', '--random', is_flag=True)
+    def cli(headline, random):
         """Main entry point for OnionCli.
 
         Args:
             * headline: An int that determines the index of the lol to display.
+            * random: A bool that determines whether to display a random lol.
+                If false, cycles through lols from start to end, then repeats.
 
         Returns:
             None.
@@ -43,17 +46,21 @@ class OnionCli(object):
         onion = Onion()
         len_lulz = len(lulz)
         lol_index = None
-        if headline is not None:
-            try:
-                lol_index = int(headline)
-            except ValueError:
-                click.secho('Expected int arg from 0 to ' +
-                            str(len(lulz)),
-                            fg='red')
-                return
+        if random:
+            lol_index = onion.random_index(len_lulz-1)
         else:
-            lol_index = onion.generate_next_index()
+            if headline is not None:
+                try:
+                    lol_index = int(headline)
+                except ValueError:
+                    click.secho('Expected int arg from 0 to ' +
+                                str(len(lulz)),
+                                fg='red')
+                    return
+            else:
+                lol_index = onion.generate_next_index()
         lol_troll = onion.generate_lol_troll(lol_index)
         click.echo(lol_troll)
         click.echo(str(onion.last_index) + '/' + str(len_lulz-1))
-        onion.save_last_index()
+        if not random:
+            onion.save_last_index()
