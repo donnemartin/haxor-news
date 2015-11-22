@@ -4,6 +4,8 @@ hacker-news-onion
 =================
 
 > ***A Hacker's Finest News Source***  *-[@HackerNewsOnion](#credits)*
+>
+> ![Imgur](http://i.imgur.com/KUMg4Si.png)
 
 ## Today's Top Headlines
 
@@ -17,8 +19,6 @@ hacker-news-onion
 ![Imgur](http://i.imgur.com/9JazvbL.png)
 ![Imgur](http://i.imgur.com/jlIfzoT.png)
 ![Imgur](http://i.imgur.com/OnVaQVp.png)
-
-> ![Imgur](http://i.imgur.com/KUMg4Si.png)
 
 ## Installing Onion
 
