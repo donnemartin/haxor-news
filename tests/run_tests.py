@@ -14,10 +14,10 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-from __future__ import print_function
 import unittest
 
 from test_onion import OnionTest  # NOQA
+from test_onion_cli import OnionCliTest  # NOQA
 
 
 if __name__ == '__main__':
