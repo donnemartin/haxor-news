@@ -30,18 +30,30 @@ class OnionCli(object):
     """
 
     @click.command()
-    def cli():
+    @click.argument('headline', required=False)
+    def cli(headline):
         """Main entry point for OnionCli.
 
         Args:
-            * None.
+            * headline: An int that determines the index of the lol to display.
 
         Returns:
             None.
         """
         onion = Onion()
-        lol_index = onion.generate_next_index()
+        len_lulz = len(lulz)
+        lol_index = None
+        if headline is not None:
+            try:
+                lol_index = int(headline)
+            except ValueError:
+                click.secho('Expected int arg from 0 to ' +
+                            str(len(lulz)),
+                            fg='red')
+                return
+        else:
+            lol_index = onion.generate_next_index()
         lol_troll = onion.generate_lol_troll(lol_index)
         click.echo(lol_troll)
-        click.echo(str(onion.last_index) + '/' + str(len(lulz)-1))
+        click.echo(str(onion.last_index) + '/' + str(len_lulz-1))
         onion.save_last_index()

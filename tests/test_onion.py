@@ -28,7 +28,7 @@ from click.testing import CliRunner
 from onion.lulz import lulz
 from onion.onion import Onion
 from onion.onion_cli import OnionCli
-from data import expected_lol_troll
+from data import expected_lol_troll, expected_partial_lol_troll
 
 
 class OnionTest(unittest.TestCase):
@@ -79,4 +79,20 @@ class OnionTest(unittest.TestCase):
         runner = CliRunner()
         onion_cli = OnionCli()
         result = runner.invoke(onion_cli.cli)
+        assert result.exit_code == 0
+
+    def test_onion_cli_headline(self):
+        runner = CliRunner()
+        onion_cli = OnionCli()
+        headline = str(len(lulz)-1)
+        result = runner.invoke(onion_cli.cli, [headline])
+        assert expected_partial_lol_troll in result.output
+        assert result.exit_code == 0
+
+    def test_onion_cli_headline_error(self):
+        runner = CliRunner()
+        onion_cli = OnionCli()
+        result = runner.invoke(onion_cli.cli, ['foo'])
+        expected = u'Expected int arg from 0 to ' + str(len(lulz))
+        assert expected in result.output
         assert result.exit_code == 0
