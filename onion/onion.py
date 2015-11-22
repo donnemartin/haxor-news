@@ -24,6 +24,8 @@ except ImportError:
     # Python 2
     import ConfigParser as configparser
 
+from .lulz import lulz
+
 
 class Onion(object):
     """Encapsulates Hacker News Onion.
@@ -95,3 +97,18 @@ class Onion(object):
             # Either the file didn't exist or we didn't have the correct
             # permissions
             return default_index
+
+    def save_last_index(self):
+        """Saves the last shown lol index to the config file.
+
+        Args:
+            * None.
+
+        Returns:
+            None.
+        """
+        config = self._onion_config(self.CONFIG)
+        parser = configparser.RawConfigParser()
+        parser.add_section(self.CONFIG_SECTION)
+        parser.set(self.CONFIG_SECTION, self.CONFIG_INDEX, self.last_index)
+        parser.write(open(config, 'w+'))

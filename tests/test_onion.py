@@ -23,6 +23,7 @@ if sys.version_info < (2, 7):
 else:
     import unittest
 
+from onion.lulz import lulz
 from onion.onion import Onion
 
 
@@ -35,6 +36,19 @@ class OnionTest(unittest.TestCase):
         expected = os.path.join(os.path.abspath(os.environ.get('HOME', '')),
                                 self.onion.CONFIG)
         assert self.onion._onion_config(self.onion.CONFIG) == expected
+
+    def save_and_generate_index(self, lol_index):
+        self.onion.last_index = lol_index
+        self.onion.save_last_index()
+        return self.onion.generate_next_index()
+
+    def test_save_and_generate_index(self):
+        lol_index = 0
+        next_lol_index = self.save_and_generate_index(lol_index)
+        assert lol_index + 1 == next_lol_index
+        lol_index = len(lulz) - 1
+        next_lol_index = self.save_and_generate_index(lol_index)
+        assert next_lol_index == 0
 
     def test_generate_next_index_default_index(self):
         default_index = 0
