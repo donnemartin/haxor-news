@@ -35,3 +35,9 @@ class OnionTest(unittest.TestCase):
         expected = os.path.join(os.path.abspath(os.environ.get('HOME', '')),
                                 self.onion.CONFIG)
         assert self.onion._onion_config(self.onion.CONFIG) == expected
+
+    def test_generate_next_index_default_index(self):
+        default_index = 0
+        self.onion.CONFIG = 'foo bar'
+        next_lol_index = self.onion.generate_next_index(default_index)
+        assert next_lol_index == 0

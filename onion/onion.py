@@ -32,6 +32,7 @@ class Onion(object):
         * CONFIG: A string representing the config file name.
         * CONFIG_SECTION: A string representing the main config file section.
         * CONFIG_INDEX: A string representing the last index used.
+        * last_index: An int that specifies the last lol index displayed.
     """
 
     CONFIG = '.onionconfig'
@@ -47,7 +48,7 @@ class Onion(object):
         Returns:
             None.
         """
-        pass
+        self.last_index = None
 
     def _onion_config(self, config_file_name):
         """Gets the config file path.
@@ -61,3 +62,36 @@ class Onion(object):
         home = os.path.abspath(os.environ.get('HOME', ''))
         config_file_path = os.path.join(home, config_file_name)
         return config_file_path
+
+    def generate_next_index(self, default_index=0):
+        """Generates the next valid lol index.
+
+        Avoids showing the same lol when cycling incrementally without flag -r.
+        Reads the config file if it exists for the last shown lol index.
+        If found, increments that index and returns it, cycling to 0 if the
+        last lol index was previously shown.
+        If not found, returns the value specified in default_index.
+
+        Args:
+            * default_index: An int that represents the next index if the
+                config file does not yet exist.
+
+        Returns:
+            An int that represents the next valid lol index.
+        """
+        config = self._onion_config(self.CONFIG)
+        # Check to make sure the file exists and we are allowed to read it
+        if os.path.isfile(config) and os.access(config, os.R_OK | os.W_OK):
+            parser = configparser.RawConfigParser()
+            parser.readfp(open(config))
+            self.last_index = int(parser.get(self.CONFIG_SECTION,
+                                             self.CONFIG_INDEX))
+            if self.last_index >= len(lulz) - 1:
+                self.last_index = 0
+            else:
+                self.last_index += 1
+            return self.last_index
+        else:
+            # Either the file didn't exist or we didn't have the correct
+            # permissions
+            return default_index
