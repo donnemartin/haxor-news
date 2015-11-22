@@ -23,12 +23,15 @@ if sys.version_info < (2, 7):
 else:
     import unittest
 
-from click.testing import CliRunner
-
-from onion.onion import Onion, OnionCli
+from onion.onion import Onion
 
 
 class OnionTest(unittest.TestCase):
 
     def setUp(self):
         self.onion = Onion()
+
+    def test_onion_config(self):
+        expected = os.path.join(os.path.abspath(os.environ.get('HOME', '')),
+                                self.onion.CONFIG)
+        assert self.onion._onion_config(self.onion.CONFIG) == expected
