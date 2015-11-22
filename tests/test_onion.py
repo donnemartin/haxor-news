@@ -23,8 +23,11 @@ if sys.version_info < (2, 7):
 else:
     import unittest
 
+from click.testing import CliRunner
+
 from onion.lulz import lulz
 from onion.onion import Onion
+from data import expected_lol_troll
 
 
 class OnionTest(unittest.TestCase):
@@ -36,6 +39,11 @@ class OnionTest(unittest.TestCase):
         expected = os.path.join(os.path.abspath(os.environ.get('HOME', '')),
                                 self.onion.CONFIG)
         assert self.onion._onion_config(self.onion.CONFIG) == expected
+
+    def test_generate_lol_troll(self):
+        lol_troll = self.onion.generate_lol_troll(lol_index=len(lulz)-1,
+                                                  troll_index=0)
+        assert lol_troll == expected_lol_troll
 
     def save_and_generate_index(self, lol_index):
         self.onion.last_index = lol_index

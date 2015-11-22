@@ -26,6 +26,7 @@ except ImportError:
     import ConfigParser as configparser
 
 from .lulz import lulz
+from .trolls import trolls
 
 
 class Onion(object):
@@ -65,6 +66,54 @@ class Onion(object):
         home = os.path.abspath(os.environ.get('HOME', ''))
         config_file_path = os.path.join(home, config_file_name)
         return config_file_path
+
+    def generate_lol_troll(self, lol_index, troll_index=None):
+        """Generates ascii art with a random troll saying the input lol.
+
+        Args:
+            * lol_index: An int that determines which lol to display from the
+                lulz list.
+            * troll_index: An int that determines which troll to display from
+                the troll list.  If None, displays a random troll.
+
+        Returns:
+            A string representing the troll + lol.
+        """
+        self.last_index = lol_index
+        # Generate the troll
+        troll = None
+        if troll_index is None:
+            troll = trolls[self.random_index(len(trolls)-1)]
+        else:
+            troll = trolls[troll_index]
+        troll_lines = troll.split('\n')
+        troll_lines_mid = len(troll_lines) // 2
+        # Generate the lol
+        lol = lulz[lol_index]
+        lol_top_half = None
+        lol_bottom_half = None
+        try:
+            lol_top_half, lol_bottom_half = lol.split('\n')
+        except ValueError:
+            # Single line, blank out the second line
+            lol_top_half = lol
+            lol_bottom_half = self.repeat(' ', len(lol_top_half))
+        # Add lol to the troll by appending it with some ascii-art-fu.
+        OFFSET = 2
+        lol_length = max(len(lol_top_half), len(lol_bottom_half))
+        troll_lines[troll_lines_mid-5] = troll_lines[troll_lines_mid-5] + \
+            '    ' + self.repeat('_', lol_length+OFFSET)
+        troll_lines[troll_lines_mid-4] = troll_lines[troll_lines_mid-4] + \
+            '  |' + self.repeat(' ', lol_length+OFFSET) + '|'
+        troll_lines[troll_lines_mid-3] = troll_lines[troll_lines_mid-3] + \
+            '  | ' + lol_top_half + ' |'
+        troll_lines[troll_lines_mid-2] = troll_lines[troll_lines_mid-2] + \
+            '  | ' + lol_bottom_half + ' |'
+        troll_lines[troll_lines_mid-1] = troll_lines[troll_lines_mid-1] + \
+            '  |__  ' + self.repeat('_', lol_length-OFFSET) + '|'
+        troll_lines[troll_lines_mid] = troll_lines[troll_lines_mid] + \
+            '     |/'
+        return '\n'.join(troll_lines)
 
     def generate_next_index(self, default_index=0):
         """Generates the next valid lol index.
