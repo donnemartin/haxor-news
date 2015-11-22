@@ -62,3 +62,13 @@ Run tests:
 * [@HackerNewsOnion](https://twitter.com/HackerNewsOnion)
 * [click](https://github.com/mitsuhiko/click) by [mitsuhiko](https://github.com/mitsuhiko)
 * [img2txt](https://github.com/hit9/img2txt) by [hit9](https://github.com/hit9)
+
+## Contact Info
+
+Feel free to contact me with any issues, questions, or comments.
+
+* Email: [donne.martin@gmail.com](mailto:donne.martin@gmail.com)
+* Twitter: [donne_martin](https://twitter.com/donne_martin)
+* GitHub: [donnemartin](https://github.com/donnemartin)
+* LinkedIn: [donnemartin](https://www.linkedin.com/in/donnemartin)
+* Website: [donnemartin.com](http://donnemartin.com)
