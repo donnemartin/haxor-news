@@ -60,3 +60,8 @@ class OnionTest(unittest.TestCase):
         len_lulz = len(lulz)
         lol_index = self.onion.random_index(len_lulz-1)
         assert lol_index >= 0 and lol_index < len_lulz
+
+    def test_repeat(self):
+        expected = '-----'
+        result = self.onion.repeat('-', 5)
+        assert result == expected

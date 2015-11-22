@@ -110,6 +110,21 @@ class Onion(object):
         """
         return random.randint(0, upper)
 
+    def repeat(self, string, iterations):
+        """Builds a string by repeating the input string iterations times.
+
+        Yay for Python one liner list comprehensions.
+
+        Args:
+            * string: A string to repeat.
+            * iterations: An int that determines number of times to repeat
+                the input string.
+
+        Returns:
+            A string of input string repeated iterations times.
+        """
+        return ''.join([string for i in range(iterations)])
+
     def save_last_index(self):
         """Saves the last shown lol index to the config file.
 
