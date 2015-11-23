@@ -59,9 +59,9 @@ Run tests:
 
 ## Credits
 
-* [@HackerNewsOnion](https://twitter.com/HackerNewsOnion)
-* [click](https://github.com/mitsuhiko/click) by [mitsuhiko](https://github.com/mitsuhiko)
-* [img2txt](https://github.com/hit9/img2txt) by [hit9](https://github.com/hit9)
+* [@HackerNewsOnion](https://twitter.com/HackerNewsOnion) - Headlines content.  Neither affiliated with nor a sponsor of `hacker-news-onion`.
+* [click](https://github.com/mitsuhiko/click) by [mitsuhiko](https://github.com/mitsuhiko) - CLIs made easy.
+* [img2txt](https://github.com/hit9/img2txt) by [hit9](https://github.com/hit9) - Ascii art from images.
 
 ## Contact Info
 
