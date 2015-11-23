@@ -55,6 +55,3 @@ docs/_build/
 
 # PyBuilder
 target/
-
-# Misc
-CHECKLIST.md
