@@ -1,11 +1,11 @@
-[![Build Status](https://travis-ci.org/donnemartin/saws.svg?branch=master)](https://travis-ci.org/donnemartin/saws) [![Codecov](https://img.shields.io/codecov/c/github/donnemartin/saws.svg)](https://codecov.io/github/donnemartin/saws/saws) [![PyPI version](https://badge.fury.io/py/onion.svg)](http://badge.fury.io/py/onion)
+[![Build Status](https://magnum.travis-ci.com/donnemartin/hacker-news-onion.svg?token=HyQMZpiZXhiL2dftcC67)](https://magnum.travis-ci.com/donnemartin/hacker-news-onion) [![Codecov](https://img.shields.io/codecov/c/github/donnemartin/hacker-news-onion.svg)](https://codecov.io/github/donnemartin/hacker-news-onion/hacker-news-onion) [![PyPI version](https://badge.fury.io/py/onion.svg)](http://badge.fury.io/py/onion)
 
 hacker-news-onion
 =================
 
 > ***A Hacker's Finest News Source***  *-[@HackerNewsOnion](#credits)*
 >
-> ![Imgur](http://i.imgur.com/KUMg4Si.png)
+> ![Imgur](http://i.imgur.com/01kNvP4.png)
 
 ## Today's Top Headlines
 
@@ -30,7 +30,7 @@ Install `onion` from [PyPI](https://pypi.python.org/pypi/onion):
 
 ## Using Onion
 
-Cycle through the top 40+ headlines:
+Cycle through the top 40 headlines:
 
     $ onion
 
@@ -44,9 +44,9 @@ RNG:
 
 ## Contributing to Onion
 
-[![Build Status](https://travis-ci.org/donnemartin/saws.svg?branch=master)](https://travis-ci.org/donnemartin/saws) [![Codecov](https://img.shields.io/codecov/c/github/donnemartin/saws.svg)](https://codecov.io/github/donnemartin/saws/saws) [![Documentation Status](https://readthedocs.org/projects/saws/badge/?version=latest)](http://saws.readthedocs.org/en/latest/?badge=latest)
+[![Build Status](https://magnum.travis-ci.com/donnemartin/hacker-news-onion.svg?token=HyQMZpiZXhiL2dftcC67)](https://magnum.travis-ci.com/donnemartin/hacker-news-onion) [![Codecov](https://img.shields.io/codecov/c/github/donnemartin/hacker-news-onion.svg)](https://codecov.io/github/donnemartin/hacker-news-onion/hacker-news-onion)
 
-For bug reports or requests [submit an issue](https://github.com/donnemartin/saws/issues).
+For bug reports or requests [submit an issue](https://github.com/donnemartin/hacker-news-onion/issues).
 
     $ git clone https://github.com/donnemartin/hacker-news-onion.git
     $ pip install -e .
