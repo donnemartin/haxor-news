@@ -114,3 +114,26 @@ class HackerNewsCli(object):
         """
         who_is_hiring = hacker_news.hacker_news.get_item(who_is_hiring_post_id)
         hacker_news.print_comments(who_is_hiring, regex_query=regex_query)
+
+    @cli.command()
+    @click.argument('limit', required=False, default=10)
+    @pass_hacker_news
+    def jobs(hacker_news, limit):
+        """Displays job posts.
+
+        Args:
+            * hacker_news: An instance of Hacker News.
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 10.
+
+        Example(s):
+            hn jobs
+            hn jobs 15
+            hn jobs | grep Python
+
+        Returns:
+            None.
+        """
+        hacker_news.print_items(
+            message='Fetching Job Headlines...',
+            item_ids=hacker_news.hacker_news.job_stories(limit))
