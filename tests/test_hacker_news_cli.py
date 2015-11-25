@@ -88,3 +88,11 @@ class HackerNewsCliTest(unittest.TestCase):
         self.assert_print_output('Show HN', limit,
                                  result.output, assert_tip=False)
         assert result.exit_code == 0
+
+    def test_top(self):
+        limit = 3
+        result = self.runner.invoke(self.hacker_news_cli.cli,
+                                    ['top', str(limit)])
+        self.assert_print_output('Top', limit,
+                                 result.output, assert_tip=False)
+        assert result.exit_code == 0

@@ -209,3 +209,26 @@ class HackerNewsCli(object):
         hacker_news.print_items(
             message='Fetching Show HN Headlines...',
             item_ids=hacker_news.hacker_news.show_stories(limit))
+
+    @cli.command()
+    @click.argument('limit', required=False, default=10)
+    @pass_hacker_news
+    def top(hacker_news, limit):
+        """Displays the top posts.
+
+        Args:
+            * hacker_news: An instance of Hacker News.
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 10.
+
+        Example(s):
+            hn top
+            hn top 20
+            hn top | grep foo
+
+        Returns:
+            None.
+        """
+        hacker_news.print_items(
+            message='Fetching Top Headlines...',
+            item_ids=hacker_news.hacker_news.top_stories(limit))
