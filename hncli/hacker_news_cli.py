@@ -257,3 +257,33 @@ class HackerNewsCli(object):
         table = [[user_id, str(user.created), str(user.karma)]]
         hacker_news.print_table(table, headers=['User Id', 'Created', 'Karma'])
         hacker_news.print_items('User submissions:', user.submitted[0:limit])
+
+    @cli.command()
+    @click.argument('index')
+    @click.option('-u', '--url', is_flag=True)
+    @pass_hacker_news
+    def view(hacker_news, index, url):
+        """Views the given index comments or url.
+
+        This method is meant to be called after a command that outputs a
+        table of posts.
+
+
+        Args:
+            * hacker_news: An instance of Hacker News.
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 10.
+
+        Example(s):
+            hn top
+            hn view 3
+            hn view 3 -u
+            hn view 3 --url
+
+            hn show
+            hn view 0
+
+        Returns:
+            None.
+        """
+        hacker_news.view(index, url)

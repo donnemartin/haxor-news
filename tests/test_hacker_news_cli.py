@@ -104,3 +104,17 @@ class HackerNewsCliTest(unittest.TestCase):
         self.assert_print_output('donnemartin', limit,
                                  result.output, assert_tip=False)
         assert result.exit_code == 0
+
+    def test_view(self):
+        result = self.runner.invoke(self.hacker_news_cli.cli,
+                                    ['view', '0'])
+        assert 'Comments' in result.output
+        assert result.exit_code == 0
+
+    @mock.patch('hncli.hacker_news.webbrowser')
+    def test_view_url(self, mock_webbrowser):
+        result = self.runner.invoke(self.hacker_news_cli.cli,
+                                    ['view', '0', '--url'])
+        assert 'Opening' in result.output
+        assert result.exit_code == 0
+        mock_webbrowser.assert_not_called()
