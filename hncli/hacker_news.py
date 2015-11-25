@@ -95,3 +95,31 @@ class HackerNews(object):
             depth += 1
             self.print_comments(comment, regex_query=regex_query, depth=depth)
             depth -= 1
+
+    def print_items(self, message, item_ids):
+        """Prints the items and headers with tabulate.
+
+        Args:
+            * message: A string to print out to the user before outputting
+                the results.
+            * item_ids: A collection of items to print as rows with tabulate.
+                Can be a list or dictionary.
+
+        Returns:
+            None.
+        """
+        click.secho(message, fg='blue')
+        rank = 0
+        table = []
+        for item_id in item_ids:
+            item = self.hacker_news.get_item(item_id)
+            if item.title:
+                table.append([rank, item.title, item.score, item.descendants])
+                self.item_ids.append(item.item_id)
+                rank += 1
+        self.save_item_ids()
+        self.print_table(table, headers=['#', 'Title', 'Score', 'Comments'])
+        click.secho('Tip: View comments in your terminal or the url in your' \
+                    ' browser with the following command:\n' \
+                    '    hn view [#] [-u/--url]',
+                    fg='blue')
