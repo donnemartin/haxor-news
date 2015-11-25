@@ -73,3 +73,25 @@ class HackerNews(object):
         home = os.path.abspath(os.environ.get('HOME', ''))
         config_file_path = os.path.join(home, config_file_name)
         return config_file_path
+
+    def print_comments(self, item, regex_query='', depth=0):
+        comment_ids = item.kids
+        if item.text is not None:
+            print_comment = True
+            if regex_query:
+                match = re.search(regex_query, item.text)
+                if not match:
+                    print_comment = False
+            if print_comment:
+                indent = '  ' * depth
+                click.secho(
+                    indent + item.by + ' - ' + str(item.submission_time),
+                    fg='blue')
+                click.echo(indent + item.text + '\n')
+        if not comment_ids:
+            return
+        for comment_id in comment_ids:
+            comment = self.hacker_news.get_item(comment_id)
+            depth += 1
+            self.print_comments(comment, regex_query=regex_query, depth=depth)
+            depth -= 1
