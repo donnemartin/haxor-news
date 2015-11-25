@@ -13,6 +13,7 @@ setup(
     version=__version__,
     license='Apache License 2.0',
     install_requires=[
+        'tabulate>=0.7.5',
         'click>=5.1',
     ],
     extras_require={
