@@ -34,3 +34,7 @@ class HackerNewsCliTest(unittest.TestCase):
     def setUp(self):
         self.runner = CliRunner()
         self.hacker_news_cli = HackerNewsCli()
+
+    def test_hacker_news_cli(self):
+        result = self.runner.invoke(self.hacker_news_cli.cli)
+        assert result.exit_code == 0
