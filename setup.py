@@ -16,6 +16,7 @@ setup(
         'tabulate>=0.7.5',
         'colorama>=0.3.3',
         'click>=5.1',
+        'requests>=2.4.3'
     ],
     extras_require={
         'testing': [
