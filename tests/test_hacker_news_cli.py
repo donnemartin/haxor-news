@@ -35,6 +35,18 @@ class HackerNewsCliTest(unittest.TestCase):
         self.runner = CliRunner()
         self.hacker_news_cli = HackerNewsCli()
 
+    def assert_print_output(self, message, count, output, assert_tip=True):
+        assert message in output
+        assert '|   ' + str(count-1) + ' |' in output
+        if assert_tip:
+            assert 'Tip: View comments in your terminal' in output
+
     def test_hacker_news_cli(self):
         result = self.runner.invoke(self.hacker_news_cli.cli)
+        assert result.exit_code == 0
+
+    def test_ask(self):
+        limit = 1
+        result = self.runner.invoke(self.hacker_news_cli.cli, ['ask'])
+        self.assert_print_output('Ask HN', limit, result.output)
         assert result.exit_code == 0

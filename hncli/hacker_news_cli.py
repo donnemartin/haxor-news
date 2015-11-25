@@ -49,3 +49,26 @@ class HackerNewsCli(object):
         # From this point onwards other commands can refer to it by using the
         # @pass_hacker_news decorator.
         ctx.obj = HackerNews()
+
+    @cli.command()
+    @click.argument('limit', required=False, default=10)
+    @pass_hacker_news
+    def ask(hacker_news, limit):
+        """Displays Ask HN posts.
+
+        Args:
+            * hacker_news: An instance of Hacker News.
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 10.
+
+        Example(s):
+            hn ask
+            hn ask 5
+            hn ask | grep foo
+
+        Returns:
+            None.
+        """
+        hacker_news.print_items(
+            message='Fetching Ask HN Headlines...',
+            item_ids=hacker_news.hacker_news.ask_stories(limit))
