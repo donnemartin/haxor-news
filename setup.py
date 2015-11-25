@@ -1,14 +1,14 @@
-from onion.__init__ import __version__
+from hncli.__init__ import __version__
 try:
     from setuptools import setup, find_packages
 except ImportError:
     from distutils.core import setup
 
 setup(
-    description='Hacker News lulz from the command line.',
+    description='A Hacker News command line interface (CLI).',
     author='Donne Martin',
-    url='https://github.com/donnemartin/hacker-news-onion',
-    download_url='https://pypi.python.org/pypi/onion',
+    url='https://github.com/donnemartin/hncli',
+    download_url='https://pypi.python.org/pypi/hncli',
     author_email='donne.martin@gmail.com',
     version=__version__,
     license='Apache License 2.0',
@@ -21,11 +21,11 @@ setup(
         ],
     },
     entry_points={
-        'console_scripts': 'onion = onion.onion_cli:OnionCli.cli'
+        'console_scripts': 'hn = hncli.hacker_news_cli:HackerNewsCli.cli'
     },
     packages=find_packages(),
     scripts=[],
-    name='onion',
+    name='hncli',
     classifiers=[
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
