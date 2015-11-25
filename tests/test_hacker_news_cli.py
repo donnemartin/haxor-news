@@ -50,3 +50,11 @@ class HackerNewsCliTest(unittest.TestCase):
         result = self.runner.invoke(self.hacker_news_cli.cli, ['ask'])
         self.assert_print_output('Ask HN', limit, result.output)
         assert result.exit_code == 0
+
+    def test_hiring(self):
+        query = 'command line'
+        post_id = '10251896'
+        result = self.runner.invoke(self.hacker_news_cli.cli,
+                                    ['hiring', query, post_id])
+        assert query in result.output
+        assert result.exit_code == 0

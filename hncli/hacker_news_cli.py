@@ -72,3 +72,45 @@ class HackerNewsCli(object):
         hacker_news.print_items(
             message='Fetching Ask HN Headlines...',
             item_ids=hacker_news.hacker_news.ask_stories(limit))
+
+    @cli.command()
+    @click.argument('regex_query')
+    @click.argument('who_is_hiring_post_id', required=False, default=10492086)
+    @pass_hacker_news
+    def hiring(hacker_news, regex_query, who_is_hiring_post_id):
+        """Displays comments matching the monthly who is hiring post.
+
+        Searches the monthly Hacker News who is hiring post for comments
+        matching the given regex_query.  Defaults to searching the latest
+        post based on your installed version of hncli.  Update to the latest
+        version of hncli to get the latest who is hiring post by:
+
+            pip install --upgrade hncli
+
+        TODO: Provide a more dynamic way of getting the latest who is hiring
+        post id.
+
+        You can search any post by providing a who_is_hiring_post_id:
+            Example: https://news.ycombinator.com/item?id=10492086
+            who_is_hiring_post_id = 10492086
+
+        Args:
+            * hacker_news: An instance of Hacker News.
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 10.
+            * who_is_hiring_post_id: An int that specifies the who is hiring
+                post id.  Optional, defaults to the latest post based on your
+                installed version of hncli.
+
+        Example(s):
+            hn hiring "Python"
+            hn hiring "[Pp]ython|[Rr]uby"
+            hn hiring "([Pp]ython|[Rr]uby).*([Rr]ock.star)"
+            hn hiring "([Pp]ython|[Rr]uby).*([Rr]ock.star)" > results.txt
+            hn hiring "([Pp]ython|[Rr]uby).*([Rr]ock.star)" 8394339
+
+        Returns:
+            None.
+        """
+        who_is_hiring = hacker_news.hacker_news.get_item(who_is_hiring_post_id)
+        hacker_news.print_comments(who_is_hiring, regex_query=regex_query)
