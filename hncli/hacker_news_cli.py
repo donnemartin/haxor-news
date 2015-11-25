@@ -18,49 +18,34 @@ from __future__ import division
 
 import click
 
-from .lulz import lulz
-from .onion import Onion
+from .hacker_news import HackerNews
+from .onions import onions
+from .settings import who_is_hiring_post_id
 
 
-class OnionCli(object):
-    """Encapsulates the OnionCli.
+pass_hacker_news = click.make_pass_decorator(HackerNews)
+
+
+class HackerNewsCli(object):
+    """Encapsulates the HackerNewsCli.
 
     Attributes:
         * None.
     """
 
-    @click.command()
-    @click.argument('headline', required=False)
-    @click.option('-r', '--random', is_flag=True)
-    def cli(headline, random):
-        """Main entry point for OnionCli.
+    @click.group()
+    @click.pass_context
+    def cli(ctx):
+        """Main entry point for HackerNewsCli.
 
         Args:
-            * headline: An int that determines the index of the lol to display.
-            * random: A bool that determines whether to display a random lol.
-                If false, cycles through lols from start to end, then repeats.
+            * ctx: An instance of click.core.Context that stores an instance
+                 of HackerNews.
 
         Returns:
             None.
         """
-        onion = Onion()
-        len_lulz = len(lulz)
-        lol_index = None
-        if random:
-            lol_index = onion.random_index(len_lulz-1)
-        else:
-            if headline is not None:
-                try:
-                    lol_index = int(headline)
-                except ValueError:
-                    click.secho('Expected int arg from 0 to ' +
-                                str(len(lulz)),
-                                fg='red')
-                    return
-            else:
-                lol_index = onion.generate_next_index()
-        lol_troll = onion.generate_lol_troll(lol_index)
-        click.echo(lol_troll)
-        click.echo(str(onion.last_index) + '/' + str(len_lulz-1))
-        if not random:
-            onion.save_last_index()
+        # Create a HackerNews object and remember it as as the context object.
+        # From this point onwards other commands can refer to it by using the
+        # @pass_hacker_news decorator.
+        ctx.obj = HackerNews()
