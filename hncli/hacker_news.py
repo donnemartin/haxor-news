@@ -135,3 +135,21 @@ class HackerNews(object):
             None.
         """
         click.echo(tabulate(table, headers, tablefmt='grid'))
+
+    def save_item_ids(self):
+        """Saves the current set of item ids to ~/.hncliconfig.
+
+        Args:
+            * None
+
+        Returns:
+            None.
+        """
+        config = self._config(self.CONFIG)
+        parser = configparser.RawConfigParser()
+        try:
+            parser.add_section(self.CONFIG_SECTION)
+        except DuplicateSectionError:
+            pass
+        parser.set(self.CONFIG_SECTION, self.CONFIG_INDEX, self.item_ids)
+        parser.write(open(config, 'w+'))
