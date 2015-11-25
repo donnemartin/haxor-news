@@ -160,3 +160,29 @@ class HackerNewsCli(object):
         hacker_news.print_items(
             message='Fetching Latest Headlines...',
             item_ids=hacker_news.hacker_news.new_stories(limit))
+
+    @cli.command()
+    @click.argument('limit', required=False, default=50)
+    @pass_hacker_news
+    def onion(hacker_news, limit):
+        """Displays onions.
+
+        Args:
+            * hacker_news: An instance of Hacker News.
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 50.
+
+        Example(s):
+            hn onion
+            hn onion 10
+
+        Returns:
+            None.
+        """
+        click.secho('Fetching Top Onion Headlines...', fg='blue')
+        rank = 0
+        table = []
+        for onion in onions[0:limit]:
+            table.append([rank, onion])
+            rank += 1
+        hacker_news.print_table(table, headers=['#', 'Title'])
