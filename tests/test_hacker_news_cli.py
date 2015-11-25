@@ -80,3 +80,11 @@ class HackerNewsCliTest(unittest.TestCase):
         self.assert_print_output('Onion', limit,
                                  result.output, assert_tip=False)
         assert result.exit_code == 0
+
+    def test_show(self):
+        limit = 2
+        result = self.runner.invoke(self.hacker_news_cli.cli,
+                                    ['show', str(limit)])
+        self.assert_print_output('Show HN', limit,
+                                 result.output, assert_tip=False)
+        assert result.exit_code == 0

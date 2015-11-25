@@ -186,3 +186,26 @@ class HackerNewsCli(object):
             table.append([rank, onion])
             rank += 1
         hacker_news.print_table(table, headers=['#', 'Title'])
+
+    @cli.command()
+    @click.argument('limit', required=False, default=10)
+    @pass_hacker_news
+    def show(hacker_news, limit):
+        """Displays Show HN posts.
+
+        Args:
+            * hacker_news: An instance of Hacker News.
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 10.
+
+        Example(s):
+            hn show
+            hn show 5
+            hn show | grep foo
+
+        Returns:
+            None.
+        """
+        hacker_news.print_items(
+            message='Fetching Show HN Headlines...',
+            item_ids=hacker_news.hacker_news.show_stories(limit))
