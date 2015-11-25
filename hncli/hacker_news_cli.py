@@ -137,3 +137,26 @@ class HackerNewsCli(object):
         hacker_news.print_items(
             message='Fetching Job Headlines...',
             item_ids=hacker_news.hacker_news.job_stories(limit))
+
+    @cli.command()
+    @click.argument('limit', required=False, default=10)
+    @pass_hacker_news
+    def new(hacker_news, limit):
+        """Displays the latest posts.
+
+        Args:
+            * hacker_news: An instance of Hacker News.
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 10.
+
+        Example(s):
+            hn new
+            hn new 20
+            hn new | grep foo
+
+        Returns:
+            None.
+        """
+        hacker_news.print_items(
+            message='Fetching Latest Headlines...',
+            item_ids=hacker_news.hacker_news.new_stories(limit))

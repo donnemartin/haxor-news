@@ -65,3 +65,10 @@ class HackerNewsCliTest(unittest.TestCase):
                                     ['jobs', str(limit)])
         self.assert_print_output('Job', limit, result.output)
         assert result.exit_code == 0
+
+    def test_new(self):
+        limit = 3
+        result = self.runner.invoke(self.hacker_news_cli.cli,
+                                    ['new', str(limit)])
+        self.assert_print_output('Latest', limit, result.output)
+        assert result.exit_code == 0
