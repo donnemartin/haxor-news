@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # Copyright 2015 Donne Martin. All Rights Reserved.
@@ -14,10 +13,24 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-import unittest
+from __future__ import print_function
+from __future__ import division
 
-from test_hacker_news_cli import HackerNewsCliTest  # NOQA
+import mock
+import sys
+if sys.version_info < (2, 7):
+    import unittest2 as unittest
+else:
+    import unittest
+
+from click.testing import CliRunner
+
+from hncli.onions import onions
+from hncli.hacker_news_cli import HackerNewsCli
 
 
-if __name__ == '__main__':
-    unittest.main()
+class HackerNewsCliTest(unittest.TestCase):
+
+    def setUp(self):
+        self.runner = CliRunner()
+        self.hacker_news_cli = HackerNewsCli()
