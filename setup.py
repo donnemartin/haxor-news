@@ -14,6 +14,7 @@ setup(
     license='Apache License 2.0',
     install_requires=[
         'tabulate>=0.7.5',
+        'colorama>=0.3.3',
         'click>=5.1',
     ],
     extras_require={
