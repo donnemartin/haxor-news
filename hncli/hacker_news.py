@@ -123,3 +123,15 @@ class HackerNews(object):
                     ' browser with the following command:\n' \
                     '    hn view [#] [-u/--url]',
                     fg='blue')
+
+    def print_table(self, table, headers):
+        """Prints the table and headers with tabulate.
+
+        Args:
+            * table: A collection of items to print as rows with tabulate.
+            * headers: A collection of column headers to print with tabulate.
+
+        Returns:
+            None.
+        """
+        click.echo(tabulate(table, headers, tablefmt='grid'))
