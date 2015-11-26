@@ -16,6 +16,7 @@
 
 import unittest
 
+from test_hacker_news import HackerNewsTest  # NOQA
 from test_hacker_news_cli import HackerNewsCliTest  # NOQA
 
 
