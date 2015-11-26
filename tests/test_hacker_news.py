@@ -60,3 +60,17 @@ class HackerNewsTest(unittest.TestCase):
         self.jobs(limit)
         assert len(self.hacker_news.item_ids) == limit
         mock_click.secho.assert_called_with(self.hacker_news.TIP, fg='blue')
+
+    @mock.patch('hncli.hacker_news.click')
+    def test_view(self, mock_click):
+        limit = 3
+        self.jobs(limit)
+        index = 0
+        query = ''
+        comments = False
+        self.hacker_news.view(index, query, comments)
+        item_id = self.hacker_news.item_ids[index]
+        item = self.hacker_news.hacker_news_api.get_item(item_id)
+        message = 'Opening ' + item.url + '...'
+        assert mock.call(message, fg='blue') in mock_click.secho.mock_calls
+        assert mock_click.echo_via_pager.mock_calls
