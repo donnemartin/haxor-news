@@ -39,7 +39,7 @@ class HackerNews(object):
         * CONFIG: A string representing the config file name.
         * CONFIG_SECTION: A string representing the main config file section.
         * CONFIG_INDEX: A string representing the last index used.
-        * hacker_news: An instance of HackerNews.
+        * hacker_news_api: An instance of HackerNews.
         * item_ids: A list containing the last set of ids the user has seen,
             which allows the user to quickly access an item with the
             gh view [#] [-u/--url] command.
@@ -65,7 +65,7 @@ class HackerNews(object):
         Returns:
             None.
         """
-        self.hacker_news = HackerNewsApi()
+        self.hacker_news_api = HackerNewsApi()
         self.item_ids = []
 
     def _config(self, config_file_name):
@@ -98,7 +98,7 @@ class HackerNews(object):
         if not comment_ids:
             return
         for comment_id in comment_ids:
-            comment = self.hacker_news.get_item(comment_id)
+            comment = self.hacker_news_api.get_item(comment_id)
             depth += 1
             self.print_comments(comment, regex_query=regex_query, depth=depth)
             depth -= 1
@@ -119,7 +119,7 @@ class HackerNews(object):
         rank = 0
         table = []
         for item_id in item_ids:
-            item = self.hacker_news.get_item(item_id)
+            item = self.hacker_news_api.get_item(item_id)
             if item.title:
                 table.append([rank, item.title, item.score, item.descendants])
                 self.item_ids.append(item.item_id)
@@ -184,7 +184,7 @@ class HackerNews(object):
             for exclude in excludes:
                 items_ids = items_ids.replace(exclude, '')
             self.item_ids = items_ids.split(', ')
-            item = self.hacker_news.get_item(self.item_ids[int(index)])
+            item = self.hacker_news_api.get_item(self.item_ids[int(index)])
             if url:
                 click.secho('Opening ' + item.url + '...',
                             fg='blue')

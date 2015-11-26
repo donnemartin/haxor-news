@@ -71,7 +71,7 @@ class HackerNewsCli(object):
         """
         hacker_news.print_items(
             message='Fetching Ask HN Headlines...',
-            item_ids=hacker_news.hacker_news.ask_stories(limit))
+            item_ids=hacker_news.hacker_news_api.ask_stories(limit))
 
     @cli.command()
     @click.argument('regex_query')
@@ -112,7 +112,7 @@ class HackerNewsCli(object):
         Returns:
             None.
         """
-        who_is_hiring = hacker_news.hacker_news.get_item(who_is_hiring_post_id)
+        who_is_hiring = hacker_news.hacker_news_api.get_item(who_is_hiring_post_id)
         hacker_news.print_comments(who_is_hiring, regex_query=regex_query)
 
     @cli.command()
@@ -136,7 +136,7 @@ class HackerNewsCli(object):
         """
         hacker_news.print_items(
             message='Fetching Job Headlines...',
-            item_ids=hacker_news.hacker_news.job_stories(limit))
+            item_ids=hacker_news.hacker_news_api.job_stories(limit))
 
     @cli.command()
     @click.argument('limit', required=False, default=10)
@@ -159,7 +159,7 @@ class HackerNewsCli(object):
         """
         hacker_news.print_items(
             message='Fetching Latest Headlines...',
-            item_ids=hacker_news.hacker_news.new_stories(limit))
+            item_ids=hacker_news.hacker_news_api.new_stories(limit))
 
     @cli.command()
     @click.argument('limit', required=False, default=50)
@@ -208,7 +208,7 @@ class HackerNewsCli(object):
         """
         hacker_news.print_items(
             message='Fetching Show HN Headlines...',
-            item_ids=hacker_news.hacker_news.show_stories(limit))
+            item_ids=hacker_news.hacker_news_api.show_stories(limit))
 
     @cli.command()
     @click.argument('limit', required=False, default=10)
@@ -231,7 +231,7 @@ class HackerNewsCli(object):
         """
         hacker_news.print_items(
             message='Fetching Top Headlines...',
-            item_ids=hacker_news.hacker_news.top_stories(limit))
+            item_ids=hacker_news.hacker_news_api.top_stories(limit))
 
     @cli.command()
     @click.argument('user_id')
@@ -253,7 +253,7 @@ class HackerNewsCli(object):
         Returns:
             None.
         """
-        user = hacker_news.hacker_news.get_user(user_id)
+        user = hacker_news.hacker_news_api.get_user(user_id)
         table = [[user_id, str(user.created), str(user.karma)]]
         hacker_news.print_table(table, headers=['User Id', 'Created', 'Karma'])
         hacker_news.print_items('User submissions:', user.submitted[0:limit])
