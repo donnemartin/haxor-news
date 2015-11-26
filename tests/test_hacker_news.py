@@ -74,3 +74,15 @@ class HackerNewsTest(unittest.TestCase):
         message = 'Opening ' + item.url + '...'
         assert mock.call(message, fg='blue') in mock_click.secho.mock_calls
         assert mock_click.echo_via_pager.mock_calls
+
+    @mock.patch('hncli.hacker_news.click')
+    def test_view_comments(self, mock_click):
+        limit = 3
+        self.jobs(limit)
+        index = 0
+        query = ''
+        comments = True
+        self.hacker_news.view(index, query, comments)
+        comments_url = self.hacker_news.URL_POST + self.hacker_news.item_ids[0]
+        message = 'Fetching Comments from ' + comments_url
+        assert mock.call(message, fg='blue') in mock_click.secho.mock_calls
