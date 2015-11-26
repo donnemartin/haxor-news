@@ -164,7 +164,7 @@ class HackerNews(object):
         parser.set(self.CONFIG_SECTION, self.CONFIG_INDEX, self.item_ids)
         parser.write(open(config, 'w+'))
 
-    def view(self, index, url):
+    def view(self, index, comments_query, comments):
         """Views the given index in a browser.
 
         Loads item ids from ~/.hncliconfig and stores them in self.item_ids.
@@ -173,8 +173,9 @@ class HackerNews(object):
 
         Args:
             * index: An int that specifies the index to open in a browser.
-            * url: A boolean that determines whether to view the item
-                in a web browser (url True) or a terminal.
+            * comments_query: A string that specifies the regex query to match.
+            * comments: A boolean that determines whether to view the comments
+                or a simplified version of the post url.
 
         Returns:
             None.
@@ -184,21 +185,22 @@ class HackerNews(object):
         try:
             parser.readfp(open(config))
             items_ids = parser.get(self.CONFIG_SECTION,
-                               self.CONFIG_INDEX)
+                                   self.CONFIG_INDEX)
             items_ids = items_ids.strip()
             excludes = ['[', ']', "'"]
             for exclude in excludes:
                 items_ids = items_ids.replace(exclude, '')
             self.item_ids = items_ids.split(', ')
-            item = self.hacker_news_api.get_item(self.item_ids[int(index)])
-            if url:
-                click.secho('Opening ' + item.url + '...',
-                            fg='blue')
-                webbrowser.open(item.url)
-            else:
+            item = self.hacker_news_api.get_item(self.item_ids[index])
+            if comments:
                 comments_url = self.URL_POST + str(item.item_id)
-                click.secho('Fetching Comments from ' + comments_url,
-                            fg='blue')
-                self.print_comments(item)
+                click.secho('Fetching Comments from ' + comments_url, fg='blue')
+                self.print_comments(item, regex_query=comments_query)
+            else:
+                click.secho('Opening ' + item.url + '...', fg='blue')
+                response = requests.get(item.url)
+                html_to_text = HTML2Text()
+                html_to_text.ignore_links = True
+                click.echo_via_pager(html_to_text.handle(response.text))
         except Exception as e:
             click.secho('Error: ' + str(e), fg='red')
