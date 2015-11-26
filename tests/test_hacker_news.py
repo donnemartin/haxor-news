@@ -86,3 +86,12 @@ class HackerNewsTest(unittest.TestCase):
         comments_url = self.hacker_news.URL_POST + self.hacker_news.item_ids[0]
         message = 'Fetching Comments from ' + comments_url
         assert mock.call(message, fg='blue') in mock_click.secho.mock_calls
+
+    @mock.patch('hncli.hacker_news.click')
+    def test_view_error(self, mock_click):
+        index = 9000
+        query = ''
+        url = False
+        self.hacker_news.view(index, query, url)
+        mock_click.secho.assert_called_with('Error: list index out of range',
+                                            fg='red')
