@@ -36,3 +36,8 @@ class HackerNewsTest(unittest.TestCase):
         self.hacker_news.print_items(
             message='Fetching Latest Headlines...',
             item_ids=self.hacker_news.hacker_news_api.job_stories(limit))
+
+    def test_config(self):
+        expected = os.path.join(os.path.abspath(os.environ.get('HOME', '')),
+                                self.hacker_news.CONFIG)
+        assert self.hacker_news._config(self.hacker_news.CONFIG) == expected
