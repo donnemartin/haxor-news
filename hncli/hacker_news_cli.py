@@ -152,13 +152,12 @@ class HackerNewsCli(object):
         Example(s):
             hn jobs
             hn jobs 15
-            hn jobs | grep Python
 
         Returns:
             None.
         """
         hacker_news.print_items(
-            message='Fetching Job Headlines...',
+            message='Fetching Jobs Headlines...',
             item_ids=hacker_news.hacker_news_api.job_stories(limit))
 
     @cli.command()
