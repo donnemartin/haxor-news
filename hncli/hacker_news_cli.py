@@ -64,7 +64,6 @@ class HackerNewsCli(object):
         Example(s):
             hn ask
             hn ask 5
-            hn ask | grep foo
 
         Returns:
             None.
@@ -174,7 +173,6 @@ class HackerNewsCli(object):
         Example(s):
             hn new
             hn new 20
-            hn new | grep foo
 
         Returns:
             None.
@@ -223,7 +221,6 @@ class HackerNewsCli(object):
         Example(s):
             hn show
             hn show 5
-            hn show | grep foo
 
         Returns:
             None.
@@ -246,7 +243,6 @@ class HackerNewsCli(object):
         Example(s):
             hn top
             hn top 20
-            hn top | grep foo
 
         Returns:
             None.
