@@ -100,9 +100,9 @@ class HackerNewsCli(object):
 
     @cli.command()
     @click.argument('regex_query')
-    @click.argument('who_is_hiring_post_id', required=False, default=10492086)
+    @click.option('-i', '--id', required=False, default=who_is_hiring_post_id)
     @pass_hacker_news
-    def hiring(hacker_news, regex_query, who_is_hiring_post_id):
+    def hiring(hacker_news, regex_query, id):
         """Displays comments matching the monthly who is hiring post.
 
         Searches the monthly Hacker News who is hiring post for comments
@@ -121,24 +121,22 @@ class HackerNewsCli(object):
 
         Args:
             * hacker_news: An instance of Hacker News.
-            * limit: A int that specifies the number of items to show.
-                Optional, defaults to 10.
-            * who_is_hiring_post_id: An int that specifies the who is hiring
-                post id.  Optional, defaults to the latest post based on your
-                installed version of hncli.
+            * regex_query: A string that specifies the regex query to match.
+            * id: An int that specifies the who is hiring post id.
+                Optional, defaults to the latest post based on your installed
+                version of hncli.
 
         Example(s):
             hn hiring "Python"
-            hn hiring "[Pp]ython|[Rr]uby"
-            hn hiring "([Pp]ython|[Rr]uby).*([Rr]ock.star)"
-            hn hiring "([Pp]ython|[Rr]uby).*([Rr]ock.star)" > results.txt
-            hn hiring "([Pp]ython|[Rr]uby).*([Rr]ock.star)" 8394339
+            hn hiring "(?i)Python|JavaScript"  # (?i) case insensitive
+            hn hiring "(?i)Python|JavaScript" -i 8394339  # search post 8394339
+            hn hiring "(?i)(Python|JavaScript).*(rockstar)" > rockstars.txt
 
         Returns:
             None.
         """
-        who_is_hiring = hacker_news.hacker_news_api.get_item(who_is_hiring_post_id)
-        hacker_news.print_comments(who_is_hiring, regex_query=regex_query)
+        who_is_hiring = hacker_news.hacker_news_api.get_item(id)
+        hacker_news.print_comments(who_is_hiring, regex_query)
 
     @cli.command()
     @click.argument('limit', required=False, default=10)
