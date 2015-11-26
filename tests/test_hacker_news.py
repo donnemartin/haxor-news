@@ -52,3 +52,11 @@ class HackerNewsTest(unittest.TestCase):
             '\n' + self.hacker_news.COMMENT_INDENT + \
             u'amjith - 2015-09-21 16:13:13',
             fg='blue')
+
+    @mock.patch('hncli.hacker_news.click')
+    def test_print_items(self, mock_click):
+        self.hacker_news.item_ids = []
+        limit = 3
+        self.jobs(limit)
+        assert len(self.hacker_news.item_ids) == limit
+        mock_click.secho.assert_called_with(self.hacker_news.TIP, fg='blue')
