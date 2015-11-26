@@ -282,30 +282,36 @@ class HackerNewsCli(object):
 
     @cli.command()
     @click.argument('index')
-    @click.option('-u', '--url', is_flag=True)
+    @click.argument('comments_query', required=False, default='')
+    @click.option('-c', '--comments', is_flag=True)
     @pass_hacker_news
-    def view(hacker_news, index, url):
+    def view(hacker_news, index, comments_query, comments):
         """Views the given index comments or url.
 
         This method is meant to be called after a command that outputs a
         table of posts.
 
-
         Args:
             * hacker_news: An instance of Hacker News.
-            * limit: A int that specifies the number of items to show.
-                Optional, defaults to 10.
+            * index: A int that specifies the index of a post just shown within
+                a table.  For example, calling hn top will list the latest posts
+                with indices for each row.  Calling hn view [index] will view
+                the comments of the given post.
+            * comments_query: A string that specifies the regex query to match.
+                Only valid if url is comments is True.
+            * comments: A boolean that determines whether to view the comments
+                or a simplified version of the post url.
 
         Example(s):
             hn top
             hn view 3
-            hn view 3 -u
-            hn view 3 --url
-
-            hn show
-            hn view 0
+            hn view 3 -c | less
+            hn view 3 -c > comments.txt
+            hn view 3 "(?i)case insensitive match" --comments
+            hn view 3 "(?i)programmer" --comments
+            hn view 3 "(?i)programmer" --comments | less
 
         Returns:
             None.
         """
-        hacker_news.view(index, url)
+        hacker_news.view(int(index), comments_query, comments)
