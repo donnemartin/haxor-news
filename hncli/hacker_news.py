@@ -160,10 +160,7 @@ class HackerNews(object):
         """
         config = self._config(self.CONFIG)
         parser = configparser.RawConfigParser()
-        try:
-            parser.add_section(self.CONFIG_SECTION)
-        except DuplicateSectionError:
-            pass
+        parser.add_section(self.CONFIG_SECTION)
         parser.set(self.CONFIG_SECTION, self.CONFIG_INDEX, self.item_ids)
         parser.write(open(config, 'w+'))
 
