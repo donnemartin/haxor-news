@@ -28,6 +28,7 @@ except ImportError:
     import ConfigParser as configparser
 
 import click
+from html2text import HTML2Text
 from tabulate import tabulate
 
 from haxor.haxor import HackerNewsApi
@@ -90,11 +91,19 @@ class HackerNews(object):
                 if not match:
                     print_comment = False
             if print_comment:
-                indent = '  ' * depth
+                indent = '    ' * depth
                 click.secho(
-                    indent + item.by + ' - ' + str(item.submission_time),
+                    '\n' + indent + item.by + ' - ' + str(item.submission_time),
                     fg='blue')
-                click.echo(indent + item.text + '\n')
+                html_to_text = HTML2Text()
+                html_to_text.body_width = 0
+                markdown = html_to_text.handle(item.text)
+                markdown = re.sub('\n\n', '\n\n' + indent, markdown)
+                wrapped_markdown = click.wrap_text(
+                    text=markdown,
+                    initial_indent=indent,
+                    subsequent_indent=indent)
+                click.echo(wrapped_markdown)
         if not comment_ids:
             return
         for comment_id in comment_ids:

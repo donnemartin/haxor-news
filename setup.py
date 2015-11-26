@@ -13,10 +13,11 @@ setup(
     version=__version__,
     license='Apache License 2.0',
     install_requires=[
-        'tabulate>=0.7.5',
-        'colorama>=0.3.3',
         'click>=5.1',
-        'requests>=2.4.3'
+        'colorama>=0.3.3',
+        'html2text',
+        'requests>=2.4.3',
+        'tabulate>=0.7.5',
     ],
     extras_require={
         'testing': [
