@@ -43,11 +43,15 @@ class HackerNews(object):
         * item_ids: A list containing the last set of ids the user has seen,
             which allows the user to quickly access an item with the
             gh view [#] [-u/--url] command.
+        * TIP: A string that lets the user know about the hn view command.
     """
 
     CONFIG = '.hncliconfig'
     CONFIG_SECTION = 'hncli'
     CONFIG_INDEX = 'item_ids'
+    TIP = 'Tip: View the page or comments in your terminal with the ' \
+          'following command:\n' \
+          '    hn view [#] [-c/--comments]'
 
     def __init__(self):
         """Initializes HackerNews.
@@ -119,10 +123,7 @@ class HackerNews(object):
                 rank += 1
         self.save_item_ids()
         self.print_table(table, headers=['#', 'Title', 'Score', 'Comments'])
-        click.secho('Tip: View comments in your terminal or the url in your' \
-                    ' browser with the following command:\n' \
-                    '    hn view [#] [-u/--url]',
-                    fg='blue')
+        click.secho(str(self.TIP), fg='blue')
 
     def print_table(self, table, headers):
         """Prints the table and headers with tabulate.
