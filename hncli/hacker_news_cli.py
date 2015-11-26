@@ -74,6 +74,31 @@ class HackerNewsCli(object):
             item_ids=hacker_news.hacker_news_api.ask_stories(limit))
 
     @cli.command()
+    @click.argument('post_id')
+    @click.argument('regex_query', required=False, default='')
+    @pass_hacker_news
+    def comments(hacker_news, post_id, regex_query):
+        """Views the comments for the given post_id.
+
+        Args:
+            * hacker_news: An instance of Hacker News.
+            * post_id: An int representing the post's id.
+            * regex_query: A string that specifies the regex query to match.
+                Optional, defaults to ''.
+
+        Example(s):
+            hn comments 10492086
+            hn comments 10492086 "Python"
+            hn comments 10492086 "(?i)case insensitive match"
+            hn comments 10492086 "(?i)(Python|Django)" > comments.txt
+
+        Returns:
+            None.
+        """
+        post = hacker_news.hacker_news_api.get_item(post_id)
+        hacker_news.print_comments(post, regex_query=regex_query)
+
+    @cli.command()
     @click.argument('regex_query')
     @click.argument('who_is_hiring_post_id', required=False, default=10492086)
     @pass_hacker_news
