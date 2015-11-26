@@ -44,6 +44,8 @@ class HackerNews(object):
             which allows the user to quickly access an item with the
             gh view [#] [-u/--url] command.
         * TIP: A string that lets the user know about the hn view command.
+        * URL_POST: A string that represents a Hacker News post minus the
+            post id.
     """
 
     CONFIG = '.hncliconfig'
@@ -52,6 +54,7 @@ class HackerNews(object):
     TIP = 'Tip: View the page or comments in your terminal with the ' \
           'following command:\n' \
           '    hn view [#] [-c/--comments]'
+    URL_POST = 'https://news.ycombinator.com/item?id='
 
     def __init__(self):
         """Initializes HackerNews.
@@ -187,8 +190,7 @@ class HackerNews(object):
                             fg='blue')
                 webbrowser.open(item.url)
             else:
-                comments_url = 'https://news.ycombinator.com/item?id=' + \
-                    str(item.item_id)
+                comments_url = self.URL_POST + str(item.item_id)
                 click.secho('Fetching Comments from ' + comments_url,
                             fg='blue')
                 self.print_comments(item)
