@@ -41,3 +41,14 @@ class HackerNewsTest(unittest.TestCase):
         expected = os.path.join(os.path.abspath(os.environ.get('HOME', '')),
                                 self.hacker_news.CONFIG)
         assert self.hacker_news._config(self.hacker_news.CONFIG) == expected
+
+    @mock.patch('hncli.hacker_news.click')
+    def test_print_comments(self, mock_click):
+        query = 'command line'
+        post_id = '10251896'
+        post = self.hacker_news.hacker_news_api.get_item(post_id)
+        self.hacker_news.print_comments(post, query)
+        mock_click.secho.assert_called_with(
+            '\n' + self.hacker_news.COMMENT_INDENT + \
+            u'amjith - 2015-09-21 16:13:13',
+            fg='blue')
