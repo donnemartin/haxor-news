@@ -247,18 +247,6 @@ class HackerNews(object):
         click.secho(str(self.TIP), fg='blue')
         click.echo('')
 
-    def print_table(self, table, headers):
-        """Prints the table and headers with tabulate.
-
-        Args:
-            * table: A collection of items to print as rows with tabulate.
-            * headers: A collection of column headers to print with tabulate.
-
-        Returns:
-            None.
-        """
-        click.echo(tabulate(table, headers, tablefmt='grid'))
-
     def save_item_ids(self):
         """Saves the current set of item ids to ~/.hncliconfig.
 
