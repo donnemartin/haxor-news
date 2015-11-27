@@ -247,6 +247,26 @@ class HackerNews(object):
         click.secho(str(self.TIP), fg='blue')
         click.echo('')
 
+    def regex_match(self, item, regex_query):
+        """Determines if there is a match with the given regex_query.
+
+        Args:
+            * item: An instance of haxor.Item.
+            * regex_query: A string that specifies the regex query to match.
+
+        Returns:
+            A boolean that specifies whether there is a match.
+        """
+        match_time = re.search(
+            regex_query,
+            str(self.pretty_date_time(item.submission_time)))
+        match_user = re.search(regex_query, item.by)
+        match_text = re.search(regex_query, item.text)
+        if not match_text and not match_user and not match_time:
+            return False
+        else:
+            return True
+
     def save_item_ids(self):
         """Saves the current set of item ids to ~/.hncliconfig.
 
