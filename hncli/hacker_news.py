@@ -186,6 +186,44 @@ class HackerNews(object):
             subsequent_indent=indent)
         click.echo(wrapped_markdown)
 
+    def print_formatted_item(self, item, index):
+        """Formats and prints an item.
+
+        Args:
+            * item: An instance of haxor.Item.
+            * index: An int that specifies the index for the given item,
+                used with the hn view [index] commend.
+
+        Returns:
+            None.
+        """
+        click.secho('  ' + str(index) + '. ',
+                    nl=False,
+                    fg='magenta')
+        click.secho(item.title + '. ',
+                    nl=False,
+                    fg='blue')
+        if item.url is not None:
+            netloc = urlparse(item.url).netloc
+            netloc = re.sub('www.', '', netloc)
+            click.secho('(' + netloc + ')',
+                        fg='magenta')
+        else:
+            click.echo('')
+        click.secho('     ' + str(item.score) + ' points ',
+                    nl=False,
+                    fg='green')
+        click.secho('by ' + item.by + ' ',
+                    nl=False,
+                    fg='yellow')
+        click.secho(str(self.pretty_date_time(item.submission_time)) + ' ',
+                    nl=False,
+                    fg='cyan')
+        num_comments = str(item.descendants) if item.descendants else '0'
+        click.secho('| ' + num_comments + ' comments\n',
+                    fg='green')
+        self.item_ids.append(item.item_id)
+
     def print_items(self, message, item_ids):
         """Prints the items and headers with tabulate.
 
@@ -198,18 +236,16 @@ class HackerNews(object):
         Returns:
             None.
         """
-        click.secho(message, fg='blue')
-        rank = 0
-        table = []
+        click.secho('\n' + message + '\n', fg='blue')
+        index = 1
         for item_id in item_ids:
             item = self.hacker_news_api.get_item(item_id)
             if item.title:
-                table.append([rank, item.title, item.score, item.descendants])
-                self.item_ids.append(item.item_id)
-                rank += 1
+                self.print_formatted_item(item, index)
+                index += 1
         self.save_item_ids()
-        self.print_table(table, headers=['#', 'Title', 'Score', 'Comments'])
         click.secho(str(self.TIP), fg='blue')
+        click.echo('')
 
     def print_table(self, table, headers):
         """Prints the table and headers with tabulate.
