@@ -38,6 +38,7 @@ class HackerNews(object):
     """Encapsulates Hacker News.
 
     Attributes:
+        * COMMENT_INDENT: A string representing the indent amount for comments.
         * CONFIG: A string representing the config file name.
         * CONFIG_SECTION: A string representing the main config file section.
         * CONFIG_INDEX: A string representing the last index used.
@@ -50,6 +51,7 @@ class HackerNews(object):
             post id.
     """
 
+    COMMENT_INDENT = '    '
     CONFIG = '.hncliconfig'
     CONFIG_SECTION = 'hncli'
     CONFIG_INDEX = 'item_ids'
@@ -142,7 +144,7 @@ class HackerNews(object):
                 if not match:
                     print_comment = False
             if print_comment:
-                indent = '    ' * depth
+                indent = self.COMMENT_INDENT * depth
                 click.secho(
                     '\n' + indent + item.by + ' - ' + str(item.submission_time),
                     fg='blue')
