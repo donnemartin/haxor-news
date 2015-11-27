@@ -17,10 +17,9 @@ from __future__ import print_function
 from __future__ import division
 
 import os
-import random
 import re
 import urllib
-import webbrowser
+from urlparse import urlparse
 try:
     # Python 3
     import configparser
@@ -31,9 +30,9 @@ except ImportError:
 import click
 from html2text import HTML2Text
 import requests
-from tabulate import tabulate
 
 from .haxor.haxor import HackerNewsApi
+
 
 class HackerNews(object):
     """Encapsulates Hacker News.
