@@ -295,7 +295,7 @@ class HackerNewsCli(object):
                 with indices for each row.  Calling hn view [index] will view
                 the comments of the given post.
             * comments_query: A string that specifies the regex query to match.
-                Only valid if url is comments is True.
+                This automatically sets comments to True.
             * comments: A boolean that determines whether to view the comments
                 or a simplified version of the post url.
             * comments_recent: A boolean that determines whether to view only
@@ -313,6 +313,8 @@ class HackerNewsCli(object):
         Returns:
             None.
         """
+        if comments_query:
+            comments = True
         if comments_recent:
             if not comments_query:
                 comments_query = 'minutes ago'
