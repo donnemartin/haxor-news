@@ -85,6 +85,32 @@ class HackerNews(object):
         config_file_path = os.path.join(home, config_file_name)
         return config_file_path
 
+    def print_comments(self, item, regex_query='', depth=0):
+        """Recursively print comments and subcomments for the given item.
+
+        Args:
+            * item: An instance of haxor.Item.
+            * regex_query: A string that specifies the regex query to match.
+            * depth: The current recursion depth, used to indent the comment.
+
+        Returns:
+            None.
+        """
+        comment_ids = item.kids
+        if item.text is not None:
+            print_comment = True
+            if regex_query and not self.regex_match(item, regex_query):
+                print_comment = False
+            if print_comment:
+                self.print_formatted_comment(item, depth)
+        if not comment_ids:
+            return
+        for comment_id in comment_ids:
+            comment = self.hacker_news_api.get_item(comment_id)
+            depth += 1
+            self.print_comments(comment, regex_query=regex_query, depth=depth)
+            depth -= 1
+
     def pretty_date_time(self, date_time):
         """Prints a pretty datetime similar to what's seen on Hacker News.
 
@@ -134,32 +160,6 @@ class HackerNews(object):
         if day_diff < 365:
             return str(day_diff // 30) + " months ago"
         return str(day_diff // 365) + " years ago"
-
-    def print_comments(self, item, regex_query='', depth=0):
-        """Recursively print comments and subcomments for the given item.
-
-        Args:
-            * item: An instance of haxor.Item.
-            * regex_query: A string that specifies the regex query to match.
-            * depth: The current recursion depth, used to indent the comment.
-
-        Returns:
-            None.
-        """
-        comment_ids = item.kids
-        if item.text is not None:
-            print_comment = True
-            if regex_query and not self.regex_match(item, regex_query):
-                print_comment = False
-            if print_comment:
-                self.print_formatted_comment(item, depth)
-        if not comment_ids:
-            return
-        for comment_id in comment_ids:
-            comment = self.hacker_news_api.get_item(comment_id)
-            depth += 1
-            self.print_comments(comment, regex_query=regex_query, depth=depth)
-            depth -= 1
 
     def print_formatted_comment(self, item, depth):
         """Formats and prints a given item's comment.
