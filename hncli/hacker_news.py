@@ -19,6 +19,7 @@ from __future__ import division
 import os
 import random
 import re
+import urllib
 import webbrowser
 try:
     # Python 3
@@ -49,6 +50,8 @@ class HackerNews(object):
         * TIP: A string that lets the user know about the hn view command.
         * URL_POST: A string that represents a Hacker News post minus the
             post id.
+        * URL_W3_HTML_TEXT: A string that represents the w3 HTML to text
+            converter service.
     """
 
     COMMENT_INDENT = '    '
@@ -59,6 +62,7 @@ class HackerNews(object):
           'following command:\n' \
           '    hn view [#] [-c/--comments]'
     URL_POST = 'https://news.ycombinator.com/item?id='
+    URL_W3_HTML_TEXT = 'https://www.w3.org/services/html2txt?url='
 
     def __init__(self):
         """Initializes HackerNews.
@@ -247,6 +251,22 @@ class HackerNews(object):
         click.secho(str(self.TIP), fg='blue')
         click.echo('')
 
+    def print_url_contents(self, item):
+        """Prints the contents of the given item's url.
+
+        Converts the HTML to text using the w3 HTML to text service then
+            displays the output in a pager.
+
+        Args:
+            * item: An instance of haxor.Item.
+
+        Returns:
+            None.
+        """
+        url_encoded = self.URL_W3_HTML_TEXT + urllib.quote(item.url, safe='')
+        response = requests.get(url_encoded)
+        click.echo_via_pager(response.text)
+
     def regex_match(self, item, regex_query):
         """Determines if there is a match with the given regex_query.
 
@@ -302,8 +322,7 @@ class HackerNews(object):
         parser = configparser.RawConfigParser()
         try:
             parser.readfp(open(config))
-            items_ids = parser.get(self.CONFIG_SECTION,
-                                   self.CONFIG_INDEX)
+            items_ids = parser.get(self.CONFIG_SECTION, self.CONFIG_INDEX)
             items_ids = items_ids.strip()
             excludes = ['[', ']', "'"]
             for exclude in excludes:
@@ -316,9 +335,6 @@ class HackerNews(object):
                 self.print_comments(item, regex_query=comments_query)
             else:
                 click.secho('Opening ' + item.url + '...', fg='blue')
-                response = requests.get(item.url)
-                html_to_text = HTML2Text()
-                html_to_text.ignore_links = True
-                click.echo_via_pager(html_to_text.handle(response.text))
+                self.print_url_contents(item)
         except Exception as e:
             click.secho('Error: ' + str(e), fg='red')

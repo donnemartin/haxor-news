@@ -15,7 +15,6 @@ setup(
     install_requires=[
         'click>=5.1',
         'colorama>=0.3.3',
-        'html2text',
         'requests>=2.4.3',
         'tabulate>=0.7.5',
     ],
