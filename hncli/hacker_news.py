@@ -328,7 +328,7 @@ class HackerNews(object):
             for exclude in excludes:
                 items_ids = items_ids.replace(exclude, '')
             self.item_ids = items_ids.split(', ')
-            item = self.hacker_news_api.get_item(self.item_ids[index])
+            item = self.hacker_news_api.get_item(self.item_ids[index-1])
             if comments:
                 comments_url = self.URL_POST + str(item.item_id)
                 click.secho('Fetching Comments from ' + comments_url, fg='blue')
