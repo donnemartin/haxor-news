@@ -316,9 +316,10 @@ class HackerNewsCli(object):
         if comments_query:
             comments = True
         if comments_recent:
+            query_recent = 'minutes ago'
             if not comments_query:
-                comments_query = 'minutes ago'
+                comments_query = query_recent
             else:
-                comments_query += '|minutes ago'
+                comments_query += '' + query_recent
             comments = True
         hacker_news.view(int(index), comments_query, comments)
