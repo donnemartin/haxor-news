@@ -280,8 +280,9 @@ class HackerNewsCli(object):
     @click.argument('index')
     @click.argument('comments_query', required=False, default='')
     @click.option('-c', '--comments', is_flag=True)
+    @click.option('-cr', '--comments_recent', is_flag=True)
     @pass_hacker_news
-    def view(hacker_news, index, comments_query, comments):
+    def view(hacker_news, index, comments_query, comments, comments_recent):
         """Views the given index comments or url.
 
         This method is meant to be called after a command that outputs a
@@ -297,6 +298,8 @@ class HackerNewsCli(object):
                 Only valid if url is comments is True.
             * comments: A boolean that determines whether to view the comments
                 or a simplified version of the post url.
+            * comments_recent: A boolean that determines whether to view only
+                 recentl comments (posted within the past 59 minutes or less)
 
         Example(s):
             hn top
@@ -310,4 +313,10 @@ class HackerNewsCli(object):
         Returns:
             None.
         """
+        if comments_recent:
+            if not comments_query:
+                comments_query = 'minutes ago'
+            else:
+                comments_query += '|minutes ago'
+            comments = True
         hacker_news.view(int(index), comments_query, comments)
