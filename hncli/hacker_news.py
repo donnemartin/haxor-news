@@ -136,27 +136,23 @@ class HackerNews(object):
         return str(day_diff // 365) + " years ago"
 
     def print_comments(self, item, regex_query='', depth=0):
+        """Recursively print comments and subcomments for the given item.
+
+        Args:
+            * item: An instance of haxor.Item.
+            * regex_query: A string that specifies the regex query to match.
+            * depth: The current recursion depth, used to indent the comment.
+
+        Returns:
+            None.
+        """
         comment_ids = item.kids
         if item.text is not None:
             print_comment = True
-            if regex_query:
-                match = re.search(regex_query, item.text)
-                if not match:
-                    print_comment = False
+            if regex_query and not self.regex_match(item, regex_query):
+                print_comment = False
             if print_comment:
-                indent = self.COMMENT_INDENT * depth
-                click.secho(
-                    '\n' + indent + item.by + ' - ' + str(item.submission_time),
-                    fg='blue')
-                html_to_text = HTML2Text()
-                html_to_text.body_width = 0
-                markdown = html_to_text.handle(item.text)
-                markdown = re.sub('\n\n', '\n\n' + indent, markdown)
-                wrapped_markdown = click.wrap_text(
-                    text=markdown,
-                    initial_indent=indent,
-                    subsequent_indent=indent)
-                click.echo(wrapped_markdown)
+                self.print_formatted_comment(item, depth)
         if not comment_ids:
             return
         for comment_id in comment_ids:
@@ -164,6 +160,31 @@ class HackerNews(object):
             depth += 1
             self.print_comments(comment, regex_query=regex_query, depth=depth)
             depth -= 1
+
+    def print_formatted_comment(self, item, depth):
+        """Formats and prints a given item's comment.
+
+        Args:
+            * item: An instance of haxor.Item.
+            * depth: The current recursion depth, used to indent the comment.
+
+        Returns:
+            None.
+        """
+        indent = self.COMMENT_INDENT * depth
+        click.secho(
+            '\n' + indent + item.by + ' - ' + \
+            str(self.pretty_date_time(item.submission_time)),
+            fg='yellow')
+        html_to_text = HTML2Text()
+        html_to_text.body_width = 0
+        markdown = html_to_text.handle(item.text)
+        markdown = re.sub('\n\n', '\n\n' + indent, markdown)
+        wrapped_markdown = click.wrap_text(
+            text=markdown,
+            initial_indent=indent,
+            subsequent_indent=indent)
+        click.echo(wrapped_markdown)
 
     def print_items(self, message, item_ids):
         """Prints the items and headers with tabulate.
