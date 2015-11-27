@@ -133,7 +133,7 @@ class HackerNews(object):
         now = datetime.now()
         if type(date_time) is int:
             diff = now - datetime.fromtimestamp(date_time)
-        elif isinstance(date_time,datetime):
+        elif isinstance(date_time, datetime):
             diff = now - date_time
         elif not date_time:
             diff = now - now
@@ -176,7 +176,7 @@ class HackerNews(object):
         """
         indent = self.COMMENT_INDENT * depth
         click.secho(
-            '\n' + indent + item.by + ' - ' + \
+            '\n' + indent + item.by + ' - ' +
             str(self.pretty_date_time(item.submission_time)),
             fg='yellow')
         html_to_text = HTML2Text()
