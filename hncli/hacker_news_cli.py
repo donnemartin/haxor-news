@@ -199,13 +199,13 @@ class HackerNewsCli(object):
         Returns:
             None.
         """
-        click.secho('Fetching Top Onion Headlines...', fg='blue')
-        rank = 0
-        table = []
+        click.secho('\nFetching Top Onion Headlines...\n', fg='blue')
+        index = 1
         for onion in onions[0:limit]:
-            table.append([rank, onion])
-            rank += 1
-        hacker_news.print_table(table, headers=['#', 'Title'])
+            hacker_news.print_index_title(index, onion)
+            click.echo('')
+            index += 1
+        click.echo('')
 
     @cli.command()
     @click.argument('limit', required=False, default=10)
