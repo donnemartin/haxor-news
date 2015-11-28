@@ -121,7 +121,7 @@ class HackerNews(object):
         pretty string like 'an hour ago', 'Yesterday', '3 months ago',
         'just now', etc.
 
-        Adapted from: http://stackoverflow.com/questions/1551382/user-friendly-time-format-in-python
+        Adapted from: http://stackoverflow.com/questions/1551382/user-friendly-time-format-in-python  # NOQA
 
         Args:
             * date_time: An instance of datetime.
