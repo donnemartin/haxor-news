@@ -189,6 +189,24 @@ class HackerNews(object):
             subsequent_indent=indent)
         click.echo(wrapped_markdown)
 
+    def print_index_title(self, index, title):
+        """Formats and prints an item's index and title.
+
+        Args:
+            * arg: A type that does xxx.
+
+        Returns:
+            * index: An int that specifies the index for the given item.
+            * title: A string that represents the item's title.
+        """
+        space = '  ' if index < 10 else ' '
+        click.secho('  ' + str(index) + '.' + space,
+                    nl=False,
+                    fg='magenta')
+        click.secho(title + ' ',
+                    nl=False,
+                    fg='blue')
+
     def print_formatted_item(self, item, index):
         """Formats and prints an item.
 
@@ -200,12 +218,7 @@ class HackerNews(object):
         Returns:
             None.
         """
-        click.secho('  ' + str(index) + '. ',
-                    nl=False,
-                    fg='magenta')
-        click.secho(item.title + '. ',
-                    nl=False,
-                    fg='blue')
+        self.print_index_title(index, item.title)
         if item.url is not None:
             netloc = urlparse(item.url).netloc
             netloc = re.sub('www.', '', netloc)
