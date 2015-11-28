@@ -226,7 +226,7 @@ class HackerNews(object):
                         fg='magenta')
         else:
             click.echo('')
-        click.secho('     ' + str(item.score) + ' points ',
+        click.secho('      ' + str(item.score) + ' points ',
                     nl=False,
                     fg='green')
         click.secho('by ' + item.by + ' ',
