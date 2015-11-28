@@ -46,7 +46,8 @@ class HackerNews(object):
         * item_ids: A list containing the last set of ids the user has seen,
             which allows the user to quickly access an item with the
             gh view [#] [-u/--url] command.
-        * TIP: A string that lets the user know about the hn view command.
+        * TIP0, TIP1, TIP2: StringS that lets the user know about the
+            hn view command.
         * URL_POST: A string that represents a Hacker News post minus the
             post id.
         * URL_W3_HTML_TEXT: A string that represents the w3 HTML to text
@@ -57,9 +58,9 @@ class HackerNews(object):
     CONFIG = '.hncliconfig'
     CONFIG_SECTION = 'hncli'
     CONFIG_INDEX = 'item_ids'
-    TIP = 'Tip: View the page or comments in your terminal with the ' \
-          'following command:\n' \
-          '    hn view [#] [-c/--comments]'
+    TIP0 = 'Tip: View the page or comments for '
+    TIP1 = ' with the following command:\n'
+    TIP2 = '  hn view [#] [comment_filter] [-c] [-cr] [-b] - hn view --help'
     URL_POST = 'https://news.ycombinator.com/item?id='
     URL_W3_HTML_TEXT = 'https://www.w3.org/services/html2txt?url='
 
@@ -260,8 +261,7 @@ class HackerNews(object):
                 self.print_formatted_item(item, index)
                 index += 1
         self.save_item_ids()
-        click.secho(str(self.TIP), fg='blue')
-        click.echo('')
+        self.print_tip_view(str(index-1))
 
     def print_url_contents(self, item):
         """Prints the contents of the given item's url.
