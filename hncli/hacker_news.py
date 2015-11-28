@@ -263,7 +263,7 @@ class HackerNews(object):
     def print_url_contents(self, url):
         """Prints the contents of the given item's url.
 
-        Converts the HTML to text using HTML2Text then displays
+        Converts the HTML to text using HTML2Text, colors it, then displays
             the output in a pager.
 
         Args:
@@ -280,6 +280,23 @@ class HackerNews(object):
         html_to_text.ignore_links = False
         html_to_text.skip_internal_links = False
         contents = html_to_text.handle(raw_response.text)
+        pattern_url_name = r'[^]]*'
+        pattern_url_link = r'[^)]+'
+        pattern_url = r'([!]*\[{0}]\(\s*{1}\s*\))'.format(pattern_url_name,
+                                                          pattern_url_link)
+        regex_url = re.compile(pattern_url)
+        contents = regex_url.sub(click.style(r'\1', fg='green'), contents)
+        regex_list = re.compile(r'(  \*.*)')
+        contents = regex_list.sub(click.style(r'\1', fg='blue'), contents)
+        regex_header = re.compile(r'(#+) (.*)')
+        contents = regex_header.sub(click.style(r'\2', fg='yellow'), contents)
+        regex_bold = re.compile(r'(\*\*|__)(.*?)\1')
+        contents = regex_bold.sub(click.style(r'\2', fg='cyan'), contents)
+        regex_code = re.compile(r'(`)(.*?)\1')
+        contents = regex_code.sub(click.style(r'\1\2\1', fg='cyan'), contents)
+        contents = re.sub(r'(\s*\r?\n\s*){2,}', r'\n\n', contents);
+        contents = click.style(
+            'Viewing ' + url + '\n\n', fg='magenta') + contents
         click.echo_via_pager(contents)
 
     def regex_match(self, item, regex_query):
