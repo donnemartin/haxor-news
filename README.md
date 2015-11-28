@@ -1,6 +1,28 @@
 hncli
 =====
 
+## Installation
+
+### Pip Installation
+
+[![PyPI version](https://badge.fury.io/py/saws.svg)](http://badge.fury.io/py/saws) [![PyPI](https://img.shields.io/pypi/pyversions/saws.svg)](https://pypi.python.org/pypi/saws/)
+
+`hncli` is hosted on [PyPI](https://pypi.python.org/pypi/hncli).  The following command will install `hncli`:
+
+    $ pip install hncli
+
+You can also install the latest `hncli` from GitHub source which can contain changes not yet pushed to PyPI:
+
+    $ pip install git+https://github.com/donnemartin/hacker-news-cli.git
+
+If you are not installing in a virtualenv, run with `sudo`:
+
+    $ sudo pip install hncli
+
+Once installed, run `hncli`:
+
+    $ hn [command] [options]
+
 ### Supported Python Versions
 
 * Python 2.6
