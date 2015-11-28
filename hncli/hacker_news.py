@@ -50,8 +50,6 @@ class HackerNews(object):
             hn view command.
         * URL_POST: A string that represents a Hacker News post minus the
             post id.
-        * URL_W3_HTML_TEXT: A string that represents the w3 HTML to text
-            converter service.
     """
 
     COMMENT_INDENT = '    '
@@ -62,7 +60,6 @@ class HackerNews(object):
     TIP1 = ' with the following command:\n'
     TIP2 = '  hn view [#] [comment_filter] [-c] [-cr] [-b] - hn view --help'
     URL_POST = 'https://news.ycombinator.com/item?id='
-    URL_W3_HTML_TEXT = 'https://www.w3.org/services/html2txt?url='
 
     def __init__(self):
         """Initializes HackerNews.
@@ -263,21 +260,27 @@ class HackerNews(object):
         self.save_item_ids()
         self.print_tip_view(str(index-1))
 
-    def print_url_contents(self, item):
+    def print_url_contents(self, url):
         """Prints the contents of the given item's url.
 
-        Converts the HTML to text using the w3 HTML to text service then
-            displays the output in a pager.
+        Converts the HTML to text using HTML2Text then displays
+            the output in a pager.
 
         Args:
-            * item: An instance of haxor.Item.
+            * url: A string representing the url.
 
         Returns:
             None.
         """
-        url_encoded = self.URL_W3_HTML_TEXT + urllib.quote(item.url, safe='')
-        response = requests.get(url_encoded)
-        click.echo_via_pager(response.text)
+        raw_response = requests.get('https://github.com/donnemartin/saws')
+        html_to_text = HTML2Text()
+        html_to_text.body_width = 0
+        html_to_text.ignore_images = False
+        html_to_text.ignore_emphasis = False
+        html_to_text.ignore_links = False
+        html_to_text.skip_internal_links = False
+        contents = html_to_text.handle(raw_response.text)
+        click.echo_via_pager(contents)
 
     def regex_match(self, item, regex_query):
         """Determines if there is a match with the given regex_query.
@@ -347,6 +350,6 @@ class HackerNews(object):
                 self.print_comments(item, regex_query=comments_query)
             else:
                 click.secho('Opening ' + item.url + '...', fg='blue')
-                self.print_url_contents(item)
+                self.print_url_contents(item.url)
         except Exception as e:
             click.secho('Error: ' + str(e), fg='red')
