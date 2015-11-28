@@ -261,6 +261,22 @@ class HackerNews(object):
         self.save_item_ids()
         self.print_tip_view(str(index-1))
 
+    def print_tip_view(self, max_index):
+        """Prints the tip about the view command.
+
+        Args:
+            * max_index: A string that represents the index upper bound.
+
+        Returns:
+            None.
+        """
+        click.secho(self.TIP0, nl=False, fg='blue')
+        click.secho('1 through ', nl=False, fg='magenta')
+        click.secho(max_index, nl=False, fg='magenta')
+        click.secho(self.TIP1, nl=False, fg='blue')
+        click.secho(self.TIP2, fg='blue')
+        click.echo('')
+
     def print_url_contents(self, url):
         """Prints the contents of the given item's url.
 
