@@ -20,6 +20,7 @@ import os
 import re
 import urllib
 from urlparse import urlparse
+import webbrowser
 try:
     # Python 3
     import configparser
@@ -334,7 +335,7 @@ class HackerNews(object):
         parser.set(self.CONFIG_SECTION, self.CONFIG_INDEX, self.item_ids)
         parser.write(open(config, 'w+'))
 
-    def view(self, index, comments_query, comments):
+    def view(self, index, comments_query, comments, browser):
         """Views the given index in a browser.
 
         Loads item ids from ~/.hncliconfig and stores them in self.item_ids.
@@ -346,6 +347,8 @@ class HackerNews(object):
             * comments_query: A string that specifies the regex query to match.
             * comments: A boolean that determines whether to view the comments
                 or a simplified version of the post url.
+            * browser: A boolean that determines whether to view the url
+                 in a browser.
 
         Returns:
             None.
@@ -363,10 +366,19 @@ class HackerNews(object):
             item = self.hacker_news_api.get_item(self.item_ids[index-1])
             if comments:
                 comments_url = self.URL_POST + str(item.item_id)
-                click.secho('Fetching Comments from ' + comments_url, fg='blue')
-                self.print_comments(item, regex_query=comments_query)
+                click.secho('\nFetching Comments from ' + comments_url,
+                            fg='blue')
+                if browser:
+                    webbrowser.open(comments_url)
+                else:
+                    self.print_comments(item, regex_query=comments_query)
+                click.echo('')
             else:
-                click.secho('Opening ' + item.url + '...', fg='blue')
-                self.print_url_contents(item.url)
+                click.secho('\nOpening ' + item.url + '...', fg='blue')
+                if browser:
+                    webbrowser.open(item.url)
+                else:
+                    self.print_url_contents(item.url)
+                click.echo('')
         except Exception as e:
             click.secho('Error: ' + str(e), fg='red')
