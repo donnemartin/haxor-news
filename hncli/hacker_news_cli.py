@@ -281,8 +281,10 @@ class HackerNewsCli(object):
     @click.argument('comments_query', required=False, default='')
     @click.option('-c', '--comments', is_flag=True)
     @click.option('-cr', '--comments_recent', is_flag=True)
+    @click.option('-b', '--browser', is_flag=True)
     @pass_hacker_news
-    def view(hacker_news, index, comments_query, comments, comments_recent):
+    def view(hacker_news, index, comments_query,
+             comments, comments_recent, browser):
         """Views the given index comments or url.
 
         This method is meant to be called after a command that outputs a
@@ -299,13 +301,17 @@ class HackerNewsCli(object):
             * comments: A boolean that determines whether to view the comments
                 or a simplified version of the post url.
             * comments_recent: A boolean that determines whether to view only
-                 recentl comments (posted within the past 59 minutes or less)
+                 recently comments (posted within the past 59 minutes or less)
+            * browser: A boolean that determines whether to view the url
+                 in a browser.
 
         Example(s):
             hn top
             hn view 3
             hn view 3 -c | less
             hn view 3 -c > comments.txt
+            hn view 3 --browser
+            hn view 3 -b -c
             hn view 3 "(?i)case insensitive match" --comments
             hn view 3 "(?i)programmer" --comments
             hn view 3 "(?i)programmer" --comments | less
@@ -322,4 +328,4 @@ class HackerNewsCli(object):
             else:
                 comments_query += '' + query_recent
             comments = True
-        hacker_news.view(int(index), comments_query, comments)
+        hacker_news.view(int(index), comments_query, comments, browser)
