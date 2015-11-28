@@ -1,6 +1,15 @@
 hncli
 =====
 
+### Supported Platforms
+
+* Mac OS X
+    * Tested on OS X 10.10
+* Linux, Unix
+    * Tested on Ubuntu 14.04 LTS
+* Windows
+    * Tested on Windows 7 and 10
+
 ## Contributing
 
 Contributions are welcome!
