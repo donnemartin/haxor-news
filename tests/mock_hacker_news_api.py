@@ -13,6 +13,7 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+from hncli.lib.haxor.haxor import InvalidItemID, InvalidUserID
 
 class MockItem(object):
 
@@ -103,13 +104,13 @@ class MockHackerNewsApi(object):
         if item_id < len(self.items):
             return self.items[item_id]
         else:
-            return None
+            raise InvalidItemID
 
     def get_user(self, user_id):
         for user in self.users:
             if user.user_id == user_id:
                 return user
-        return None
+        raise InvalidUserID
 
     def top_stories(self, limit=None):
         return self.item_ids(limit)
