@@ -32,7 +32,7 @@ import click
 from html2text import HTML2Text
 import requests
 
-from .lib.haxor.haxor import HackerNewsApi
+from .lib.haxor.haxor import HackerNewsApi, InvalidUserID
 from .lib.pretty_date_time import pretty_date_time
 
 
@@ -502,10 +502,8 @@ class HackerNews(object):
         Returns:
             None.
         """
-        user = self.hacker_news_api.get_user(user_id)
-        if user is None:
-            self.print_item_not_found(user_id)
-        else:
+        try:
+            user = self.hacker_news_api.get_user(user_id)
             click.secho('\nUser Id: ', nl=False, fg='magenta')
             click.secho(user_id, fg='yellow')
             click.secho('Created: ', nl=False, fg='magenta')
@@ -514,6 +512,8 @@ class HackerNews(object):
             click.secho(str(user.karma), fg='yellow')
             self.print_items(self.MSG_SUBMISSIONS,
                              user.submitted[0:submission_limit])
+        except InvalidUserID:
+            self.print_item_not_found(user_id)
 
     def view(self, index, comments_query, comments, browser):
         """Views the given index in a browser.
