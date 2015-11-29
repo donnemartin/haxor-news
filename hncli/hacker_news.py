@@ -55,6 +55,8 @@ class HackerNews(object):
             command hn show is executed.
         * MSG_TOP: A string representing the message displayed when the
             command hn top is executed.
+        * MSG_SUBMISSIONS: A string representing the message displayed for
+            repositories when the command hn user is executed.
         * hacker_news_api: An instance of HackerNews.
         * item_ids: A list containing the last set of ids the user has seen,
             which allows the user to quickly access an item with the
@@ -75,6 +77,7 @@ class HackerNews(object):
     MSG_ONION = 'Top Onion'
     MSG_SHOW = 'Show HN'
     MSG_TOP = 'Top'
+    MSG_SUBMISSIONS = 'User submissions:'
     TIP0 = 'Tip: View the page or comments for '
     TIP1 = ' with the following command:\n'
     TIP2 = '  hn view [#] [comment_filter] [-c] [-cr] [-b] - hn view --help'
@@ -508,6 +511,31 @@ class HackerNews(object):
         self.print_items(
             message=self.headlines_message(self.MSG_TOP),
             item_ids=self.hacker_news_api.top_stories(limit))
+
+    def user(self, user_id, submission_limit):
+        """Displays basic user info and submitted posts.
+
+        Args:
+            * user_id: A string representing the user id.
+            * submission_limit: A int that specifies the number of
+                submissions to show.
+                Optional, defaults to 10.
+
+        Returns:
+            None.
+        """
+        user = self.hacker_news_api.get_user(user_id)
+        if user is None:
+            self.print_item_not_found(user_id)
+        else:
+            click.secho('\nUser Id: ', nl=False, fg='magenta')
+            click.secho(user_id, fg='yellow')
+            click.secho('Created: ', nl=False, fg='magenta')
+            click.secho(str(user.created), fg='yellow')
+            click.secho('Karma: ', nl=False, fg='magenta')
+            click.secho(str(user.karma), fg='yellow')
+            self.print_items(self.MSG_SUBMISSIONS,
+                             user.submitted[0:submission_limit])
 
     def view(self, index, comments_query, comments, browser):
         """Views the given index in a browser.
