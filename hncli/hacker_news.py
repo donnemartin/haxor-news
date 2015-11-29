@@ -34,6 +34,7 @@ import requests
 
 from .lib.haxor.haxor import HackerNewsApi, InvalidUserID
 from .lib.pretty_date_time import pretty_date_time
+from .onions import onions
 
 
 class HackerNews(object):
