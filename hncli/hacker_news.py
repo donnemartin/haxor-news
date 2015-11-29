@@ -49,6 +49,8 @@ class HackerNews(object):
             command hn jobs is executed.
         * MSG_NEW: A string representing the message displayed when the
             command hn new is executed.
+        * MSG_ONION: A string representing the message displayed when the
+            command hn onion is executed.
         * hacker_news_api: An instance of HackerNews.
         * item_ids: A list containing the last set of ids the user has seen,
             which allows the user to quickly access an item with the
@@ -66,6 +68,7 @@ class HackerNews(object):
     MSG_ASK = 'Ask HN'
     MSG_JOBS = 'Jobs'
     MSG_NEW = 'Latest'
+    MSG_ONION = 'Top Onion'
     TIP0 = 'Tip: View the page or comments for '
     TIP1 = ' with the following command:\n'
     TIP2 = '  hn view [#] [comment_filter] [-c] [-cr] [-b] - hn view --help'
@@ -188,6 +191,25 @@ class HackerNews(object):
         self.print_items(
             message=self.headlines_message(self.MSG_NEW),
             item_ids=self.hacker_news_api.new_stories(limit))
+
+    def onion(self, limit):
+        """Displays onions.
+
+        Args:
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 50.
+
+        Returns:
+            None.
+        """
+        click.secho('\n' + self.headlines_message(self.MSG_ONION) + '\n',
+                    fg='blue')
+        index = 1
+        for onion in onions[0:limit]:
+            self.print_index_title(index, onion)
+            click.echo('')
+            index += 1
+        click.echo('')
 
     def print_comments(self, item, regex_query='', depth=0):
         """Recursively print comments and subcomments for the given item.
