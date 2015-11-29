@@ -122,6 +122,18 @@ class HackerNewsTest(unittest.TestCase):
         self.hn.user(self.invalid_id, self.limit)
         mock_print_item_not_found.assert_called_with(self.invalid_id)
 
+    @mock.patch('hncli.hacker_news.HackerNews.view')
+    def test_view_setup_query_recent(self, mock_view):
+        index = 0
+        comments = False
+        comments_recent = True
+        browser = False
+        self.hn.view_setup(
+            index, self.query, comments, comments_recent, browser)
+        comments_expected = True
+        mock_view.assert_called_with(
+            index, self.hn.QUERY_RECENT, comments_expected, browser)
+
     # @mock.patch('hncli.hacker_news.click')
     # def test_print_comments(self, mock_click):
     #     query = 'command line'

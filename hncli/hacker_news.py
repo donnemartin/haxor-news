@@ -61,6 +61,7 @@ class HackerNews(object):
         * item_ids: A list containing the last set of ids the user has seen,
             which allows the user to quickly access an item with the
             gh view [#] [-u/--url] command.
+        * QUERY_RECENT: A list representing the query to show recent comments.
         * TIP0, TIP1, TIP2: StringS that lets the user know about the
             hn view command.
         * URL_POST: A string that represents a Hacker News post minus the
@@ -78,6 +79,7 @@ class HackerNews(object):
     MSG_SHOW = 'Show HN'
     MSG_TOP = 'Top'
     MSG_SUBMISSIONS = 'User submissions:'
+    QUERY_RECENT = 'minutes ago'
     TIP0 = 'Tip: View the page or comments for '
     TIP1 = ' with the following command:\n'
     TIP2 = '  hn view [#] [comment_filter] [-c] [-cr] [-b] - hn view --help'
@@ -589,3 +591,37 @@ class HackerNews(object):
                 click.echo('')
         except Exception as e:
             click.secho('Error: ' + str(e), fg='red')
+
+    def view_setup(self, index, comments_query,
+                   comments, comments_recent, browser):
+        """Sets up the call to views the given index comments or url.
+
+        This method is meant to be called after a command that outputs a
+        table of posts.
+
+        Args:
+            * index: A int that specifies the index of a post just shown within
+                a table.  For example, calling hn top will list the latest posts
+                with indices for each row.  Calling hn view [index] will view
+                the comments of the given post.
+            * comments_query: A string that specifies the regex query to match.
+                This automatically sets comments to True.
+            * comments: A boolean that determines whether to view the comments
+                or a simplified version of the post url.
+            * comments_recent: A boolean that determines whether to view only
+                 recently comments (posted within the past 59 minutes or less)
+            * browser: A boolean that determines whether to view the url
+                 in a browser.
+
+        Returns:
+            None.
+        """
+        if comments_query:
+            comments = True
+        if comments_recent:
+            comments_query = self.QUERY_RECENT
+            comments = True
+        self.view(int(index),
+                  comments_query,
+                  comments,
+                  browser)
