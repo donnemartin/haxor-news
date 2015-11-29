@@ -133,6 +133,28 @@ class HackerNews(object):
         """
         return 'Fetching {0} Headlines...'.format(message)
 
+    def hiring(self, regex_query, post_id):
+        """Displays comments matching the monthly who is hiring post.
+
+        Searches the monthly Hacker News who is hiring post for comments
+        matching the given regex_query.  Defaults to searching the latest
+        post based on your installed version of hncli.
+
+        Args:
+            * regex_query: A string that specifies the regex query to match.
+            * id: An int that specifies the who is hiring post id.
+                Optional, defaults to the latest post based on your installed
+                version of hncli.
+
+        Returns:
+            None.
+        """
+        item = self.hacker_news_api.get_item(post_id)
+        if item is None:
+            self.print_item_not_found(post_id)
+        else:
+            self.print_comments(item, regex_query)
+
     def print_comments(self, item, regex_query='', depth=0):
         """Recursively print comments and subcomments for the given item.
 
