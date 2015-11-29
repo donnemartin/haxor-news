@@ -43,6 +43,13 @@ class HackerNewsTest(unittest.TestCase):
                                 self.hn.CONFIG)
         assert self.hn._config(self.hn.CONFIG) == expected
 
+    @mock.patch('hncli.hacker_news.HackerNews.print_items')
+    def test_ask(self, mock_print_items):
+        self.hn.ask(self.limit)
+        mock_print_items.assert_called_with(
+            message=self.hn.headlines_message(self.hn.MSG_ASK),
+            item_ids=self.hn.hacker_news_api.ask_stories(self.limit))
+
     # @mock.patch('hncli.hacker_news.click')
     # def test_print_comments(self, mock_click):
     #     query = 'command line'

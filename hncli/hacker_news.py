@@ -43,6 +43,8 @@ class HackerNews(object):
         * CONFIG: A string representing the config file name.
         * CONFIG_SECTION: A string representing the main config file section.
         * CONFIG_INDEX: A string representing the last index used.
+        * MSG_ASK: A string representing the message displayed when the
+            command hn ask is executed.
         * hacker_news_api: An instance of HackerNews.
         * item_ids: A list containing the last set of ids the user has seen,
             which allows the user to quickly access an item with the
@@ -57,6 +59,7 @@ class HackerNews(object):
     CONFIG = '.hncliconfig'
     CONFIG_SECTION = 'hncli'
     CONFIG_INDEX = 'item_ids'
+    MSG_ASK = 'Ask HN'
     TIP0 = 'Tip: View the page or comments for '
     TIP1 = ' with the following command:\n'
     TIP2 = '  hn view [#] [comment_filter] [-c] [-cr] [-b] - hn view --help'
@@ -86,6 +89,20 @@ class HackerNews(object):
         home = os.path.abspath(os.environ.get('HOME', ''))
         config_file_path = os.path.join(home, config_file_name)
         return config_file_path
+
+    def ask(self, limit):
+        """Displays Ask HN posts.
+
+        Args:
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 10.
+
+        Returns:
+            None.
+        """
+        self.print_items(
+            message=self.headlines_message(self.MSG_ASK),
+            item_ids=self.hacker_news_api.ask_stories(limit))
 
     def print_comments(self, item, regex_query='', depth=0):
         """Recursively print comments and subcomments for the given item.
