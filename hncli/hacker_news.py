@@ -33,6 +33,7 @@ from html2text import HTML2Text
 import requests
 
 from .lib.haxor.haxor import HackerNewsApi
+from .lib.pretty_date_time import pretty_date_time
 
 
 class HackerNews(object):
@@ -248,56 +249,6 @@ class HackerNews(object):
             self.print_comments(comment, regex_query=regex_query, depth=depth)
             depth -= 1
 
-    def pretty_date_time(self, date_time):
-        """Prints a pretty datetime similar to what's seen on Hacker News.
-
-        Gets a datetime object or a int() Epoch timestamp and return a
-        pretty string like 'an hour ago', 'Yesterday', '3 months ago',
-        'just now', etc.
-
-        Adapted from: http://stackoverflow.com/questions/1551382/user-friendly-time-format-in-python  # NOQA
-
-        Args:
-            * date_time: An instance of datetime.
-
-        Returns:
-            A string that represents the pretty datetime.
-        """
-        from datetime import datetime
-        now = datetime.now()
-        if type(date_time) is int:
-            diff = now - datetime.fromtimestamp(date_time)
-        elif isinstance(date_time, datetime):
-            diff = now - date_time
-        elif not date_time:
-            diff = now - now
-        second_diff = diff.seconds
-        day_diff = diff.days
-        if day_diff < 0:
-            return ''
-        if day_diff == 0:
-            if second_diff < 10:
-                return "just now"
-            if second_diff < 60:
-                return str(second_diff) + " seconds ago"
-            if second_diff < 120:
-                return "1 minute ago"
-            if second_diff < 3600:
-                return str(second_diff // 60) + " minutes ago"
-            if second_diff < 7200:
-                return "1 hour ago"
-            if second_diff < 86400:
-                return str(second_diff // 3600) + " hours ago"
-        if day_diff == 1:
-            return "Yesterday"
-        if day_diff < 7:
-            return str(day_diff) + " days ago"
-        if day_diff < 31:
-            return str(day_diff // 7) + " weeks ago"
-        if day_diff < 365:
-            return str(day_diff // 30) + " months ago"
-        return str(day_diff // 365) + " years ago"
-
     def print_formatted_comment(self, item, depth):
         """Formats and prints a given item's comment.
 
@@ -311,7 +262,7 @@ class HackerNews(object):
         indent = self.COMMENT_INDENT * depth
         click.secho(
             '\n' + indent + item.by + ' - ' +
-            str(self.pretty_date_time(item.submission_time)),
+            str(pretty_date_time(item.submission_time)),
             fg='yellow')
         html_to_text = HTML2Text()
         html_to_text.body_width = 0
@@ -366,7 +317,7 @@ class HackerNews(object):
         click.secho('by ' + item.by + ' ',
                     nl=False,
                     fg='yellow')
-        click.secho(str(self.pretty_date_time(item.submission_time)) + ' ',
+        click.secho(str(pretty_date_time(item.submission_time)) + ' ',
                     nl=False,
                     fg='cyan')
         num_comments = str(item.descendants) if item.descendants else '0'
@@ -463,7 +414,7 @@ class HackerNews(object):
         """
         match_time = re.search(
             regex_query,
-            str(self.pretty_date_time(item.submission_time)))
+            str(pretty_date_time(item.submission_time)))
         match_user = re.search(regex_query, item.by)
         match_text = re.search(regex_query, item.text)
         if not match_text and not match_user and not match_time:
