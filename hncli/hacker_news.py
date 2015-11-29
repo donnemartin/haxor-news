@@ -53,6 +53,8 @@ class HackerNews(object):
             command hn onion is executed.
         * MSG_SHOW: A string representing the message displayed when the
             command hn show is executed.
+        * MSG_TOP: A string representing the message displayed when the
+            command hn top is executed.
         * hacker_news_api: An instance of HackerNews.
         * item_ids: A list containing the last set of ids the user has seen,
             which allows the user to quickly access an item with the
@@ -72,6 +74,7 @@ class HackerNews(object):
     MSG_NEW = 'Latest'
     MSG_ONION = 'Top Onion'
     MSG_SHOW = 'Show HN'
+    MSG_TOP = 'Top'
     TIP0 = 'Tip: View the page or comments for '
     TIP1 = ' with the following command:\n'
     TIP2 = '  hn view [#] [comment_filter] [-c] [-cr] [-b] - hn view --help'
@@ -491,6 +494,20 @@ class HackerNews(object):
         self.print_items(
             message=self.headlines_message(self.MSG_SHOW),
             item_ids=self.hacker_news_api.show_stories(limit))
+
+    def top(self, limit):
+        """Displays the top posts.
+
+        Args:
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 10.
+
+        Returns:
+            None.
+        """
+        self.print_items(
+            message=self.headlines_message(self.MSG_TOP),
+            item_ids=self.hacker_news_api.top_stories(limit))
 
     def view(self, index, comments_query, comments, browser):
         """Views the given index in a browser.
