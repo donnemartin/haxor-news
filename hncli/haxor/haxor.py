@@ -73,6 +73,7 @@ class HackerNewsApi(object):
           InvalidAPIVersion: If Hacker News version is not supported.
 
         """
+        self.session = requests.Session()
         try:
             self.base_url = supported_api_versions[version]
         except KeyError:
@@ -91,7 +92,7 @@ class HackerNewsApi(object):
           HTTPError: If HTTP request failed.
 
         """
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.status_code == requests.codes.ok:
             return response
         else:
