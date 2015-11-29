@@ -125,6 +125,32 @@ class HackerNews(object):
             message=self.headlines_message(self.MSG_ASK),
             item_ids=self.hacker_news_api.ask_stories(limit))
 
+    def colorize_markdown(self, text):
+        """Adds color to the input markdown using click.style.
+
+        Args:
+            * text: A string that represents the markdown text.
+
+        Returns:
+            A string that has been colorized.
+        """
+        pattern_url_name = r'[^]]*'
+        pattern_url_link = r'[^)]+'
+        pattern_url = r'([!]*\[{0}]\(\s*{1}\s*\))'.format(pattern_url_name,
+                                                          pattern_url_link)
+        regex_url = re.compile(pattern_url)
+        contents = regex_url.sub(click.style(r'\1', fg='green'), text)
+        regex_list = re.compile(r'(  \*.*)')
+        text = regex_list.sub(click.style(r'\1', fg='blue'), text)
+        regex_header = re.compile(r'(#+) (.*)')
+        text = regex_header.sub(click.style(r'\2', fg='yellow'), text)
+        regex_bold = re.compile(r'(\*\*|__)(.*?)\1')
+        text = regex_bold.sub(click.style(r'\2', fg='cyan'), text)
+        regex_code = re.compile(r'(`)(.*?)\1')
+        text = regex_code.sub(click.style(r'\1\2\1', fg='cyan'), text)
+        text = re.sub(r'(\s*\r?\n\s*){2,}', r'\n\n', text)
+        return text
+
     def comments(self, post_id, regex_query):
         """Views the comments for the given post_id.
 
@@ -388,7 +414,7 @@ class HackerNews(object):
         Returns:
             None.
         """
-        raw_response = requests.get('https://github.com/donnemartin/saws')
+        raw_response = requests.get(url)
         html_to_text = HTML2Text()
         html_to_text.body_width = 0
         html_to_text.ignore_images = False
@@ -396,21 +422,7 @@ class HackerNews(object):
         html_to_text.ignore_links = False
         html_to_text.skip_internal_links = False
         contents = html_to_text.handle(raw_response.text)
-        pattern_url_name = r'[^]]*'
-        pattern_url_link = r'[^)]+'
-        pattern_url = r'([!]*\[{0}]\(\s*{1}\s*\))'.format(pattern_url_name,
-                                                          pattern_url_link)
-        regex_url = re.compile(pattern_url)
-        contents = regex_url.sub(click.style(r'\1', fg='green'), contents)
-        regex_list = re.compile(r'(  \*.*)')
-        contents = regex_list.sub(click.style(r'\1', fg='blue'), contents)
-        regex_header = re.compile(r'(#+) (.*)')
-        contents = regex_header.sub(click.style(r'\2', fg='yellow'), contents)
-        regex_bold = re.compile(r'(\*\*|__)(.*?)\1')
-        contents = regex_bold.sub(click.style(r'\2', fg='cyan'), contents)
-        regex_code = re.compile(r'(`)(.*?)\1')
-        contents = regex_code.sub(click.style(r'\1\2\1', fg='cyan'), contents)
-        contents = re.sub(r'(\s*\r?\n\s*){2,}', r'\n\n', contents);
+        contents = self.colorize_markdown(contents)
         contents = click.style(
             'Viewing ' + url + '\n\n', fg='magenta') + contents
         click.echo_via_pager(contents)
