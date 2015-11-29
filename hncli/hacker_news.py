@@ -51,6 +51,8 @@ class HackerNews(object):
             command hn new is executed.
         * MSG_ONION: A string representing the message displayed when the
             command hn onion is executed.
+        * MSG_SHOW: A string representing the message displayed when the
+            command hn show is executed.
         * hacker_news_api: An instance of HackerNews.
         * item_ids: A list containing the last set of ids the user has seen,
             which allows the user to quickly access an item with the
@@ -69,6 +71,7 @@ class HackerNews(object):
     MSG_JOBS = 'Jobs'
     MSG_NEW = 'Latest'
     MSG_ONION = 'Top Onion'
+    MSG_SHOW = 'Show HN'
     TIP0 = 'Tip: View the page or comments for '
     TIP1 = ' with the following command:\n'
     TIP2 = '  hn view [#] [comment_filter] [-c] [-cr] [-b] - hn view --help'
@@ -474,6 +477,20 @@ class HackerNews(object):
         parser.add_section(self.CONFIG_SECTION)
         parser.set(self.CONFIG_SECTION, self.CONFIG_INDEX, self.item_ids)
         parser.write(open(config, 'w+'))
+
+    def show(self, limit):
+        """Displays Show HN posts.
+
+        Args:
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 10.
+
+        Returns:
+            None.
+        """
+        self.print_items(
+            message=self.headlines_message(self.MSG_SHOW),
+            item_ids=self.hacker_news_api.show_stories(limit))
 
     def view(self, index, comments_query, comments, browser):
         """Views the given index in a browser.
