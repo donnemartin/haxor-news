@@ -59,6 +59,11 @@ class HackerNewsTest(unittest.TestCase):
         self.hn.comments(self.invalid_id, regex_query=self.query)
         mock_print_item_not_found.assert_called_with(self.invalid_id)
 
+    def test_headlines_message(self):
+        message = 'foo'
+        headlines_message = self.hn.headlines_message(message)
+        assert message in headlines_message
+
     # @mock.patch('hncli.hacker_news.click')
     # def test_print_comments(self, mock_click):
     #     query = 'command line'

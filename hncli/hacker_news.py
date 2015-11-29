@@ -122,6 +122,17 @@ class HackerNews(object):
         else:
             self.print_comments(item, regex_query=regex_query)
 
+    def headlines_message(self, message):
+        """Creates the "Fetching [message] Headlines..." string.
+
+        Args:
+            * message: A string that represents the message.
+
+        Returns:
+            A string: "Fetching [message] Headlines..."
+        """
+        return 'Fetching {0} Headlines...'.format(message)
+
     def print_comments(self, item, regex_query='', depth=0):
         """Recursively print comments and subcomments for the given item.
 
