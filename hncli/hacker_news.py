@@ -32,7 +32,7 @@ import click
 from html2text import HTML2Text
 import requests
 
-from .haxor.haxor import HackerNewsApi
+from .lib.haxor.haxor import HackerNewsApi
 
 
 class HackerNews(object):
