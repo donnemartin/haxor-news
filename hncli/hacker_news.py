@@ -325,6 +325,19 @@ class HackerNews(object):
                     fg='green')
         self.item_ids.append(item.item_id)
 
+    def print_item_not_found(self, item_id):
+        """Prints a message the given item id was not found.
+
+        Long description.
+
+        Args:
+            * item_id: An int representing the item id.
+
+        Returns:
+            None.
+        """
+        click.secho('Item with id {0} not found'.format(item_id), fg='red')
+
     def print_items(self, message, item_ids):
         """Prints the items and headers with tabulate.
 
