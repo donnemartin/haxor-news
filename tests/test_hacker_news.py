@@ -80,6 +80,13 @@ class HackerNewsTest(unittest.TestCase):
             message=self.hn.headlines_message(self.hn.MSG_JOBS),
             item_ids=self.hn.hacker_news_api.ask_stories(self.limit))
 
+    @mock.patch('hncli.hacker_news.HackerNews.print_items')
+    def test_new(self, mock_print_items):
+        self.hn.new(self.limit)
+        mock_print_items.assert_called_with(
+            message=self.hn.headlines_message(self.hn.MSG_NEW),
+            item_ids=self.hn.hacker_news_api.new_stories(self.limit))
+
     # @mock.patch('hncli.hacker_news.click')
     # def test_print_comments(self, mock_click):
     #     query = 'command line'

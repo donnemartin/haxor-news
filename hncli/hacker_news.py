@@ -47,6 +47,8 @@ class HackerNews(object):
             command hn ask is executed.
         * MSG_JOBS: A string representing the message displayed when the
             command hn jobs is executed.
+        * MSG_NEW: A string representing the message displayed when the
+            command hn new is executed.
         * hacker_news_api: An instance of HackerNews.
         * item_ids: A list containing the last set of ids the user has seen,
             which allows the user to quickly access an item with the
@@ -63,6 +65,7 @@ class HackerNews(object):
     CONFIG_INDEX = 'item_ids'
     MSG_ASK = 'Ask HN'
     MSG_JOBS = 'Jobs'
+    MSG_NEW = 'Latest'
     TIP0 = 'Tip: View the page or comments for '
     TIP1 = ' with the following command:\n'
     TIP2 = '  hn view [#] [comment_filter] [-c] [-cr] [-b] - hn view --help'
@@ -171,6 +174,20 @@ class HackerNews(object):
         self.print_items(
             message=self.headlines_message(self.MSG_JOBS),
             item_ids=self.hacker_news_api.job_stories(limit))
+
+    def new(self, limit):
+        """Displays the latest posts.
+
+        Args:
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 10.
+
+        Returns:
+            None.
+        """
+        self.print_items(
+            message=self.headlines_message(self.MSG_NEW),
+            item_ids=self.hacker_news_api.new_stories(limit))
 
     def print_comments(self, item, regex_query='', depth=0):
         """Recursively print comments and subcomments for the given item.
