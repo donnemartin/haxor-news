@@ -50,6 +50,15 @@ class HackerNewsTest(unittest.TestCase):
             message=self.hn.headlines_message(self.hn.MSG_ASK),
             item_ids=self.hn.hacker_news_api.ask_stories(self.limit))
 
+    @mock.patch('hncli.hacker_news.HackerNews.print_comments')
+    @mock.patch('hncli.hacker_news.HackerNews.print_item_not_found')
+    def test_comments(self, mock_print_item_not_found, mock_print_comments):
+        self.hn.comments(self.valid_id, regex_query=self.query)
+        item = self.hn.hacker_news_api.get_item(self.valid_id)
+        mock_print_comments.assert_called_with(item, regex_query=self.query)
+        self.hn.comments(self.invalid_id, regex_query=self.query)
+        mock_print_item_not_found.assert_called_with(self.invalid_id)
+
     # @mock.patch('hncli.hacker_news.click')
     # def test_print_comments(self, mock_click):
     #     query = 'command line'
