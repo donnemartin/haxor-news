@@ -273,10 +273,10 @@ class HackerNewsCli(object):
 
         Args:
             * hacker_news: An instance of Hacker News.
-            * index: A int that specifies the index of a post just shown within
-                a table.  For example, calling hn top will list the latest posts
-                with indices for each row.  Calling hn view [index] will view
-                the comments of the given post.
+            * index: A string that specifies the index of a post just shown
+                within a table.  For example, calling hn top will list the
+                latest posts with indices for each row.  Calling
+                hn view [index] will view the comments of the given post.
             * comments_query: A string that specifies the regex query to match.
                 This automatically sets comments to True.
             * comments: A boolean that determines whether to view the comments
@@ -291,6 +291,8 @@ class HackerNewsCli(object):
             hn view 3
             hn view 3 -c | less
             hn view 3 -c > comments.txt
+            hn view 3 -cr
+            hn view 3 --comments_recent
             hn view 3 --browser
             hn view 3 -b -c
             hn view 3 "(?i)case insensitive match" --comments
@@ -300,13 +302,8 @@ class HackerNewsCli(object):
         Returns:
             None.
         """
-        if comments_query:
-            comments = True
-        if comments_recent:
-            query_recent = 'minutes ago'
-            if not comments_query:
-                comments_query = query_recent
-            else:
-                comments_query += '' + query_recent
-            comments = True
-        hacker_news.view(int(index), comments_query, comments, browser)
+        hacker_news.view_setup(int(index),
+                               comments_query,
+                               comments,
+                               comments_recent,
+                               browser)
