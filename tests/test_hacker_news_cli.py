@@ -42,93 +42,69 @@ class HackerNewsCliTest(unittest.TestCase):
         result = self.runner.invoke(self.hacker_news_cli.cli)
         assert result.exit_code == 0
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_items')
-    def test_ask(self, mock_print_items):
-        self.hn.ask(self.limit)
-        mock_print_items.assert_called_with(
-            message=self.hn.headlines_message(self.hn.MSG_ASK),
-            item_ids=self.hn.hacker_news_api.ask_stories(self.limit))
+    @mock.patch('hncli.hacker_news_cli.HackerNews.ask')
+    def test_ask(self, mock_hn_call):
+        result = self.runner.invoke(self.hacker_news_cli.cli, ['ask'])
+        mock_hn_call.assert_called_with(self.limit)
+        assert result.exit_code == 0
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_comments')
-    @mock.patch('hncli.hacker_news.HackerNews.print_item_not_found')
-    def test_comments(self, mock_print_item_not_found, mock_print_comments):
-        self.hn.comments(self.valid_id, regex_query=self.query)
-        item = self.hn.hacker_news_api.get_item(self.valid_id)
-        mock_print_comments.assert_called_with(item, regex_query=self.query)
-        self.hn.comments(self.invalid_id, regex_query=self.query)
-        mock_print_item_not_found.assert_called_with(self.invalid_id)
+    @mock.patch('hncli.hacker_news_cli.HackerNews.comments')
+    def test_comments(self, mock_hn_call):
+        result = self.runner.invoke(
+            self.hacker_news_cli.cli, ['comments', self.dummy, self.dummy])
+        mock_hn_call.assert_called_with(self.dummy, self.dummy)
+        assert result.exit_code == 0
 
-    def test_headlines_message(self):
-        message = 'foo'
-        headlines_message = self.hn.headlines_message(message)
-        assert message in headlines_message
+    @mock.patch('hncli.hacker_news_cli.HackerNews.hiring')
+    def test_hiring(self, mock_hn_call):
+        result = self.runner.invoke(
+            self.hacker_news_cli.cli, ['hiring', self.dummy, '-i', 0])
+        mock_hn_call.assert_called_with(self.dummy, 0)
+        assert result.exit_code == 0
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_comments')
-    @mock.patch('hncli.hacker_news.HackerNews.print_item_not_found')
-    def test_hiring(self, mock_print_item_not_found, mock_print_comments):
-        self.hn.hiring(self.query, post_id=self.valid_id)
-        item = self.hn.hacker_news_api.get_item(self.valid_id)
-        mock_print_comments.assert_called_with(item, self.query)
-        self.hn.hiring(self.query, post_id=self.invalid_id)
-        mock_print_item_not_found.assert_called_with(self.invalid_id)
+    @mock.patch('hncli.hacker_news_cli.HackerNews.jobs')
+    def test_jobs(self, mock_hn_call):
+        result = self.runner.invoke(self.hacker_news_cli.cli, ['jobs'])
+        mock_hn_call.assert_called_with(self.limit)
+        assert result.exit_code == 0
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_items')
-    def test_jobs(self, mock_print_items):
-        self.hn.jobs(self.limit)
-        mock_print_items.assert_called_with(
-            message=self.hn.headlines_message(self.hn.MSG_JOBS),
-            item_ids=self.hn.hacker_news_api.ask_stories(self.limit))
+    @mock.patch('hncli.hacker_news_cli.HackerNews.new')
+    def test_new(self, mock_hn_call):
+        result = self.runner.invoke(self.hacker_news_cli.cli, ['new'])
+        mock_hn_call.assert_called_with(self.limit)
+        assert result.exit_code == 0
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_items')
-    def test_new(self, mock_print_items):
-        self.hn.new(self.limit)
-        mock_print_items.assert_called_with(
-            message=self.hn.headlines_message(self.hn.MSG_NEW),
-            item_ids=self.hn.hacker_news_api.new_stories(self.limit))
+    @mock.patch('hncli.hacker_news_cli.HackerNews.onion')
+    def test_onion(self, mock_hn_call):
+        result = self.runner.invoke(
+            self.hacker_news_cli.cli, ['onion', str(self.limit)])
+        mock_hn_call.assert_called_with(self.limit)
+        assert result.exit_code == 0
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_index_title')
-    @mock.patch('hncli.hacker_news.click')
-    def test_onion(self, mock_click, mock_print_index_title):
-        self.hn.onion(self.limit)
-        assert len(mock_print_index_title.mock_calls) == self.limit
-        assert mock_click.mock_calls
+    @mock.patch('hncli.hacker_news_cli.HackerNews.show')
+    def test_show(self, mock_hn_call):
+        result = self.runner.invoke(self.hacker_news_cli.cli, ['show'])
+        mock_hn_call.assert_called_with(self.limit)
+        assert result.exit_code == 0
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_items')
-    def test_show(self, mock_print_items):
-        self.hn.show(self.limit)
-        mock_print_items.assert_called_with(
-            message=self.hn.headlines_message(self.hn.MSG_SHOW),
-            item_ids=self.hn.hacker_news_api.show_stories(self.limit))
+    @mock.patch('hncli.hacker_news_cli.HackerNews.top')
+    def test_top(self, mock_hn_call):
+        result = self.runner.invoke(self.hacker_news_cli.cli, ['top'])
+        mock_hn_call.assert_called_with(self.limit)
+        assert result.exit_code == 0
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_items')
-    def test_top(self, mock_print_items):
-        self.hn.top(self.limit)
-        mock_print_items.assert_called_with(
-            message=self.hn.headlines_message(self.hn.MSG_TOP),
-            item_ids=self.hn.hacker_news_api.top_stories(self.limit))
+    @mock.patch('hncli.hacker_news_cli.HackerNews.user')
+    def test_user(self, mock_hn_call):
+        result = self.runner.invoke(
+            self.hacker_news_cli.cli, ['user', self.user])
+        mock_hn_call.assert_called_with(self.user, self.limit)
+        assert result.exit_code == 0
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_items')
-    @mock.patch('hncli.hacker_news.click')
-    @mock.patch('hncli.hacker_news.HackerNews.print_item_not_found')
-    def test_user(self, mock_print_item_not_found,
-                  mock_click, mock_print_items):
-        user_id = 'foo'
-        self.hn.user(user_id, self.limit)
-        user = self.hn.hacker_news_api.get_user(user_id)
-        mock_print_items.assert_called_with(
-            self.hn.MSG_SUBMISSIONS, user.submitted[0:self.limit])
-        assert mock_click.mock_calls
-        self.hn.user(self.invalid_id, self.limit)
-        mock_print_item_not_found.assert_called_with(self.invalid_id)
-
-    @mock.patch('hncli.hacker_news.HackerNews.view')
-    def test_view_setup_query_recent(self, mock_view):
-        index = 0
-        comments = False
-        comments_recent = True
-        browser = False
-        self.hn.view_setup(
-            index, self.query, comments, comments_recent, browser)
-        comments_expected = True
-        mock_view.assert_called_with(
-            index, self.hn.QUERY_RECENT, comments_expected, browser)
+    @mock.patch('hncli.hacker_news_cli.HackerNews.view')
+    def test_view(self, mock_hn_call):
+        dummy = False
+        index = '0'
+        result = self.runner.invoke(
+            self.hacker_news_cli.cli, ['view', index])
+        mock_hn_call.assert_called_with(int(index), '', dummy, dummy)
+        assert result.exit_code == 0
