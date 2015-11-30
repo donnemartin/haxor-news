@@ -95,10 +95,11 @@ class HackerNewsCli(object):
         hacker_news.comments(post_id, regex_query)
 
     @cli.command()
-    @click.argument('regex_query')
-    @click.option('-i', '--id', required=False, default=who_is_hiring_post_id)
+    @click.argument('regex_query', required=False)
+    @click.option('-i', '--id_post', required=False,
+                  default=who_is_hiring_post_id)
     @pass_hacker_news
-    def hiring(hacker_news, regex_query, id):
+    def hiring(hacker_news, regex_query, id_post):
         """Displays comments matching the monthly who is hiring post.
 
         Searches the monthly Hacker News who is hiring post for comments
@@ -118,11 +119,12 @@ class HackerNewsCli(object):
         Args:
             * hacker_news: An instance of Hacker News.
             * regex_query: A string that specifies the regex query to match.
-            * id: An int that specifies the who is hiring post id.
+            * id_post: A string that specifies the who is hiring post id.
                 Optional, defaults to the latest post based on your installed
                 version of hncli.
 
         Example(s):
+            hn hiring
             hn hiring "Python"
             hn hiring "(?i)Python|JavaScript"  # (?i) case insensitive
             hn hiring "(?i)Python|JavaScript" -i 8394339  # search post 8394339
@@ -131,8 +133,7 @@ class HackerNewsCli(object):
         Returns:
             None.
         """
-        who_is_hiring = hacker_news.hacker_news_api.get_item(id)
-        hacker_news.print_comments(who_is_hiring, regex_query)
+        hacker_news.hiring(regex_query, id_post)
 
     @cli.command()
     @click.argument('limit', required=False, default=10)
