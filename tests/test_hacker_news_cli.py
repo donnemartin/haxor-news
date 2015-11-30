@@ -106,3 +106,17 @@ class HackerNewsCliTest(unittest.TestCase):
         mock_print_items.assert_called_with(
             message=self.hn.headlines_message(self.hn.MSG_TOP),
             item_ids=self.hn.hacker_news_api.top_stories(self.limit))
+
+    @mock.patch('hncli.hacker_news.HackerNews.print_items')
+    @mock.patch('hncli.hacker_news.click')
+    @mock.patch('hncli.hacker_news.HackerNews.print_item_not_found')
+    def test_user(self, mock_print_item_not_found,
+                  mock_click, mock_print_items):
+        user_id = 'foo'
+        self.hn.user(user_id, self.limit)
+        user = self.hn.hacker_news_api.get_user(user_id)
+        mock_print_items.assert_called_with(
+            self.hn.MSG_SUBMISSIONS, user.submitted[0:self.limit])
+        assert mock_click.mock_calls
+        self.hn.user(self.invalid_id, self.limit)
+        mock_print_item_not_found.assert_called_with(self.invalid_id)

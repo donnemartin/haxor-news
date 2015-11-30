@@ -236,15 +236,16 @@ class HackerNewsCli(object):
 
     @cli.command()
     @click.argument('user_id')
-    @click.argument('limit', required=False, default=10)
+    @click.argument('submission_limit', required=False, default=10)
     @pass_hacker_news
-    def user(hacker_news, user_id, limit):
+    def user(hacker_news, user_id, submission_limit):
         """Displays basic user info and submitted posts.
 
         Args:
             * hacker_news: An instance of Hacker News.
             * user_id: A string representing the user id.
-            * limit: A int that specifies the number of submissions to show.
+            * submission_limit: A string that specifies the number of
+                submissions to show.
                 Optional, defaults to 10.
 
         Example(s):
@@ -254,10 +255,7 @@ class HackerNewsCli(object):
         Returns:
             None.
         """
-        user = hacker_news.hacker_news_api.get_user(user_id)
-        table = [[user_id, str(user.created), str(user.karma)]]
-        hacker_news.print_table(table, headers=['User Id', 'Created', 'Karma'])
-        hacker_news.print_items('User submissions:', user.submitted[0:limit])
+        hacker_news.user(user_id, submission_limit)
 
     @cli.command()
     @click.argument('index')
