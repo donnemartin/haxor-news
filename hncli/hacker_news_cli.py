@@ -79,7 +79,7 @@ class HackerNewsCli(object):
 
         Args:
             * hacker_news: An instance of Hacker News.
-            * post_id: An int representing the post's id.
+            * post_id: A string representing the post's id.
             * regex_query: A string that specifies the regex query to match.
                 Optional, defaults to ''.
 
@@ -92,8 +92,7 @@ class HackerNewsCli(object):
         Returns:
             None.
         """
-        post = hacker_news.hacker_news_api.get_item(post_id)
-        hacker_news.print_comments(post, regex_query=regex_query)
+        hacker_news.comments(post_id, regex_query)
 
     @cli.command()
     @click.argument('regex_query')
