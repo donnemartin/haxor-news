@@ -19,7 +19,6 @@ from __future__ import division
 import click
 
 from .hacker_news import HackerNews
-from .onions import onions
 from .settings import who_is_hiring_post_id
 
 
@@ -183,7 +182,7 @@ class HackerNewsCli(object):
 
         Args:
             * hacker_news: An instance of Hacker News.
-            * limit: A int that specifies the number of items to show.
+            * limit: A string that specifies the number of items to show.
                 Optional, defaults to 50.
 
         Example(s):
@@ -193,13 +192,7 @@ class HackerNewsCli(object):
         Returns:
             None.
         """
-        click.secho('\nFetching Top Onion Headlines...\n', fg='blue')
-        index = 1
-        for onion in onions[0:limit]:
-            hacker_news.print_index_title(index, onion)
-            click.echo('')
-            index += 1
-        click.echo('')
+        hacker_news.onion(limit)
 
     @cli.command()
     @click.argument('limit', required=False, default=10)
