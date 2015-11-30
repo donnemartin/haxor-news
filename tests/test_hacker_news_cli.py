@@ -41,3 +41,10 @@ class HackerNewsCliTest(unittest.TestCase):
     def test_cli(self):
         result = self.runner.invoke(self.hacker_news_cli.cli)
         assert result.exit_code == 0
+
+    @mock.patch('hncli.hacker_news.HackerNews.print_items')
+    def test_ask(self, mock_print_items):
+        self.hn.ask(self.limit)
+        mock_print_items.assert_called_with(
+            message=self.hn.headlines_message(self.hn.MSG_ASK),
+            item_ids=self.hn.hacker_news_api.ask_stories(self.limit))

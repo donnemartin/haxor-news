@@ -58,7 +58,7 @@ class HackerNewsCli(object):
 
         Args:
             * hacker_news: An instance of Hacker News.
-            * limit: A int that specifies the number of items to show.
+            * limit: A string that specifies the number of items to show.
                 Optional, defaults to 10.
 
         Example(s):
@@ -68,9 +68,7 @@ class HackerNewsCli(object):
         Returns:
             None.
         """
-        hacker_news.print_items(
-            message='Fetching Ask HN Headlines...',
-            item_ids=hacker_news.hacker_news_api.ask_stories(limit))
+        hacker_news.ask(limit)
 
     @cli.command()
     @click.argument('post_id')
