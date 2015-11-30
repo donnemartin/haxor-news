@@ -25,7 +25,7 @@ else:
 
 from click.testing import CliRunner
 
-from hncli.onions import onions
+from hncli.hacker_news import HackerNews
 from hncli.hacker_news_cli import HackerNewsCli
 
 
@@ -34,87 +34,10 @@ class HackerNewsCliTest(unittest.TestCase):
     def setUp(self):
         self.runner = CliRunner()
         self.hacker_news_cli = HackerNewsCli()
+        self.limit = 10
+        self.user = 'foo'
+        self.dummy = 'foo'
 
-    def assert_print_output(self, message, count, output, assert_tip=True):
-        assert message in output
-        assert '|   ' + str(count-1) + ' |' in output
-        if assert_tip:
-            assert 'Tip: View comments in your terminal' in output
-
-    def test_hacker_news_cli(self):
+    def test_cli(self):
         result = self.runner.invoke(self.hacker_news_cli.cli)
         assert result.exit_code == 0
-
-    def test_ask(self):
-        limit = 1
-        result = self.runner.invoke(self.hacker_news_cli.cli, ['ask'])
-        self.assert_print_output('Ask HN', limit, result.output)
-        assert result.exit_code == 0
-
-    def test_hiring(self):
-        query = 'command line'
-        post_id = '10251896'
-        result = self.runner.invoke(self.hacker_news_cli.cli,
-                                    ['hiring', query, post_id])
-        assert query in result.output
-        assert result.exit_code == 0
-
-    def test_jobs(self):
-        limit = 2
-        result = self.runner.invoke(self.hacker_news_cli.cli,
-                                    ['jobs', str(limit)])
-        self.assert_print_output('Job', limit, result.output)
-        assert result.exit_code == 0
-
-    def test_new(self):
-        limit = 3
-        result = self.runner.invoke(self.hacker_news_cli.cli,
-                                    ['new', str(limit)])
-        self.assert_print_output('Latest', limit, result.output)
-        assert result.exit_code == 0
-
-    def test_onions(self):
-        limit = 1
-        result = self.runner.invoke(self.hacker_news_cli.cli,
-                                    ['onion', str(limit)])
-        self.assert_print_output('Onion', limit,
-                                 result.output, assert_tip=False)
-        assert result.exit_code == 0
-
-    def test_show(self):
-        limit = 2
-        result = self.runner.invoke(self.hacker_news_cli.cli,
-                                    ['show', str(limit)])
-        self.assert_print_output('Show HN', limit,
-                                 result.output, assert_tip=False)
-        assert result.exit_code == 0
-
-    def test_top(self):
-        limit = 3
-        result = self.runner.invoke(self.hacker_news_cli.cli,
-                                    ['top', str(limit)])
-        self.assert_print_output('Top', limit,
-                                 result.output, assert_tip=False)
-        assert result.exit_code == 0
-
-    def test_user(self):
-        limit = 1
-        result = self.runner.invoke(self.hacker_news_cli.cli,
-                                    ['user', 'donnemartin', str(limit)])
-        self.assert_print_output('donnemartin', limit,
-                                 result.output, assert_tip=False)
-        assert result.exit_code == 0
-
-    def test_view(self):
-        result = self.runner.invoke(self.hacker_news_cli.cli,
-                                    ['view', '0'])
-        assert 'Comments' in result.output
-        assert result.exit_code == 0
-
-    @mock.patch('hncli.hacker_news.webbrowser')
-    def test_view_url(self, mock_webbrowser):
-        result = self.runner.invoke(self.hacker_news_cli.cli,
-                                    ['view', '0', '--url'])
-        assert 'Opening' in result.output
-        assert result.exit_code == 0
-        mock_webbrowser.assert_not_called()
