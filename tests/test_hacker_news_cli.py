@@ -58,6 +58,11 @@ class HackerNewsCliTest(unittest.TestCase):
         self.hn.comments(self.invalid_id, regex_query=self.query)
         mock_print_item_not_found.assert_called_with(self.invalid_id)
 
+    def test_headlines_message(self):
+        message = 'foo'
+        headlines_message = self.hn.headlines_message(message)
+        assert message in headlines_message
+
     @mock.patch('hncli.hacker_news.HackerNews.print_comments')
     @mock.patch('hncli.hacker_news.HackerNews.print_item_not_found')
     def test_hiring(self, mock_print_item_not_found, mock_print_comments):
