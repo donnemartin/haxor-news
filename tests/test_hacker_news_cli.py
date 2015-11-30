@@ -92,3 +92,10 @@ class HackerNewsCliTest(unittest.TestCase):
         self.hn.onion(self.limit)
         assert len(mock_print_index_title.mock_calls) == self.limit
         assert mock_click.mock_calls
+
+    @mock.patch('hncli.hacker_news.HackerNews.print_items')
+    def test_show(self, mock_print_items):
+        self.hn.show(self.limit)
+        mock_print_items.assert_called_with(
+            message=self.hn.headlines_message(self.hn.MSG_SHOW),
+            item_ids=self.hn.hacker_news_api.show_stories(self.limit))
