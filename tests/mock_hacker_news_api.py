@@ -15,6 +15,7 @@
 
 from hncli.lib.haxor.haxor import InvalidItemID, InvalidUserID
 
+
 class MockItem(object):
 
     def __init__(self):
@@ -69,15 +70,15 @@ class MockHackerNewsApi(object):
         item1.descendants = 1
         items.append(item1)
         item2 = MockItem()
-        item2.item_id = 1
+        item2.item_id = 2
         item2.by = 'baz'
         item2.submission_time = None
         item2.text = 'text baz'
-        item2.kids = [1]
+        item2.kids = []
         item2.url = 'baz.com'
         item2.score = 30
         item2.title = 'title baz'
-        item2.descendants = 1
+        item2.descendants = 0
         items.append(item2)
         return items
 
