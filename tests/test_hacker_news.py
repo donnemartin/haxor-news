@@ -162,6 +162,10 @@ class HackerNewsTest(unittest.TestCase):
         mock_click.secho.assert_called_with(
             self.hn.MSG_ITEM_NOT_FOUND.format(self.invalid_id), fg='red')
 
+    def test_print_tip_view(self):
+        result = self.hn.tip_view(max_index=10)
+        assert result == formatted_tip
+
     # @mock.patch('hncli.hacker_news.click')
     # def test_print_comments(self, mock_click):
     #     query = 'command line'

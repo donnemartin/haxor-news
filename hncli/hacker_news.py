@@ -423,23 +423,23 @@ class HackerNews(object):
             except InvalidItemID:
                 self.print_item_not_found(item_id)
         self.save_item_ids()
-        self.print_tip_view(str(index-1))
+        click.secho(self.tip_view(str(index-1)))
 
-    def print_tip_view(self, max_index):
-        """Prints the tip about the view command.
+    def tip_view(self, max_index):
+        """Creates the tip about the view command.
 
         Args:
             * max_index: A string that represents the index upper bound.
 
         Returns:
-            None.
+            A string representation of the formatted tip.
         """
-        click.secho(self.TIP0, nl=False, fg='blue')
-        click.secho('1 through ', nl=False, fg='magenta')
-        click.secho(max_index, nl=False, fg='magenta')
-        click.secho(self.TIP1, nl=False, fg='blue')
-        click.secho(self.TIP2, fg='blue')
-        click.echo('')
+        tip = click.style(self.TIP0, fg='blue')
+        tip += click.style('1 through ', fg='magenta')
+        tip += click.style(str(max_index), fg='magenta')
+        tip += click.style(self.TIP1, fg='blue')
+        tip += click.style(self.TIP2 + '\n', fg='blue')
+        return tip
 
     def print_url_contents(self, url):
         """Prints the contents of the given item's url.
