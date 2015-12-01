@@ -138,6 +138,13 @@ class HackerNewsTest(unittest.TestCase):
         mock_view.assert_called_with(
             index, self.hn.QUERY_RECENT, comments_expected, browser)
 
+    def test_format_comment(self):
+        item = self.hn.hacker_news_api.get_item(0)
+        item.text = raw_comment
+        heading, comment = self.hn.format_comment(item, depth=3)
+        assert heading == formatted_heading
+        assert comment == formatted_comment
+
     def test_format_index_title(self):
         result = self.hn.format_index_title(
             index=1, title=raw_title)

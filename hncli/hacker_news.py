@@ -304,30 +304,28 @@ class HackerNews(object):
             self.print_comments(comment, regex_query=regex_query, depth=depth)
             depth -= 1
 
-    def print_formatted_comment(self, item, depth):
-        """Formats and prints a given item's comment.
+    def format_comment(self, item, depth):
+        """Formats a given item's comment.
 
         Args:
             * item: An instance of haxor.Item.
             * depth: The current recursion depth, used to indent the comment.
 
         Returns:
-            None.
+            A tuple of the following:
+                * A string representing the formatted comment header.
+                * A string representing the formatted comment.
         """
         indent = self.COMMENT_INDENT * depth
-        click.secho(
+        formatted_heading = click.style(
             '\n' + indent + item.by + ' - ' +
-            str(pretty_date_time(item.submission_time)),
+            str(pretty_date_time(item.submission_time)) + '\n',
             fg='yellow')
-        html_to_text = HTML2Text()
-        html_to_text.body_width = 0
-        markdown = html_to_text.handle(item.text)
-        markdown = re.sub('\n\n', '\n\n' + indent, markdown)
-        wrapped_markdown = click.wrap_text(
-            text=markdown,
+        formatted_comment = click.wrap_text(
+            text=item.text,
             initial_indent=indent,
             subsequent_indent=indent)
-        click.echo(wrapped_markdown)
+        return formatted_heading, formatted_comment
 
     def format_index_title(self, index, title):
         """Formats and item's index and title.
