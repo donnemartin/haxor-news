@@ -166,6 +166,13 @@ class HackerNewsTest(unittest.TestCase):
         result = self.hn.tip_view(max_index=10)
         assert result == formatted_tip
 
+    @mock.patch('hncli.hacker_news.requests')
+    def test_url_contents(self, mock_requests):
+        self.hn.html_to_text = mock.Mock(handle=lambda _: 'bar')
+        result = self.hn.url_contents('foo')
+        mock_requests.get.assert_called_with('foo')
+        assert result == formatted_url
+
     # @mock.patch('hncli.hacker_news.click')
     # def test_print_comments(self, mock_click):
     #     query = 'command line'

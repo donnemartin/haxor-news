@@ -441,8 +441,8 @@ class HackerNews(object):
         tip += click.style(self.TIP2 + '\n', fg='blue')
         return tip
 
-    def print_url_contents(self, url):
-        """Prints the contents of the given item's url.
+    def url_contents(self, url):
+        """Gets the formatted contents of the given item's url.
 
         Converts the HTML to text using HTML2Text, colors it, then displays
             the output in a pager.
@@ -451,20 +451,14 @@ class HackerNews(object):
             * url: A string representing the url.
 
         Returns:
-            None.
+            A string representation of the formatted url contents.
         """
         raw_response = requests.get(url)
-        html_to_text = HTML2Text()
-        html_to_text.body_width = 0
-        html_to_text.ignore_images = False
-        html_to_text.ignore_emphasis = False
-        html_to_text.ignore_links = False
-        html_to_text.skip_internal_links = False
-        contents = html_to_text.handle(raw_response.text)
+        contents = self.html_to_text.handle(raw_response.text)
         contents = self.format_markdown(contents)
         contents = click.style(
             'Viewing ' + url + '\n\n', fg='magenta') + contents
-        click.echo_via_pager(contents)
+        return contents
 
     def regex_match(self, item, regex_query):
         """Determines if there is a match with the given regex_query.
@@ -602,7 +596,8 @@ class HackerNews(object):
                 if browser:
                     webbrowser.open(item.url)
                 else:
-                    self.print_url_contents(item.url)
+                    contents = self.url_contents(item.url)
+                    click.echo_via_pager(contents)
                 click.echo('')
         except Exception as e:
             click.secho('Error: ' + str(e), fg='red')
