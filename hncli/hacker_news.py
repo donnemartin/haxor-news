@@ -192,11 +192,11 @@ class HackerNews(object):
         Returns:
             None.
         """
-        item = self.hacker_news_api.get_item(post_id)
-        if item is None:
-            self.print_item_not_found(post_id)
-        else:
+        try:
+            item = self.hacker_news_api.get_item(post_id)
             self.print_comments(item, regex_query=regex_query)
+        except InvalidItemID:
+            self.print_item_not_found(post_id)
 
     def headlines_message(self, message):
         """Creates the "Fetching [message] Headlines..." string.
