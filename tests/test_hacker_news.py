@@ -150,6 +150,12 @@ class HackerNewsTest(unittest.TestCase):
             index=1, title=raw_title)
         assert result == formatted_title
 
+    def test_format_item(self):
+        items = self.hn.hacker_news_api.items
+        for index, item in enumerate(items):
+            result = self.hn.format_item(items[index], index+1)
+            assert result == formatted_items[index]
+
     # @mock.patch('hncli.hacker_news.click')
     # def test_print_comments(self, mock_click):
     #     query = 'command line'

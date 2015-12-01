@@ -352,8 +352,8 @@ class HackerNews(object):
                                              fg='blue')
         return formatted_index_title
 
-    def print_formatted_item(self, item, index):
-        """Formats and prints an item.
+    def format_item(self, item, index):
+        """Formats an item.
 
         Args:
             * item: An instance of haxor.Item.
@@ -361,30 +361,27 @@ class HackerNews(object):
                 used with the hn view [index] commend.
 
         Returns:
-            None.
+            A string representing the formatted item.
         """
-        formatted_index_title = self.format_index_title(index, item.title)
-        click.secho(formatted_index_title, nl=False)
+        formatted_item = self.format_index_title(index, item.title)
         if item.url is not None:
             netloc = urlparse(item.url).netloc
             netloc = re.sub('www.', '', netloc)
-            click.secho('(' + netloc + ')',
-                        fg='magenta')
-        else:
-            click.echo('')
-        click.secho('      ' + str(item.score) + ' points ',
-                    nl=False,
-                    fg='green')
-        click.secho('by ' + item.by + ' ',
-                    nl=False,
-                    fg='yellow')
-        click.secho(str(pretty_date_time(item.submission_time)) + ' ',
-                    nl=False,
-                    fg='cyan')
+            formatted_item += click.style('(' + netloc + ')',
+                                          fg='magenta')
+        formatted_item += '\n'
+        formatted_item += click.style('      ' + str(item.score) + ' points ',
+                                      fg='green')
+        formatted_item += click.style('by ' + item.by + ' ',
+                                      fg='yellow')
+        formatted_item += click.style(
+            str(pretty_date_time(item.submission_time)) + ' ',
+            fg='cyan')
         num_comments = str(item.descendants) if item.descendants else '0'
-        click.secho('| ' + num_comments + ' comments\n',
-                    fg='green')
+        formatted_item += click.style('| ' + num_comments + ' comments\n',
+                                      fg='green')
         self.item_ids.append(item.item_id)
+        return formatted_item
 
     def print_item_not_found(self, item_id):
         """Prints a message the given item id was not found.
