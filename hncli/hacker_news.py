@@ -273,8 +273,8 @@ class HackerNews(object):
                     fg='blue')
         index = 1
         for onion in onions[0:limit]:
-            self.print_index_title(index, onion)
-            click.echo('')
+            formatted_index_title = self.format_index_title(index, onion)
+            click.echo(formatted_index_title)
             index += 1
         click.echo('')
 
@@ -329,23 +329,22 @@ class HackerNews(object):
             subsequent_indent=indent)
         click.echo(wrapped_markdown)
 
-    def print_index_title(self, index, title):
-        """Formats and prints an item's index and title.
+    def format_index_title(self, index, title):
+        """Formats and item's index and title.
 
         Args:
-            * arg: A type that does xxx.
-
-        Returns:
             * index: An int that specifies the index for the given item.
             * title: A string that represents the item's title.
+
+        Returns:
+            A string representation of the formatted index and title.
         """
         space = '  ' if index < 10 else ' '
-        click.secho('  ' + str(index) + '.' + space,
-                    nl=False,
-                    fg='magenta')
-        click.secho(title + ' ',
-                    nl=False,
-                    fg='blue')
+        formatted_index_title = click.style('  ' + str(index) + '.' + space,
+                                            fg='magenta')
+        formatted_index_title += click.style(title + ' ',
+                                             fg='blue')
+        return formatted_index_title
 
     def print_formatted_item(self, item, index):
         """Formats and prints an item.
@@ -358,7 +357,7 @@ class HackerNews(object):
         Returns:
             None.
         """
-        self.print_index_title(index, item.title)
+        self.format_index_title(index, item.title)
         if item.url is not None:
             netloc = urlparse(item.url).netloc
             netloc = re.sub('www.', '', netloc)

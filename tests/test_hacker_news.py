@@ -91,11 +91,11 @@ class HackerNewsTest(unittest.TestCase):
             message=self.hn.headlines_message(self.hn.MSG_NEW),
             item_ids=self.hn.hacker_news_api.new_stories(self.limit))
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_index_title')
+    @mock.patch('hncli.hacker_news.HackerNews.format_index_title')
     @mock.patch('hncli.hacker_news.click')
-    def test_onion(self, mock_click, mock_print_index_title):
+    def test_onion(self, mock_click, mock_format_index_title):
         self.hn.onion(self.limit)
-        assert len(mock_print_index_title.mock_calls) == self.limit
+        assert len(mock_format_index_title.mock_calls) == self.limit
         assert mock_click.mock_calls
 
     @mock.patch('hncli.hacker_news.HackerNews.print_items')
@@ -137,6 +137,11 @@ class HackerNewsTest(unittest.TestCase):
         comments_expected = True
         mock_view.assert_called_with(
             index, self.hn.QUERY_RECENT, comments_expected, browser)
+
+    def test_format_index_title(self):
+        result = self.hn.format_index_title(
+            index=1, title=raw_title)
+        assert result == formatted_title
 
     # @mock.patch('hncli.hacker_news.click')
     # def test_print_comments(self, mock_click):
