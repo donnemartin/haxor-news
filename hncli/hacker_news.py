@@ -574,7 +574,7 @@ class HackerNews(object):
     def view(self, index, comments_query, comments, browser):
         """Views the given index in a browser.
 
-        Loads item ids from ~/.hncliconfig and stores them in self.item_ids.
+        Uses ids from ~/.hncliconfig stored in self.item_ids.
         If url is True, opens a browser with the url based on the given index.
         Else, displays the post's comments.
 
@@ -589,41 +589,34 @@ class HackerNews(object):
         Returns:
             None.
         """
-        config = self._config(self.CONFIG)
-        parser = configparser.RawConfigParser()
+        self.item_ids = self.load_item_ids()
         try:
-            parser.readfp(open(config))
-            items_ids = parser.get(self.CONFIG_SECTION, self.CONFIG_INDEX)
-            items_ids = items_ids.strip()
-            excludes = ['[', ']', "'"]
-            for exclude in excludes:
-                items_ids = items_ids.replace(exclude, '')
-            self.item_ids = items_ids.split(', ')
             item = self.hacker_news_api.get_item(self.item_ids[index-1])
-            if not comments and item.url is None:
-                click.secho('\nNo url associated with post.',
-                            nl=False,
-                            fg='blue')
-                comments = True
-            if comments:
-                comments_url = self.URL_POST + str(item.item_id)
-                click.secho('\nFetching Comments from ' + comments_url,
-                            fg='blue')
-                if browser:
-                    webbrowser.open(comments_url)
-                else:
-                    self.print_comments(item, regex_query=comments_query)
-                click.echo('')
+        except InvalidItemID:
+            self.print_item_not_found(self.item_ids[index-1])
+            return
+        if not comments and item.url is None:
+            click.secho('\nNo url associated with post.',
+                        nl=False,
+                        fg='blue')
+            comments = True
+        if comments:
+            comments_url = self.URL_POST + str(item.item_id)
+            click.secho('\nFetching Comments from ' + comments_url,
+                        fg='blue')
+            if browser:
+                webbrowser.open(comments_url)
             else:
-                click.secho('\nOpening ' + item.url + '...', fg='blue')
-                if browser:
-                    webbrowser.open(item.url)
-                else:
-                    contents = self.url_contents(item.url)
-                    click.echo_via_pager(contents)
-                click.echo('')
-        except Exception as e:
-            click.secho('Error: ' + str(e), fg='red')
+                self.print_comments(item, regex_query=comments_query)
+            click.echo('')
+        else:
+            click.secho('\nOpening ' + item.url + '...', fg='blue')
+            if browser:
+                webbrowser.open(item.url)
+            else:
+                contents = self.url_contents(item.url)
+                click.echo_via_pager(contents)
+            click.echo('')
 
     def view_setup(self, index, comments_query,
                    comments, comments_recent, browser):
