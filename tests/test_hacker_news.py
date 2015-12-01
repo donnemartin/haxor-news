@@ -98,6 +98,12 @@ class HackerNewsTest(unittest.TestCase):
         assert len(mock_format_index_title.mock_calls) == self.limit
         assert mock_click.mock_calls
 
+    def test_save_and_load_item_ids(self):
+        self.hn.item_ids = [0, 1, 2]
+        self.hn.save_item_ids()
+        item_ids = self.hn.load_item_ids()
+        assert item_ids == ['0', '1', '2']
+
     @mock.patch('hncli.hacker_news.HackerNews.print_items')
     def test_show(self, mock_print_items):
         self.hn.show(self.limit)

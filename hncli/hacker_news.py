@@ -548,6 +548,29 @@ class HackerNews(object):
         except InvalidUserID:
             self.print_item_not_found(user_id)
 
+    def load_item_ids(self):
+        """Loads item ids from ~/.hncliconfig.
+
+        Args:
+            * None.
+
+        Returns:
+            A list of ints representing item ids.
+        """
+        config = self._config(self.CONFIG)
+        parser = configparser.RawConfigParser()
+        try:
+            parser.readfp(open(config))
+            items_ids = parser.get(self.CONFIG_SECTION, self.CONFIG_INDEX)
+            items_ids = items_ids.strip()
+            excludes = ['[', ']', "'"]
+            for exclude in excludes:
+                items_ids = items_ids.replace(exclude, '')
+            return items_ids.split(', ')
+        except Exception as e:
+            click.secho('Error: ' + str(e), fg='red')
+            return None
+
     def view(self, index, comments_query, comments, browser):
         """Views the given index in a browser.
 
