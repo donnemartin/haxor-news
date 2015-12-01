@@ -294,15 +294,23 @@ class HackerNews(object):
             print_comment = True
             if regex_query and not self.regex_match(item, regex_query):
                 print_comment = False
+            formatted_heading, formatted_comment = self.format_comment(
+                    item, depth)
+            click.echo(formatted_heading)
             if print_comment:
-                self.print_formatted_comment(item, depth)
+                click.echo(formatted_comment)
         if not comment_ids:
             return
         for comment_id in comment_ids:
-            comment = self.hacker_news_api.get_item(comment_id)
-            depth += 1
-            self.print_comments(comment, regex_query=regex_query, depth=depth)
-            depth -= 1
+            try:
+                comment = self.hacker_news_api.get_item(comment_id)
+                depth += 1
+                self.print_comments(comment,
+                                    regex_query=regex_query,
+                                    depth=depth)
+                depth -= 1
+            except InvalidItemID:
+                self.print_item_not_found(comment_id)
 
     def format_comment(self, item, depth):
         """Formats a given item's comment.
