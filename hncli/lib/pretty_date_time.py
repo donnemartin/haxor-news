@@ -19,7 +19,7 @@ from __future__ import division
 from datetime import datetime
 
 
-def pretty_date_time(self, date_time):
+def pretty_date_time(date_time):
     """Prints a pretty datetime similar to what's seen on Hacker News.
 
     Gets a datetime object or a int() Epoch timestamp and return a
