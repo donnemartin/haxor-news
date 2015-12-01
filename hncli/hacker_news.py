@@ -414,10 +414,14 @@ class HackerNews(object):
         click.secho('\n' + message + '\n', fg='blue')
         index = 1
         for item_id in item_ids:
-            item = self.hacker_news_api.get_item(item_id)
-            if item.title:
-                self.print_formatted_item(item, index)
-                index += 1
+            try:
+                item = self.hacker_news_api.get_item(item_id)
+                if item.title:
+                    formatted_item = self.format_item(item, index)
+                    click.echo(formatted_item)
+                    index += 1
+            except InvalidItemID:
+                self.print_item_not_found(item_id)
         self.save_item_ids()
         self.print_tip_view(str(index-1))
 
