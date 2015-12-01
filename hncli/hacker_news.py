@@ -146,7 +146,7 @@ class HackerNews(object):
             message=self.headlines_message(self.MSG_ASK),
             item_ids=self.hacker_news_api.ask_stories(limit))
 
-    def colorize_markdown(self, text):
+    def format_markdown(self, text):
         """Adds color to the input markdown using click.style.
 
         Args:
@@ -157,9 +157,11 @@ class HackerNews(object):
         """
         pattern_url_name = r'[^]]*'
         pattern_url_link = r'[^)]+'
-        pattern_url = r'([!]*\[{0}]\(\s*{1}\s*\))'.format(pattern_url_name,
-                                                          pattern_url_link)
+        pattern_url = r'([!]*\[{0}]\(\s*{1}\s*\))'.format(
+            pattern_url_name,
+            pattern_url_link)
         regex_url = re.compile(pattern_url)
+        text = regex_url.sub(click.style(r'\1', fg='green'), text)
         pattern_url_ref_name = r'[^]]*'
         pattern_url_ref_link = r'[^]]+'
         pattern_url_ref = r'([!]*\[{0}]\[\s*{1}\s*\])'.format(
@@ -167,7 +169,6 @@ class HackerNews(object):
             pattern_url_ref_link)
         regex_url_ref = re.compile(pattern_url_ref)
         text = regex_url_ref.sub(click.style(r'\1', fg='green'), text)
-        text = regex_url.sub(click.style(r'\1', fg='green'), text)
         regex_list = re.compile(r'(  \*.*)')
         text = regex_list.sub(click.style(r'\1', fg='blue'), text)
         regex_header = re.compile(r'(#+) (.*)')
@@ -450,7 +451,7 @@ class HackerNews(object):
         html_to_text.ignore_links = False
         html_to_text.skip_internal_links = False
         contents = html_to_text.handle(raw_response.text)
-        contents = self.colorize_markdown(contents)
+        contents = self.format_markdown(contents)
         contents = click.style(
             'Viewing ' + url + '\n\n', fg='magenta') + contents
         click.echo_via_pager(contents)
