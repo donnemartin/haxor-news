@@ -363,7 +363,8 @@ class HackerNews(object):
         Returns:
             None.
         """
-        self.format_index_title(index, item.title)
+        formatted_index_title = self.format_index_title(index, item.title)
+        click.secho(formatted_index_title, nl=False)
         if item.url is not None:
             netloc = urlparse(item.url).netloc
             netloc = re.sub('www.', '', netloc)
