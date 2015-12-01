@@ -29,10 +29,10 @@ except ImportError:
     import ConfigParser as configparser
 
 import click
-from html2text import HTML2Text
 import requests
 
 from .lib.haxor.haxor import HackerNewsApi, InvalidUserID
+from .lib.html2text.html2text import HTML2Text
 from .lib.pretty_date_time import pretty_date_time
 from .onions import onions
 
@@ -98,6 +98,8 @@ class HackerNews(object):
         """
         self.hacker_news_api = HackerNewsApi()
         self.item_ids = []
+        self.html_to_text = None
+        self._init_html_to_text()
 
     def _config(self, config_file_name):
         """Gets the config file path.
@@ -111,6 +113,24 @@ class HackerNews(object):
         home = os.path.abspath(os.environ.get('HOME', ''))
         config_file_path = os.path.join(home, config_file_name)
         return config_file_path
+
+    def _init_html_to_text(self):
+        """Initializes HTML2Text.
+
+        Args:
+            * None.
+
+        Returns:
+            None.
+        """
+        self.html_to_text = HTML2Text()
+        self.html_to_text.body_width = 0
+        self.html_to_text.ignore_images = False
+        self.html_to_text.ignore_emphasis = False
+        self.html_to_text.ignore_links = False
+        self.html_to_text.skip_internal_links = False
+        self.html_to_text.inline_links = False
+        self.html_to_text.links_each_paragraph = False
 
     def ask(self, limit):
         """Displays Ask HN posts.
