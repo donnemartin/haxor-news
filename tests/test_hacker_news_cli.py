@@ -48,6 +48,12 @@ class HackerNewsCliTest(unittest.TestCase):
         mock_hn_call.assert_called_with(self.limit)
         assert result.exit_code == 0
 
+    @mock.patch('hncli.hacker_news_cli.HackerNews.best')
+    def test_best(self, mock_hn_call):
+        result = self.runner.invoke(self.hacker_news_cli.cli, ['best'])
+        mock_hn_call.assert_called_with(self.limit)
+        assert result.exit_code == 0
+
     @mock.patch('hncli.hacker_news_cli.HackerNews.comments')
     def test_comments(self, mock_hn_call):
         result = self.runner.invoke(

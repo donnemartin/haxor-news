@@ -70,6 +70,26 @@ class HackerNewsCli(object):
         hacker_news.ask(limit)
 
     @cli.command()
+    @click.argument('limit', required=False, default=10)
+    @pass_hacker_news
+    def best(hacker_news, limit):
+        """Displays best posts.
+
+        Args:
+            * hacker_news: An instance of Hacker News.
+            * limit: A string that specifies the number of items to show.
+                Optional, defaults to 10.
+
+        Example(s):
+            hn best
+            hn best 20
+
+        Returns:
+            None.
+        """
+        hacker_news.best(limit)
+
+    @cli.command()
     @click.argument('post_id')
     @click.argument('regex_query', required=False, default='')
     @pass_hacker_news
