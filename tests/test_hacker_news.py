@@ -201,3 +201,10 @@ class HackerNewsTest(unittest.TestCase):
         result = self.hn.url_contents('foo')
         mock_requests.get.assert_called_with('foo')
         assert result == formatted_url
+
+    def test_regex_match(self):
+        regex_query = '(?i)(Python|JavaScript).*(rockstar)'
+        item = self.hn.hacker_news_api.get_item(self.valid_id)
+        assert not self.hn.regex_match(item, regex_query)
+        item.text = raw_text_for_regex
+        assert self.hn.regex_match(item, regex_query)
