@@ -215,3 +215,10 @@ class HackerNewsTest(unittest.TestCase):
         assert not self.hn.regex_match(item, regex_query)
         regex_query = 'fo'
         assert self.hn.regex_match(item, regex_query)
+
+    def test_regex_time_match(self):
+        regex_query = 'just now'
+        item = self.hn.hacker_news_api.get_item(self.valid_id)
+        assert self.hn.regex_match(item, regex_query)
+        regex_query = 'minutes ago'
+        assert not self.hn.regex_match(item, regex_query)
