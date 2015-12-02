@@ -64,7 +64,7 @@ class HackerNewsTest(unittest.TestCase):
 
     @mock.patch('hncli.hacker_news.HackerNews.print_items')
     def test_best(self, mock_print_items):
-        self.hn.ask(self.limit)
+        self.hn.best(self.limit)
         mock_print_items.assert_called_with(
             message=self.hn.headlines_message(self.hn.MSG_BEST),
             item_ids=self.hn.hacker_news_api.best_stories(self.limit))

@@ -122,6 +122,9 @@ class MockHackerNewsApi(object):
     def ask_stories(self, limit=None):
         return self.item_ids(limit)
 
+    def best_stories(self, limit=None):
+        return self.item_ids(limit)
+
     def show_stories(self, limit=None):
         return self.item_ids(limit)
 
