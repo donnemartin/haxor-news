@@ -45,6 +45,11 @@ class HackerNewsTest(unittest.TestCase):
         self.invalid_id = 9000
         self.query = 'foo'
 
+    def top(self, limit=2):
+        self.hn.print_items(
+            message='Fetching Top Headlines...',
+            item_ids=self.hn.hacker_news_api.top_stories(limit))
+
     def test_config(self):
         expected = os.path.join(os.path.abspath(os.environ.get('HOME', '')),
                                 self.hn.CONFIG)
