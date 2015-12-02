@@ -208,3 +208,10 @@ class HackerNewsTest(unittest.TestCase):
         assert not self.hn.regex_match(item, regex_query)
         item.text = raw_text_for_regex
         assert self.hn.regex_match(item, regex_query)
+
+    def test_regex_user_match(self):
+        regex_query = 'bar'
+        item = self.hn.hacker_news_api.get_item(self.valid_id)
+        assert not self.hn.regex_match(item, regex_query)
+        regex_query = 'fo'
+        assert self.hn.regex_match(item, regex_query)
