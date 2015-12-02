@@ -47,6 +47,8 @@ class HackerNews(object):
         * CONFIG_INDEX: A string representing the last index used.
         * MSG_ASK: A string representing the message displayed when the
             command hn ask is executed.
+        * MSG_BEST: A string representing the message displayed when the
+            command hn best is executed.
         * MSG_ITEM_NOT_FOUND: A string representing the message displayed when
             the given item is not found.
         * MSG_JOBS: A string representing the message displayed when the
@@ -77,6 +79,7 @@ class HackerNews(object):
     CONFIG_SECTION = 'hncli'
     CONFIG_INDEX = 'item_ids'
     MSG_ASK = 'Ask HN'
+    MSG_BEST = 'Best'
     MSG_ITEM_NOT_FOUND = 'Item with id {0} not found.'
     MSG_JOBS = 'Jobs'
     MSG_NEW = 'Latest'
@@ -148,6 +151,20 @@ class HackerNews(object):
         self.print_items(
             message=self.headlines_message(self.MSG_ASK),
             item_ids=self.hacker_news_api.ask_stories(limit))
+
+    def best(self, limit):
+        """Displays best posts.
+
+        Args:
+            * limit: A int that specifies the number of items to show.
+                Optional, defaults to 10.
+
+        Returns:
+            None.
+        """
+        self.print_items(
+            message=self.headlines_message(self.MSG_BEST),
+            item_ids=self.hacker_news_api.best_stories(limit))
 
     def format_markdown(self, text):
         """Adds color to the input markdown using click.style.
