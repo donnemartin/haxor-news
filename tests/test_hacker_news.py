@@ -180,6 +180,17 @@ class HackerNewsTest(unittest.TestCase):
         mock_click.secho.assert_called_with(
             self.hn.MSG_ITEM_NOT_FOUND.format(self.invalid_id), fg='red')
 
+    @mock.patch('hncli.hacker_news.click')
+    @mock.patch('hncli.hacker_news.HackerNews.format_item')
+    def test_print_items(self, mock_format_item, mock_click):
+        items = self.hn.hacker_news_api.items
+        item_ids = [item.item_id for item in items]
+        self.hn.print_items(self.hn.headlines_message(
+            self.hn.MSG_TOP), item_ids)
+        for index, item in enumerate(items):
+            assert mock.call(item, index+1) in mock_format_item.mock_calls
+        assert mock_click.secho.mock_calls
+
     def test_print_tip_view(self):
         result = self.hn.tip_view(max_index=10)
         assert result == formatted_tip
