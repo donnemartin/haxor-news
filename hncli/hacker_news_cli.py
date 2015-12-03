@@ -262,17 +262,21 @@ class HackerNewsCli(object):
     @pass_hacker_news
     def view(hacker_news, index, comments_query,
              comments, comments_recent, browser):
-        """Views the given index comments or url.
-
-        This method is meant to be called after a command that outputs a
-        table of posts.
+        """Views the post index or id, hn view --help.
 
         Args:
             * hacker_news: An instance of Hacker News.
-            * index: A string that specifies the index of a post just shown
-                within a table.  For example, calling hn top will list the
-                latest posts with indices for each row.  Calling
-                hn view [index] will view the comments of the given post.
+            * index: A string that specifies either:
+                    1) the index of a post just shown within a list of posts or
+                    2) the actual post id
+                For example, calling `hn top` will list the top posts with
+                1-based indices for each post:
+                  1. Post foo
+                  2. Post bar
+                  3. Post baz
+                A subsequent call to `hn view 1` will view 'Post foo'.
+                Providing an index larger than MAX_LIST_INDEX (1000) will
+                result in hn view treating index as an actual post id.
             * comments_query: A string that specifies the regex query to match.
                 This automatically sets comments to True.
             * comments: A boolean that determines whether to view the comments
@@ -294,6 +298,10 @@ class HackerNewsCli(object):
             hn view 3 "(?i)case insensitive match" --comments
             hn view 3 "(?i)programmer" --comments
             hn view 3 "(?i)programmer" --comments | less
+            hn view 10492086
+            hn view 10492086 "Python"
+            hn view 10492086 "(?i)case insensitive match"
+            hn view 10492086 "(?i)(Python|Django)" > comments.txt
 
         Returns:
             None.
