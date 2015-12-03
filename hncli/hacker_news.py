@@ -301,6 +301,9 @@ class HackerNews(object):
             if regex_query and not self.regex_match(item, regex_query):
                 print_comment = False
             new_comment = False
+            if str(item.item_id) not in self.item_cache:
+                self.item_cache.append(item.item_id)
+                new_comment = True
             formatted_heading, formatted_comment = self.format_comment(
                     item, depth, new_comment)
             click.echo(formatted_heading)
