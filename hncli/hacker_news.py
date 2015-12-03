@@ -619,8 +619,15 @@ class HackerNews(object):
             None.
         """
         self.item_ids = self.load_cache(self.CONFIG_IDS)
+        item_id = index
+        if index < self.MAX_LIST_INDEX:
+            try:
+                item_id = self.item_ids[index-1]
+            except IndexError:
+                self.print_item_not_found(item_id)
+                return
         try:
-            item = self.hacker_news_api.get_item(self.item_ids[index-1])
+            item = self.hacker_news_api.get_item(item_id)
         except InvalidItemID:
             self.print_item_not_found(self.item_ids[index-1])
             return
