@@ -354,40 +354,6 @@ class HackerNews(object):
                                              fg='blue')
         return formatted_index_title
 
-    def print_formatted_item(self, item, index):
-        """Formats and prints an item.
-
-        Args:
-            * item: An instance of haxor.Item.
-            * index: An int that specifies the index for the given item,
-                used with the hn view [index] commend.
-
-        Returns:
-            None.
-        """
-        formatted_index_title = self.format_index_title(index, item.title)
-        click.secho(formatted_index_title, nl=False)
-        if item.url is not None:
-            netloc = urlparse(item.url).netloc
-            netloc = re.sub('www.', '', netloc)
-            click.secho('(' + netloc + ')',
-                        fg='magenta')
-        else:
-            click.echo('')
-        click.secho('      ' + str(item.score) + ' points ',
-                    nl=False,
-                    fg='green')
-        click.secho('by ' + item.by + ' ',
-                    nl=False,
-                    fg='yellow')
-        click.secho(str(pretty_date_time(item.submission_time)) + ' ',
-                    nl=False,
-                    fg='cyan')
-        num_comments = str(item.descendants) if item.descendants else '0'
-        click.secho('| ' + num_comments + ' comments\n',
-                    fg='green')
-        self.item_ids.append(item.item_id)
-
     def format_item(self, item, index):
         """Formats an item.
 
