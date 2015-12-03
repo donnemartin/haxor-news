@@ -189,6 +189,20 @@ class HackerNewsTest(unittest.TestCase):
         mock_click_echo.assert_any_call(
             '        text baz')
 
+    @mock.patch('hncli.hacker_news.click.echo')
+    def test_print_comments_regex(self, mock_click_echo):
+        items = self.hn.hacker_news_api.items
+        regex_query = 'foo'
+        self.hn.print_comments(items[0], regex_query)
+        mock_click_echo.assert_any_call(
+            '\x1b[33m\nfoo - just now\n\x1b[0m')
+        mock_click_echo.assert_any_call(
+            'text foo')
+        mock_click_echo.assert_any_call(
+            '\x1b[33m\n    bar - just now\n\x1b[0m')
+        mock_click_echo.assert_any_call(
+            '\x1b[33m\n        baz - just now\n\x1b[0m')
+
     @mock.patch('hncli.hacker_news.click')
     def test_print_item_not_found(self, mock_click):
         self.hn.print_item_not_found(self.invalid_id)
