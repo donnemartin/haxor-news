@@ -51,6 +51,8 @@ class HackerNews(object):
             hn view will use to match item_ids.  Any value larger than
             MAX_LIST_INDEX will result in hn view treating that index as an
             actual post id.
+        * MAX_SNIPPET_LENGTH: An int representing the max length of a comment
+            snippet shown when filtering comments.
         * MSG_ASK: A string representing the message displayed when the
             command hn ask is executed.
         * MSG_BEST: A string representing the message displayed when the
@@ -74,7 +76,8 @@ class HackerNews(object):
         * item_ids: A list containing the last set of ids the user has seen,
             which allows the user to quickly access an item with the
             gh view [#] [-u/--url] command.
-        * QUERY_RECENT: A list representing the query to show recent comments.
+        * QUERY_RECENT: A string representing the query to show recent comments.
+        * QUERY_UNSEEN: A string representing the query to show unseen comments.
         * TIP0, TIP1, TIP2: StringS that lets the user know about the
             hn view command.
         * URL_POST: A string that represents a Hacker News post minus the
@@ -87,6 +90,7 @@ class HackerNews(object):
     CONFIG_IDS = 'item_ids'
     CONFIG_CACHE = 'item_cache'
     MAX_LIST_INDEX = 1000
+    MAX_SNIPPET_LENGTH = 40
     MSG_ASK = 'Ask HN'
     MSG_BEST = 'Best'
     MSG_ITEM_NOT_FOUND = 'Item with id {0} not found.'
@@ -97,9 +101,11 @@ class HackerNews(object):
     MSG_TOP = 'Top'
     MSG_SUBMISSIONS = 'User submissions:'
     QUERY_RECENT = 'minutes ago'
+    QUERY_UNSEEN = '\[!\]'
     TIP0 = 'Tip: View the page or comments for '
     TIP1 = ' with the following command:\n'
-    TIP2 = '  hn view [#] [comment_filter] [-c] [-cr] [-b] - hn view --help'
+    TIP2 = '  hn view [#] optional: [comment_filter] [-c] [-cr] [-cu] [-b] ' \
+        '[--help]'
     URL_POST = 'https://news.ycombinator.com/item?id='
 
     def __init__(self):
@@ -304,19 +310,25 @@ class HackerNews(object):
         """
         comment_ids = item.kids
         if item.text is not None:
-            print_comment = True
-            if regex_query and not self.regex_match(item, regex_query):
-                print_comment = False
             new_comment = False
             if str(item.item_id) not in self.item_cache:
                 self.item_cache.append(item.item_id)
                 new_comment = True
+            print_comment = True
+            if regex_query and not self.regex_match(
+                item, new_comment, regex_query):
+                print_comment = False
             formatted_heading, formatted_comment = self.format_comment(
                     item, depth, new_comment)
             click.echo(formatted_heading)
             if print_comment:
                 click.echo('')
                 click.echo(formatted_comment)
+            else:
+                num_chars = len(formatted_comment)
+                if num_chars > self.MAX_SNIPPET_LENGTH:
+                    num_chars = self.MAX_SNIPPET_LENGTH
+                click.echo(formatted_comment[0:num_chars] + '...')
         if not comment_ids:
             return
         for comment_id in comment_ids:
@@ -347,10 +359,15 @@ class HackerNews(object):
                 * A string representing the formatted comment.
         """
         color = 'magenta' if new_comment else 'yellow'
+        color = 'yellow'
+        text_adornment = ''
+        if new_comment:
+            color = 'magenta'
+            text_adornment = ' [!]'
         indent = self.COMMENT_INDENT * depth
         formatted_heading = click.style(
             '\n' + indent + item.by + ' - ' +
-            str(pretty_date_time(item.submission_time)),
+            str(pretty_date_time(item.submission_time)) + text_adornment,
             fg=color)
         formatted_comment = click.wrap_text(
             text=item.text,
@@ -480,16 +497,20 @@ class HackerNews(object):
             'Viewing ' + url + '\n\n', fg='magenta') + contents
         return contents
 
-    def regex_match(self, item, regex_query):
+    def regex_match(self, item, new_comment, regex_query):
         """Determines if there is a match with the given regex_query.
 
         Args:
             * item: An instance of haxor.Item.
+            * new_comment: A boolean that represents whether a comment has been
+                seen before, determines comment styling.
             * regex_query: A string that specifies the regex query to match.
 
         Returns:
             A boolean that specifies whether there is a match.
         """
+        if regex_query == self.QUERY_UNSEEN and new_comment:
+            return True
         match_time = re.search(
             regex_query,
             str(pretty_date_time(item.submission_time)))
@@ -604,7 +625,7 @@ class HackerNews(object):
             parser.readfp(open(config))
             return self.load_section(parser, section)
         except Exception as e:
-            click.secho('Error: ' + str(e), fg='red')
+            # There might not be a cache yet, just silently return
             return None
 
     def view(self, index, comments_query, comments, browser):
@@ -662,8 +683,8 @@ class HackerNews(object):
                 click.echo_via_pager(contents)
             click.echo('')
 
-    def view_setup(self, index, comments_query,
-                   comments, comments_recent, browser):
+    def view_setup(self, index, comments_query, comments,
+                   comments_recent, comments_unseen, browser):
         """Sets up the call to views the given index comments or url.
 
         This method is meant to be called after a command that outputs a
@@ -679,9 +700,11 @@ class HackerNews(object):
             * comments: A boolean that determines whether to view the comments
                 or a simplified version of the post url.
             * comments_recent: A boolean that determines whether to view only
-                 recently comments (posted within the past 59 minutes or less)
+                recently comments (posted within the past 59 minutes or less)
+            * comments_unseen: A boolean that determines whether to view only
+                comments that you have not yet seen.
             * browser: A boolean that determines whether to view the url
-                 in a browser.
+                in a browser.
 
         Returns:
             None.
@@ -690,6 +713,9 @@ class HackerNews(object):
             comments = True
         if comments_recent:
             comments_query = self.QUERY_RECENT
+            comments = True
+        if comments_unseen:
+            comments_query = self.QUERY_UNSEEN
             comments = True
         self.view(int(index),
                   comments_query,
