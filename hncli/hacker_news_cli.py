@@ -73,7 +73,7 @@ class HackerNewsCli(object):
     @click.argument('limit', required=False, default=10)
     @pass_hacker_news
     def best(hacker_news, limit):
-        """Displays best posts.
+        """Displays the best posts of the past few days.
 
         Args:
             * hacker_news: An instance of Hacker News.
@@ -95,7 +95,7 @@ class HackerNewsCli(object):
                   default=who_is_hiring_post_id)
     @pass_hacker_news
     def hiring(hacker_news, regex_query, id_post):
-        """Displays comments matching the monthly who is hiring post.
+        """Displays comments from the who is hiring posts.
 
         Searches the monthly Hacker News who is hiring post for comments
         matching the given regex_query.  Defaults to searching the latest
@@ -214,7 +214,7 @@ class HackerNewsCli(object):
     @click.argument('limit', required=False, default=10)
     @pass_hacker_news
     def top(hacker_news, limit):
-        """Displays the top posts.
+        """Displays the top recent posts.
 
         Args:
             * hacker_news: An instance of Hacker News.
