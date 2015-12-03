@@ -172,6 +172,23 @@ class HackerNewsTest(unittest.TestCase):
             result = self.hn.format_item(items[index], index+1)
             assert result == formatted_items[index]
 
+    @mock.patch('hncli.hacker_news.click.echo')
+    def test_print_comments(self, mock_click_echo):
+        items = self.hn.hacker_news_api.items
+        self.hn.print_comments(items[0])
+        mock_click_echo.assert_any_call(
+            '\x1b[33m\nfoo - just now\n\x1b[0m')
+        mock_click_echo.assert_any_call(
+            'text foo')
+        mock_click_echo.assert_any_call(
+            '\x1b[33m\n    bar - just now\n\x1b[0m')
+        mock_click_echo.assert_any_call(
+            '    text bar')
+        mock_click_echo.assert_any_call(
+            '\x1b[33m\n        baz - just now\n\x1b[0m')
+        mock_click_echo.assert_any_call(
+            '        text baz')
+
     @mock.patch('hncli.hacker_news.click')
     def test_print_item_not_found(self, mock_click):
         self.hn.print_item_not_found(self.invalid_id)
