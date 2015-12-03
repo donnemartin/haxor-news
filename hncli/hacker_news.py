@@ -79,7 +79,7 @@ class HackerNews(object):
             post id.
     """
 
-    COMMENT_INDENT = '    '
+    COMMENT_INDENT = '  '
     CONFIG = '.hncliconfig'
     CONFIG_SECTION = 'hncli'
     CONFIG_IDS = 'item_ids'
