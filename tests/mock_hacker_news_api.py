@@ -52,7 +52,7 @@ class MockHackerNewsApi(object):
         item0.by = 'foo'
         item0.submission_time = None
         item0.text = 'text foo'
-        item0.kids = [0, 1]
+        item0.kids = [1]
         item0.url = 'foo.com'
         item0.score = 10
         item0.title = 'title foo'
@@ -63,7 +63,7 @@ class MockHackerNewsApi(object):
         item1.by = 'bar'
         item1.submission_time = None
         item1.text = 'text bar'
-        item1.kids = [1]
+        item1.kids = [2]
         item1.url = 'bar.com'
         item1.score = 20
         item1.title = 'title bar'
