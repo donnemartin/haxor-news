@@ -510,7 +510,7 @@ class HackerNews(object):
         config = self._config(self.CONFIG)
         parser = configparser.RawConfigParser()
         parser.add_section(self.CONFIG_SECTION)
-        parser.set(self.CONFIG_SECTION, self.CONFIG_INDEX, self.item_ids)
+        parser.set(self.CONFIG_SECTION, self.CONFIG_IDS, self.item_ids)
         parser.set(self.CONFIG_SECTION, self.CONFIG_CACHE, self.item_cache)
         parser.write(open(config, 'w+'))
 
