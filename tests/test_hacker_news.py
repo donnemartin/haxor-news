@@ -308,3 +308,18 @@ class HackerNewsTest(unittest.TestCase):
         self.hn.view(one_based_index, comments_query, comments, browser)
         mock_webbrowser.open.assert_called_with(items[self.valid_id].url)
         assert mock_click.mock_calls
+
+    @mock.patch('hncli.hacker_news.webbrowser')
+    @mock.patch('hncli.hacker_news.click')
+    def test_view_browser_comments(self, mock_click, mock_webbrowser):
+        items = self.hn.hacker_news_api.items
+        self.hn.item_ids = [int(item.item_id) for item in items]
+        one_based_index = self.valid_id + 1
+        comments_query = 'foo'
+        comments = True
+        browser = True
+        self.hn.view(one_based_index, comments_query, comments, browser)
+        item = items[self.valid_id]
+        comments_url = self.hn.URL_POST + str(item.item_id)
+        mock_webbrowser.open.assert_called_with(comments_url)
+        assert mock_click.mock_calls
