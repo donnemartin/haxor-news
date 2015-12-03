@@ -31,7 +31,8 @@ except ImportError:
 import click
 import requests
 
-from .lib.haxor.haxor import HackerNewsApi, InvalidUserID
+from .lib.haxor.haxor import HackerNewsApi, HTTPError, InvalidItemID, \
+    InvalidUserID
 from .lib.html2text.html2text import HTML2Text
 from .lib.pretty_date_time import pretty_date_time
 from .onions import onions
