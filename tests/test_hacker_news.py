@@ -251,3 +251,18 @@ class HackerNewsTest(unittest.TestCase):
         assert self.hn.regex_match(item, regex_query)
         regex_query = 'minutes ago'
         assert not self.hn.regex_match(item, regex_query)
+
+    @mock.patch('hncli.hacker_news.HackerNews.url_contents')
+    @mock.patch('hncli.hacker_news.click')
+    def test_view(self, mock_click, mock_url_contents):
+        items = self.hn.hacker_news_api.items
+        self.hn.item_ids = [int(item.item_id) for item in items]
+        one_based_index = self.valid_id + 1
+        comments_query = ''
+        comments = False
+        browser = False
+        self.hn.view(one_based_index, comments_query, comments, browser)
+        mock_url_contents.assert_called_with(
+            items[self.valid_id].url)
+        assert mock_click.secho.mock_calls
+        assert mock_click.echo_via_pager.mock_calls
