@@ -73,15 +73,6 @@ class HackerNewsTest(unittest.TestCase):
         result = self.hn.format_markdown(raw_markdown)
         assert result == formatted_markdown
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_comments')
-    @mock.patch('hncli.hacker_news.HackerNews.print_item_not_found')
-    def test_comments(self, mock_print_item_not_found, mock_print_comments):
-        self.hn.comments(self.valid_id, regex_query=self.query)
-        item = self.hn.hacker_news_api.get_item(self.valid_id)
-        mock_print_comments.assert_called_with(item, regex_query=self.query)
-        self.hn.comments(self.invalid_id, regex_query=self.query)
-        mock_print_item_not_found.assert_called_with(self.invalid_id)
-
     def test_headlines_message(self):
         message = 'foo'
         headlines_message = self.hn.headlines_message(message)

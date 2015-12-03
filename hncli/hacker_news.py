@@ -200,24 +200,6 @@ class HackerNews(object):
         text = re.sub(r'(\s*\r?\n\s*){2,}', r'\n\n', text)
         return text
 
-    def comments(self, post_id, regex_query):
-        """Views the comments for the given post_id.
-
-        Args:
-            * hacker_news: An instance of Hacker News.
-            * post_id: An int representing the post's id.
-            * regex_query: A string that specifies the regex query to match.
-                Optional, defaults to ''.
-
-        Returns:
-            None.
-        """
-        try:
-            item = self.hacker_news_api.get_item(post_id)
-            self.print_comments(item, regex_query=regex_query)
-        except InvalidItemID:
-            self.print_item_not_found(post_id)
-
     def headlines_message(self, message):
         """Creates the "Fetching [message] Headlines..." string.
 
