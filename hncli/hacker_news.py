@@ -296,10 +296,12 @@ class HackerNews(object):
             print_comment = True
             if regex_query and not self.regex_match(item, regex_query):
                 print_comment = False
+            new_comment = False
             formatted_heading, formatted_comment = self.format_comment(
-                    item, depth)
+                    item, depth, new_comment)
             click.echo(formatted_heading)
             if print_comment:
+                click.echo('')
                 click.echo(formatted_comment)
         if not comment_ids:
             return
@@ -311,26 +313,31 @@ class HackerNews(object):
                                     regex_query=regex_query,
                                     depth=depth)
                 depth -= 1
-            except InvalidItemID:
+            except (InvalidItemID, HTTPError):
+                click.echo('')
                 self.print_item_not_found(comment_id)
 
-    def format_comment(self, item, depth):
+    def format_comment(self, item, depth, new_comment):
         """Formats a given item's comment.
 
         Args:
             * item: An instance of haxor.Item.
-            * depth: The current recursion depth, used to indent the comment.
+            * depth: An int that represents the current recursion depth,
+                used to indent the comment.
+            * new_comment: A boolean that represents whether a comment has been
+                seen before, determines comment styling.
 
         Returns:
             A tuple of the following:
                 * A string representing the formatted comment header.
                 * A string representing the formatted comment.
         """
+        color = 'magenta' if new_comment else 'yellow'
         indent = self.COMMENT_INDENT * depth
         formatted_heading = click.style(
             '\n' + indent + item.by + ' - ' +
-            str(pretty_date_time(item.submission_time)) + '\n',
-            fg='yellow')
+            str(pretty_date_time(item.submission_time)),
+            fg=color)
         formatted_comment = click.wrap_text(
             text=item.text,
             initial_indent=indent,
