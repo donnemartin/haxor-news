@@ -44,7 +44,8 @@ class HackerNews(object):
         * COMMENT_INDENT: A string representing the indent amount for comments.
         * CONFIG: A string representing the config file name.
         * CONFIG_SECTION: A string representing the main config file section.
-        * CONFIG_INDEX: A string representing the last index used.
+        * CONFIG_IDS: A string representing the last post ids seen.
+        * CONFIG_CACHE: A string representing the last item ids seen.
         * MSG_ASK: A string representing the message displayed when the
             command hn ask is executed.
         * MSG_BEST: A string representing the message displayed when the
@@ -77,7 +78,8 @@ class HackerNews(object):
     COMMENT_INDENT = '    '
     CONFIG = '.hncliconfig'
     CONFIG_SECTION = 'hncli'
-    CONFIG_INDEX = 'item_ids'
+    CONFIG_IDS = 'item_ids'
+    CONFIG_CACHE = 'item_cache'
     MSG_ASK = 'Ask HN'
     MSG_BEST = 'Best'
     MSG_ITEM_NOT_FOUND = 'Item with id {0} not found.'
@@ -104,6 +106,7 @@ class HackerNews(object):
         """
         self.hacker_news_api = HackerNewsApi()
         self.item_ids = []
+        self.item_cache = self.load_cache(self.CONFIG_CACHE)
         self.html_to_text = None
         self._init_html_to_text()
 
@@ -230,6 +233,7 @@ class HackerNews(object):
         try:
             item = self.hacker_news_api.get_item(post_id)
             self.print_comments(item, regex_query)
+            self.save_item_ids()
         except InvalidItemID:
             self.print_item_not_found(post_id)
 
@@ -499,6 +503,7 @@ class HackerNews(object):
         parser = configparser.RawConfigParser()
         parser.add_section(self.CONFIG_SECTION)
         parser.set(self.CONFIG_SECTION, self.CONFIG_INDEX, self.item_ids)
+        parser.set(self.CONFIG_SECTION, self.CONFIG_CACHE, self.item_cache)
         parser.write(open(config, 'w+'))
 
     def show(self, limit):
@@ -554,25 +559,40 @@ class HackerNews(object):
         except InvalidUserID:
             self.print_item_not_found(user_id)
 
-    def load_item_ids(self):
-        """Loads item ids from ~/.hncliconfig.
+    def load_section(self, parser, section):
+        """Loads the given section from the ~/.hncliconfig.
 
         Args:
-            * None.
+            * parser: An instance of ConfigParser.RawConfigParser.
+            * section: A string representing the section to load
 
         Returns:
-            A list of ints representing item ids.
+            A list containing a string of elements.
+
+        Raises:
+            Exception: An error occurred reading from the parser.
+        """
+        items_ids = parser.get(self.CONFIG_SECTION, section)
+        items_ids = items_ids.strip()
+        excludes = ['[', ']', "'"]
+        for exclude in excludes:
+            items_ids = items_ids.replace(exclude, '')
+        return items_ids.split(', ')
+
+    def load_cache(self, section):
+        """Loads the item ids and the item cache from ~/.hncliconfig.
+
+        Args:
+            * list_sections: A list of sections to load.
+
+        Returns:
+            A list of caches.
         """
         config = self._config(self.CONFIG)
         parser = configparser.RawConfigParser()
         try:
             parser.readfp(open(config))
-            items_ids = parser.get(self.CONFIG_SECTION, self.CONFIG_INDEX)
-            items_ids = items_ids.strip()
-            excludes = ['[', ']', "'"]
-            for exclude in excludes:
-                items_ids = items_ids.replace(exclude, '')
-            return items_ids.split(', ')
+            return self.load_section(parser, section)
         except Exception as e:
             click.secho('Error: ' + str(e), fg='red')
             return None
@@ -595,7 +615,7 @@ class HackerNews(object):
         Returns:
             None.
         """
-        self.item_ids = self.load_item_ids()
+        self.item_ids = self.load_cache(self.CONFIG_IDS)
         try:
             item = self.hacker_news_api.get_item(self.item_ids[index-1])
         except InvalidItemID:
@@ -614,6 +634,7 @@ class HackerNews(object):
                 webbrowser.open(comments_url)
             else:
                 self.print_comments(item, regex_query=comments_query)
+                self.save_item_ids()
             click.echo('')
         else:
             click.secho('\nOpening ' + item.url + '...', fg='blue')
