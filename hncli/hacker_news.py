@@ -46,6 +46,10 @@ class HackerNews(object):
         * CONFIG_SECTION: A string representing the main config file section.
         * CONFIG_IDS: A string representing the last post ids seen.
         * CONFIG_CACHE: A string representing the last item ids seen.
+        * MAX_LIST_INDEX: An int representing the maximum 1-based index value
+            hn view will use to match item_ids.  Any value larger than
+            MAX_LIST_INDEX will result in hn view treating that index as an
+            actual post id.
         * MSG_ASK: A string representing the message displayed when the
             command hn ask is executed.
         * MSG_BEST: A string representing the message displayed when the
@@ -80,6 +84,7 @@ class HackerNews(object):
     CONFIG_SECTION = 'hncli'
     CONFIG_IDS = 'item_ids'
     CONFIG_CACHE = 'item_cache'
+    MAX_LIST_INDEX = 1000
     MSG_ASK = 'Ask HN'
     MSG_BEST = 'Best'
     MSG_ITEM_NOT_FOUND = 'Item with id {0} not found.'
