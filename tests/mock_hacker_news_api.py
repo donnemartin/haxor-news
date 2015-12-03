@@ -102,9 +102,13 @@ class MockHackerNewsApi(object):
         return [item.item_id for item in self.items[:limit]]
 
     def get_item(self, item_id):
-        if item_id < len(self.items):
-            return self.items[item_id]
-        else:
+        item_id = int(item_id)
+        try:
+            if item_id < len(self.items):
+                return self.items[item_id]
+            else:
+                raise InvalidItemID
+        except IndexError:
             raise InvalidItemID
 
     def get_user(self, user_id):
