@@ -253,12 +253,12 @@ class HackerNewsCli(object):
 
     @cli.command()
     @click.argument('index')
-    @click.argument('comments_query', required=False, default='')
+    @click.option('-cq', '--comments_regex_query', required=False, default=None)
     @click.option('-c', '--comments', is_flag=True)
     @click.option('-cr', '--comments_recent', is_flag=True)
     @click.option('-b', '--browser', is_flag=True)
     @pass_hacker_news
-    def view(hacker_news, index, comments_query,
+    def view(hacker_news, index, comments_regex_query,
              comments, comments_recent, browser):
         """Views the post index or id, hn view --help.
 
@@ -275,12 +275,13 @@ class HackerNewsCli(object):
                 A subsequent call to `hn view 1` will view 'Post foo'.
                 Providing an index larger than MAX_LIST_INDEX (1000) will
                 result in hn view treating index as an actual post id.
-            * comments_query: A string that specifies the regex query to match.
-                This automatically sets comments to True.
+            * comments_regex_query: A string that specifies the regex query
+                to match.  Passing this option automatically sets comments
+                to True.
             * comments: A boolean that determines whether to view the comments
                 or a simplified version of the post url.
             * comments_recent: A boolean that determines whether to view only
-                 recently comments (posted within the past 59 minutes or less)
+                recently comments (posted within the past 59 minutes or less)
             * browser: A boolean that determines whether to view the url
                  in a browser.
 
@@ -305,7 +306,7 @@ class HackerNewsCli(object):
             None.
         """
         hacker_news.view_setup(int(index),
-                               comments_query,
+                               comments_regex_query,
                                comments,
                                comments_recent,
                                browser)
