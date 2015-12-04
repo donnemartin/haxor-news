@@ -17,6 +17,7 @@ setup(
         'colorama>=0.3.3',
         'html2text==2015.11.4',
         'requests>=2.4.3',
+        'six>=1.9.0',
     ],
     extras_require={
         'testing': [
