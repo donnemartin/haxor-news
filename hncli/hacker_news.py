@@ -79,7 +79,7 @@ class HackerNews(object):
             gh view [#] [-u/--url] command.
         * QUERY_RECENT: A string representing the query to show recent comments.
         * QUERY_UNSEEN: A string representing the query to show unseen comments.
-        * TIP0, TIP1, TIP2: StringS that lets the user know about the
+        * TIP0, TIP1, TIP2, TIP3: Strings that lets the user know about the
             hn view command.
         * URL_POST: A string that represents a Hacker News post minus the
             post id.
@@ -105,8 +105,8 @@ class HackerNews(object):
     QUERY_UNSEEN = '\[!\]'
     TIP0 = 'Tip: View the page or comments for '
     TIP1 = ' with the following command:\n'
-    TIP2 = '  hn view [#] optional: [comment_filter] [-c] [-cr] [-cu] [-b] ' \
-        '[--help]'
+    TIP2 = '  hn view [#] '
+    TIP3 = 'optional: [comment_filter] [-c] [-cr] [-cu] [-b] [--help]'
     URL_POST = 'https://news.ycombinator.com/item?id='
 
     def __init__(self):
@@ -476,7 +476,8 @@ class HackerNews(object):
         tip += click.style('1 through ', fg='magenta')
         tip += click.style(str(max_index), fg='magenta')
         tip += click.style(self.TIP1, fg='blue')
-        tip += click.style(self.TIP2 + '\n', fg='blue')
+        tip += click.style(self.TIP2, fg='magenta')
+        tip += click.style(self.TIP3 + '\n', fg='blue')
         return tip
 
     def url_contents(self, url):
