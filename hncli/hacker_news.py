@@ -685,7 +685,7 @@ class HackerNews(object):
                 click.echo_via_pager(contents)
             click.echo('')
 
-    def view_setup(self, index, comments_query, comments,
+    def view_setup(self, index, comments_regex_query, comments,
                    comments_recent, comments_unseen, browser):
         """Sets up the call to views the given index comments or url.
 
@@ -697,8 +697,8 @@ class HackerNews(object):
                 a table.  For example, calling hn top will list the latest posts
                 with indices for each row.  Calling hn view [index] will view
                 the comments of the given post.
-            * comments_query: A string that specifies the regex query to match.
-                This automatically sets comments to True.
+            * comments_regex_query: A string that specifies the regex query
+                to match.  This automatically sets comments to True.
             * comments: A boolean that determines whether to view the comments
                 or a simplified version of the post url.
             * comments_recent: A boolean that determines whether to view only
@@ -711,15 +711,15 @@ class HackerNews(object):
         Returns:
             None.
         """
-        if comments_query:
+        if comments_regex_query is not None:
             comments = True
         if comments_recent:
-            comments_query = self.QUERY_RECENT
+            comments_regex_query = self.QUERY_RECENT
             comments = True
         if comments_unseen:
-            comments_query = self.QUERY_UNSEEN
+            comments_regex_query = self.QUERY_UNSEEN
             comments = True
         self.view(int(index),
-                  comments_query,
+                  comments_regex_query,
                   comments,
                   browser)
