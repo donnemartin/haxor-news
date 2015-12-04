@@ -1,0 +1,145 @@
+# -*- coding: utf-8 -*-
+
+# Copyright 2015 Donne Martin. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"). You
+# may not use this file except in compliance with the License. A copy of
+# the License is located at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# or in the "license" file accompanying this file. This file is
+# distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+# ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
+
+from .settings import who_is_hiring_post_id
+
+
+COMMAND = 'hn'
+SUBCOMMAND_ASK = 'ask'
+SUBCOMMAND_BEST = 'best'
+SUBCOMMAND_HIRING = 'hiring'
+SUBCOMMAND_JOBS = 'jobs'
+SUBCOMMAND_NEW = 'new'
+SUBCOMMAND_ONION = 'onion'
+SUBCOMMAND_SHOW = 'show'
+SUBCOMMAND_TOP = 'top'
+SUBCOMMAND_USER = 'user'
+SUBCOMMAND_VIEW = 'view'
+SUB_COMMANDS = [
+    SUBCOMMAND_ASK,
+    SUBCOMMAND_BEST,
+    SUBCOMMAND_HIRING,
+    SUBCOMMAND_JOBS,
+    SUBCOMMAND_NEW,
+    SUBCOMMAND_ONION,
+    SUBCOMMAND_SHOW,
+    SUBCOMMAND_TOP,
+    SUBCOMMAND_USER,
+    SUBCOMMAND_VIEW,
+]
+ARG_POST_LIMIT = '10'
+ARG_HIRING_REGEX_QUERY = '"(?i)(Python|Django)"'
+ARG_VIEW_POST_INDEX = '1'
+ARG_USER_ID = '"user"'
+OPTION_COMMENTS_REGEX_QUERY = '--comments_regex_query ""'
+OPTION_COMMENTS_REGEX_QUERY_SHORT = '-cq ""'
+OPTION_COMMENTS = '--comments'
+OPTION_COMMENTS_SHORT = '-c'
+OPTION_COMMENTS_RECENT = '--comments_recent'
+OPTION_COMMENTS_RECENT_SHORT = '-cr'
+OPTION_COMMENTS_UNSEEN = '--comments_unseen'
+OPTION_COMMENTS_UNSEEN_SHORT = '-cu'
+OPTION_BROWSER = '--browser'
+OPTION_BROWSER_SHORT = '-b'
+OPTIONS_VIEW = [
+    OPTION_COMMENTS_REGEX_QUERY,
+    OPTION_COMMENTS_REGEX_QUERY_SHORT,
+    OPTION_COMMENTS,
+    OPTION_COMMENTS_SHORT,
+    OPTION_COMMENTS_RECENT,
+    OPTION_COMMENTS_RECENT_SHORT,
+    OPTION_COMMENTS_UNSEEN,
+    OPTION_COMMENTS_UNSEEN_SHORT,
+    OPTION_BROWSER,
+    OPTION_BROWSER_SHORT,
+]
+OPTION_ID_POST = '--id_post ' + str(who_is_hiring_post_id)
+OPTION_ID_POST_SHORT = '-i ' + str(who_is_hiring_post_id)
+OPTIONS_HIRING = [
+    OPTION_ID_POST,
+    OPTION_ID_POST_SHORT,
+]
+OPTION_POST_LIMIT = '--limit 10'
+OPTION_POST_LIMIT_SHORT= '-l 10'
+OPTIONS_USER = [
+    OPTION_POST_LIMIT,
+    OPTION_POST_LIMIT_SHORT,
+]
+OPTION_HELP = '--help'
+META_PARAM_LIMIT = 'limit:int (opt)'
+META_OPTION_COMMENTS_REGEX_QUERY = 'Filter comments with a regular expression' \
+    ' query (string)'
+META_OPTION_COMMENTS = 'View comments instead of the url contents (flag)'
+META_OPTION_COMMENTS_RECENT = 'View only comments in the past hour (flag)'
+META_OPTION_COMMENTS_UNSEEN = 'View only previously unseen comments (flag)'
+META_OPTION_BROWSER = 'View in a browser instead of the terminal (flag)'
+META_OPTION_ID_POST = 'View matching comments from the (optional) post ' \
+    'id instead of the latest post (int)'
+META_OPTION_POST_LIMIT = 'Limits the number of user submissions displayed (int)'
+DISPLAY_LOOKUP = {
+    SUBCOMMAND_ASK: META_PARAM_LIMIT,
+    SUBCOMMAND_BEST: META_PARAM_LIMIT,
+    SUBCOMMAND_HIRING: 'regex_query:str (opt) [options]',
+    SUBCOMMAND_JOBS: META_PARAM_LIMIT,
+    SUBCOMMAND_NEW: META_PARAM_LIMIT,
+    SUBCOMMAND_ONION: META_PARAM_LIMIT,
+    SUBCOMMAND_SHOW: META_PARAM_LIMIT,
+    SUBCOMMAND_TOP: META_PARAM_LIMIT,
+    SUBCOMMAND_USER: 'user_id:str (req) [options]',
+    SUBCOMMAND_VIEW: 'index:int (req) [options]',
+    OPTION_COMMENTS: META_OPTION_COMMENTS,
+    OPTION_COMMENTS_SHORT: META_OPTION_COMMENTS,
+    OPTION_COMMENTS_RECENT: META_OPTION_COMMENTS_RECENT,
+    OPTION_COMMENTS_RECENT_SHORT: META_OPTION_COMMENTS_RECENT,
+    OPTION_COMMENTS_UNSEEN: META_OPTION_COMMENTS_UNSEEN,
+    OPTION_COMMENTS_UNSEEN_SHORT: META_OPTION_COMMENTS_UNSEEN,
+    OPTION_BROWSER: META_OPTION_BROWSER,
+    OPTION_BROWSER_SHORT: META_OPTION_BROWSER,
+    OPTION_ID_POST: META_OPTION_ID_POST,
+    OPTION_ID_POST_SHORT: META_OPTION_ID_POST,
+    OPTION_POST_LIMIT: META_OPTION_POST_LIMIT,
+    OPTION_POST_LIMIT_SHORT: META_OPTION_POST_LIMIT,
+}
+META_LOOKUP = {
+    ARG_POST_LIMIT: 'limit: int (opt) limits the posts displayed',
+    ARG_HIRING_REGEX_QUERY: 'regex_query: string (opt) applies a regular ' \
+        'expression comment filter',
+    ARG_VIEW_POST_INDEX: 'index: int (req) views the post index',
+    ARG_USER_ID: 'user:string (req) views the specified user',
+    SUBCOMMAND_ASK: META_PARAM_LIMIT,
+    SUBCOMMAND_BEST: META_PARAM_LIMIT,
+    SUBCOMMAND_HIRING: 'regex_query:str (opt) [options]',
+    SUBCOMMAND_JOBS: META_PARAM_LIMIT,
+    SUBCOMMAND_NEW: META_PARAM_LIMIT,
+    SUBCOMMAND_ONION: META_PARAM_LIMIT,
+    SUBCOMMAND_SHOW: META_PARAM_LIMIT,
+    SUBCOMMAND_TOP: META_PARAM_LIMIT,
+    SUBCOMMAND_USER: 'user_id:str (req) [options]',
+    SUBCOMMAND_VIEW: 'index:int (req) [options]',
+    OPTION_COMMENTS_REGEX_QUERY: META_OPTION_COMMENTS_REGEX_QUERY,
+    OPTION_COMMENTS_REGEX_QUERY_SHORT: META_OPTION_COMMENTS_REGEX_QUERY,
+    OPTION_COMMENTS: META_OPTION_COMMENTS,
+    OPTION_COMMENTS_SHORT: META_OPTION_COMMENTS,
+    OPTION_COMMENTS_RECENT: META_OPTION_COMMENTS_RECENT,
+    OPTION_COMMENTS_RECENT_SHORT: META_OPTION_COMMENTS_RECENT,
+    OPTION_COMMENTS_UNSEEN: META_OPTION_COMMENTS_UNSEEN,
+    OPTION_COMMENTS_UNSEEN_SHORT: META_OPTION_COMMENTS_UNSEEN,
+    OPTION_BROWSER: META_OPTION_BROWSER,
+    OPTION_BROWSER_SHORT: META_OPTION_BROWSER,
+    OPTION_ID_POST: META_OPTION_ID_POST,
+    OPTION_ID_POST_SHORT: META_OPTION_ID_POST,
+    OPTION_POST_LIMIT: META_OPTION_POST_LIMIT,
+    OPTION_POST_LIMIT_SHORT: META_OPTION_POST_LIMIT,
+}
