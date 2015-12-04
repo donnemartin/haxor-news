@@ -178,6 +178,17 @@ class HackerNewsApi(object):
         """
         return self._get_page('askstories').json()[:limit]
 
+    def best_stories(self, limit=None):
+        """Returns list of item ids of best HN stories
+
+        Args:
+            limit (int): specifies the number of stories to be returned.
+
+        Returns:
+            `list` object containing ids of best stories.
+        """
+        return self._get_page('beststories').json()[:limit]
+
     def show_stories(self, limit=None):
         """Returns list of item ids of latest Show HN stories
 
