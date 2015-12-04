@@ -19,14 +19,15 @@ from __future__ import division
 import os
 import re
 import urllib
-from urlparse import urlparse
 import webbrowser
 try:
     # Python 3
     import configparser
+    from urllib.parse import urlparse
 except ImportError:
     # Python 2
     import ConfigParser as configparser
+    from urlparse import urlparse
 
 import click
 import requests
