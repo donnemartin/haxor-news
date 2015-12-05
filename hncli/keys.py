@@ -25,35 +25,31 @@ class KeyManager(object):
         * manager: An instance of a prompt_toolkit's KeyBindingManager.
     """
 
-    def __init__(self, set_color, get_color,
-                 refresh_resources_and_options):
+    def __init__(self, set_fuzzy_match, get_fuzzy_match):
         """Initializes KeyManager.
 
         Args:
-            * set_color: A function setting the color output config.
-            * get_color: A function getting the color output config.
+            * set_fuzzy_match: A function setting the fuzzy match config.
+            * get_fuzzy_match: A function getting the fuzzy match config.
 
         Returns:
             None.
         """
         self.manager = None
-        self._create_key_manager(set_color, get_color,
-                                 refresh_resources_and_options)
+        self._create_key_manager(set_fuzzy_match, get_fuzzy_match)
 
-    def _create_key_manager(self, set_color, get_color,
-                            refresh_resources_and_options):
+    def _create_key_manager(self, set_fuzzy_match, get_fuzzy_match):
         """Creates and initializes the keybinding manager.
 
         Args:
-            * set_color: A function setting the color output config.
-            * get_color: A function getting the color output config.
+            * set_fuzzy_match: A function setting the fuzzy match config.
+            * get_fuzzy_match: A function getting the fuzzy match config.
 
         Returns:
             A KeyBindingManager.
         """
-        assert callable(set_color)
-        assert callable(get_color)
-        assert callable(refresh_resources_and_options)
+        assert callable(set_fuzzy_match)
+        assert callable(get_fuzzy_match)
         self.manager = KeyBindingManager(
             enable_search=True,
             enable_abort_and_exit_bindings=True,
@@ -62,7 +58,7 @@ class KeyManager(object):
 
         @self.manager.registry.add_binding(Keys.F2)
         def handle_f2(_):
-            """Enables/Disables color output.
+            """Enables/Disables fuzzy matching.
 
             Args:
                 * _: An instance of prompt_toolkit's Event (not used).
@@ -70,19 +66,7 @@ class KeyManager(object):
             Returns:
                 None.
             """
-            set_color(not get_color())
-
-        @self.manager.registry.add_binding(Keys.F5)
-        def handle_f5(event):
-            """Refreshes AWS resources.
-
-            Args:
-                * event: An instance of prompt_toolkit's Event.
-
-            Returns:
-                None.
-            """
-            event.cli.run_in_terminal(refresh_resources_and_options)
+            set_fuzzy_match(not get_fuzzy_match())
 
         @self.manager.registry.add_binding(Keys.F10)
         def handle_f10(_):
