@@ -24,27 +24,27 @@ class Toolbar(object):
         * handler: A callable get_toolbar_items.
     """
 
-    def __init__(self, color_cfg):
+    def __init__(self, fuzzy_cfg):
         """Initializes ToolBar.
 
         Args:
-            * color_cfg: A boolean that spedifies whether to color the output.
+            * fuzzy_cfg: A boolean that spedifies whether to do fuzzy matching.
 
         Returns:
             None
         """
-        self.handler = self._create_toolbar_handler(color_cfg)
+        self.handler = self._create_toolbar_handler(fuzzy_cfg)
 
-    def _create_toolbar_handler(self, color_cfg):
+    def _create_toolbar_handler(self, fuzzy_cfg):
         """Creates the toolbar handler.
 
         Args:
-            * color_cfg: A boolean that spedifies whether to color the output.
+            * fuzzy_cfg: A boolean that spedifies whether to do fuzzy matching.
 
         Returns:
             A callable get_toolbar_items.
         """
-        assert callable(color_cfg)
+        assert callable(fuzzy_cfg)
 
         def get_toolbar_items(_):
             """Returns bottom menu items.
@@ -55,15 +55,14 @@ class Toolbar(object):
             Returns:
                 A list of Token.Toolbar.
             """
-            if color_cfg():
-                color_token = Token.Toolbar.On
-                color = 'ON'
+            if fuzzy_cfg():
+                fuzzy_token = Token.Toolbar.On
+                fuzzy = 'ON'
             else:
-                color_token = Token.Toolbar.Off
-                color = 'OFF'
+                fuzzy_token = Token.Toolbar.Off
+                fuzzy = 'OFF'
             return [
-                (color_token, ' [F2] Color: {0} '.format(color)),
-                (Token.Toolbar, ' [F5] Refresh '),
+                (fuzzy_token, ' [F2] Fuzzy: {0} '.format(fuzzy)),
                 (Token.Toolbar, ' [F10] Exit ')
             ]
 
