@@ -27,35 +27,60 @@ from six.moves import cStringIO
 from .completions import ARG_POST_LIMIT, ARG_HIRING_REGEX_QUERY, \
     ARG_VIEW_POST_INDEX, ARG_USER_ID, COMMAND, SUBCOMMAND_HIRING, \
     SUBCOMMAND_USER, SUBCOMMAND_VIEW, OPTIONS_HIRING, OPTIONS_USER, \
-    OPTIONS_VIEW, SUB_COMMANDS
-from .utils import TextUtils
+    OPTIONS_VIEW, SUBCOMMANDS, SUBCOMMAND_FREELANCE, OPTIONS_FREELANCE
 
 
 class Completer(Completer):
     """Completer hncli.
 
     Attributes:
-        * None
+        * text_utils: An instance of TextUtils.
+        * fuzzy_match: A boolean that determines whether to use fuzzy matching.
     """
 
-    def __init__(self):
+    def __init__(self, fuzzy_match, text_utils):
         """Initializes Completer.
 
         Args:
-            * None.
+            * text_utils: An instance of TextUtils.
+            * fuzzy_match: A boolean that determines whether to use
+                fuzzy matching.
 
         Returns:
             None.
         """
-        self.text_utils = TextUtils()
+        self.fuzzy_match = fuzzy_match
+        self.text_utils = text_utils
 
     def completing_command(self, words, word_before_cursor):
+        """Determines if we are currently completing the hn command.
+
+        Args:
+            * words: A list of words repsenting the input text.
+            * word_before_cursor: A string that represents the current word
+                 before the cursor, which might be one or more blank spaces.
+
+        Returns:
+            A boolean that specifies whether we are currently completing the
+                hn command.
+        """
         if len(words) == 1 and word_before_cursor != '':
             return True
         else:
             return False
 
-    def completing_sub_command(self, words, word_before_cursor):
+    def completing_subcommand(self, words, word_before_cursor):
+        """Determines if we are currently completing a subcommand.
+
+        Args:
+            * words: A list of words repsenting the input text.
+            * word_before_cursor: A string that represents the current word
+                 before the cursor, which might be one or more blank spaces.
+
+        Returns:
+            A boolean that specifies whether we are currently completing a
+                subcommand.
+        """
         if (len(words) == 1 and word_before_cursor == '') \
             or (len(words) == 2 and word_before_cursor != ''):
             return True
@@ -63,30 +88,77 @@ class Completer(Completer):
             return False
 
     def completing_arg(self, words, word_before_cursor):
+        """Determines if we are currently completing an arg.
+
+        Args:
+            * words: A list of words repsenting the input text.
+            * word_before_cursor: A string that represents the current word
+                 before the cursor, which might be one or more blank spaces.
+
+        Returns:
+            A boolean that specifies whether we are currently completing an arg.
+        """
         if (len(words) == 2 and word_before_cursor == '') \
             or (len(words) == 3 and word_before_cursor != ''):
             return True
         else:
             return False
 
-    def completing_sub_command_option(self, option, words, word_before_cursor):
+    def completing_subcommand_option(self, option, words, word_before_cursor):
+        """Determines if we are currently completing an option.
+
+        Args:
+            * words: A list of words repsenting the input text.
+            * word_before_cursor: A string that represents the current word
+                 before the cursor, which might be one or more blank spaces.
+
+        Returns:
+            A boolean that specifies whether we are currently completing an
+                option.
+        """
         if option in words and \
             (words[-2] == option or \
-                self.completing_option(option, words)):
+                self.completing_subcommand_option_util(option, words)):
             return True
         else:
             return False
 
-    def completing_option(self, option, words):
+    def completing_subcommand_option_util(self, option, words):
+        """Determines if we are currently completing an option.
+
+        Called by completing_subcommand_option as a utility method.
+
+        Args:
+            * words: A list of words repsenting the input text.
+            * word_before_cursor: A string that represents the current word
+                 before the cursor, which might be one or more blank spaces.
+
+        Returns:
+            A boolean that specifies whether we are currently completing an
+                option.
+        """
         # Example: Return True for: hn view 0 --comm
         if len(words) > 3:
-            if words[-3] == option:
+            # if words[-3] == option:
+            if option in words:
                 return True
         return False
 
-    def generate_arg(self, words, word_before_cursor):
+    def arg_completions(self, words, word_before_cursor):
+        """Generates arguments completions based on the input.
+
+        Args:
+            * words: A list of words repsenting the input text.
+            * word_before_cursor: A string that represents the current word
+                 before the cursor, which might be one or more blank spaces.
+
+        Returns:
+            A list of completions.
+        """
         if COMMAND not in words:
             return []
+        elif SUBCOMMAND_FREELANCE in words:
+            return [ARG_HIRING_REGEX_QUERY]
         elif SUBCOMMAND_HIRING in words:
             return [ARG_HIRING_REGEX_QUERY]
         elif SUBCOMMAND_USER in words:
@@ -117,20 +189,25 @@ class Completer(Completer):
             words, word_before_cursor):
             commands = [COMMAND]
         else:
-            if self.completing_sub_command(words, word_before_cursor):
-                commands = SUB_COMMANDS
+            if self.completing_subcommand(words, word_before_cursor):
+                commands = SUBCOMMANDS
             else:
                 if self.completing_arg(words, word_before_cursor):
-                    commands = self.generate_arg(words, word_before_cursor)
-                elif self.completing_sub_command_option(
+                    commands = self.arg_completions(words, word_before_cursor)
+                elif self.completing_subcommand_option(
+                    SUBCOMMAND_FREELANCE, words, word_before_cursor):
+                    commands = OPTIONS_FREELANCE
+                elif self.completing_subcommand_option(
                     SUBCOMMAND_HIRING, words, word_before_cursor):
                     commands = OPTIONS_HIRING
-                elif self.completing_sub_command_option(
+                elif self.completing_subcommand_option(
                     SUBCOMMAND_USER, words, word_before_cursor):
                     commands = OPTIONS_USER
-                elif self.completing_sub_command_option(
+                elif self.completing_subcommand_option(
                     SUBCOMMAND_VIEW, words, word_before_cursor):
                     commands = OPTIONS_VIEW
+                else:
+                    commands = []
         completions = self.text_utils.find_matches(
-            word_before_cursor, commands, fuzzy=False)
+            word_before_cursor, commands, fuzzy=self.fuzzy_match)
         return completions
