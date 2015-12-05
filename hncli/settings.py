@@ -15,3 +15,4 @@
 
 # Updated frequently, see HackerNewsCli.hiring docstring.
 who_is_hiring_post_id = 10492086
+freelancer_post_id = 10492087
