@@ -15,7 +15,9 @@
 # language governing permissions and limitations under the License.
 
 from __future__ import print_function
+
 import click
+
 from .haxor import Haxor
 
 
@@ -28,8 +30,11 @@ def cli():
     Returns:
         None.
     """
-    haxor = Haxor()
-    haxor.run_cli()
+    try:
+        haxor = Haxor()
+        haxor.run_cli()
+    except (EOFError, KeyboardInterrupt):
+        haxor.cli.set_return_value(None)
 
 
 if __name__ == "__main__":
