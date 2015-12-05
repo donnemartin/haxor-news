@@ -1,0 +1,57 @@
+# -*- coding: utf-8 -*-
+
+# Copyright 2015 Donne Martin. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"). You
+# may not use this file except in compliance with the License. A copy of
+# the License is located at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# or in the "license" file accompanying this file. This file is
+# distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+# ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
+
+import pip
+import pexpect
+import sys
+if sys.version_info < (2, 7):
+    import unittest2 as unittest
+else:
+    import unittest
+
+class CliTest(unittest.TestCase):
+
+    def test_run_cli(self):
+        self.cli = None
+        self.step_cli_installed()
+        self.step_run_cli()
+        self.step_see_prompt()
+        self.step_send_ctrld()
+
+    def step_cli_installed(self):
+        """
+        Make sure haxor is in installed packages.
+        """
+        dists = set([di.key for di in pip.get_installed_distributions()])
+        assert 'haxor' in dists
+
+    def step_run_cli(self):
+        """
+        Run the process using pexpect.
+        """
+        self.cli = pexpect.spawnu('haxor')
+
+    def step_see_prompt(self):
+        """
+        Expect to see prompt.
+        """
+        self.cli.expect('haxor> ')
+
+    def step_send_ctrld(self):
+        """
+        Send Ctrl + D to exit.
+        """
+        self.cli.sendcontrol('d')
+        self.cli.expect(pexpect.EOF)
