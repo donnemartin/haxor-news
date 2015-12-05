@@ -16,8 +16,17 @@
 
 import unittest
 
+from test_completer import CompleterTest  # NOQA
 from test_hacker_news import HackerNewsTest  # NOQA
 from test_hacker_news_cli import HackerNewsCliTest  # NOQA
+from test_haxor import HaxorTest  # NOQA
+from test_keys import KeysTest  # NOQA
+from test_toolbar import ToolbarTest  # NOQA
+try:
+    from test_cli import CliTest  # NOQA
+except:
+    # pexpect import fails on Windows
+    pass
 
 
 if __name__ == '__main__':
