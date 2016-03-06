@@ -302,26 +302,26 @@ class HackerNewsTest(unittest.TestCase):
         match = self.hn.match_comment_unseen(regex_query, header_adornment)
         assert match
 
-    def test_regex_match(self):
+    def test_match_regex(self):
         regex_query = '(?i)(Python|JavaScript).*(rockstar)'
         item = self.hn.hacker_news_api.get_item(self.valid_id)
-        assert not self.hn.regex_match(item, regex_query)
+        assert not self.hn.match_regex(item, regex_query)
         item.text = raw_text_for_regex
-        assert self.hn.regex_match(item, regex_query)
+        assert self.hn.match_regex(item, regex_query)
 
-    def test_regex_user_match(self):
+    def test_match_regex_user(self):
         regex_query = 'bar'
         item = self.hn.hacker_news_api.get_item(self.valid_id)
-        assert not self.hn.regex_match(item, regex_query)
+        assert not self.hn.match_regex(item, regex_query)
         regex_query = 'fo'
-        assert self.hn.regex_match(item, regex_query)
+        assert self.hn.match_regex(item, regex_query)
 
-    def test_regex_time_match(self):
+    def test_match_regex_item(self):
         regex_query = 'just now'
         item = self.hn.hacker_news_api.get_item(self.valid_id)
-        assert self.hn.regex_match(item, regex_query)
+        assert self.hn.match_regex(item, regex_query)
         regex_query = 'minutes ago'
-        assert not self.hn.regex_match(item, regex_query)
+        assert not self.hn.match_regex(item, regex_query)
 
     @mock.patch('hncli.hacker_news.HackerNews.url_contents')
     @mock.patch('hncli.hacker_news.click')
