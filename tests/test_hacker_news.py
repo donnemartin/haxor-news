@@ -69,6 +69,14 @@ class HackerNewsTest(unittest.TestCase):
             message=self.hn.headlines_message(self.hn.MSG_BEST),
             item_ids=self.hn.hacker_news_api.best_stories(self.limit))
 
+    @mock.patch('hncli.hacker_news.HackerNews.save_cache')
+    def test_clear_item_cache(self, mock_save_cache):
+        item_ids = self.hn.load_cache(self.hn.CONFIG_IDS)
+        self.hn.clear_item_cache()
+        assert self.hn.item_ids == item_ids
+        assert self.hn.item_cache == []
+        mock_save_cache.assert_called_with()
+
     def test_format_markdown(self):
         result = self.hn.format_markdown(raw_markdown)
         assert result == formatted_markdown
