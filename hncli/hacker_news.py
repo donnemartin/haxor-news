@@ -272,7 +272,7 @@ class HackerNews(object):
         """
         try:
             item = self.hacker_news_api.get_item(post_id)
-            self.print_comments(item, regex_query)
+            self.print_comments(item, regex_query, hide_no_match=True)
             self.save_cache()
         except InvalidItemID:
             self.print_item_not_found(post_id)
@@ -324,12 +324,15 @@ class HackerNews(object):
             index += 1
         click.echo('')
 
-    def print_comments(self, item, regex_query='', depth=0):
+    def print_comments(self, item, regex_query='',
+                       hide_no_match=False, depth=0):
         """Recursively print comments and subcomments for the given item.
 
         Args:
             * item: An instance of haxor.Item.
             * regex_query: A string that specifies the regex query to match.
+            * hide_no_match: A bool that determines whether to hide comments
+                that don't match (False) or truncate them (True).
             * depth: The current recursion depth, used to indent the comment.
 
         Returns:
@@ -352,12 +355,14 @@ class HackerNews(object):
                 else:
                     print_comment = False
             formatted_heading, formatted_comment = self.format_comment(
-                    item, depth, header_color, header_adornment)
-            click.echo(formatted_heading)
+                item, depth, header_color, header_adornment)
             if print_comment:
-                click.echo('')
+                click.echo(formatted_heading + '\n')
                 click.echo(formatted_comment)
+            elif hide_no_match:
+                click.secho('.', nl=False, fg='blue')
             else:
+                click.echo(formatted_heading + '\n')
                 num_chars = len(formatted_comment)
                 if num_chars > self.MAX_SNIPPET_LENGTH:
                     num_chars = self.MAX_SNIPPET_LENGTH
@@ -370,6 +375,7 @@ class HackerNews(object):
                 depth += 1
                 self.print_comments(comment,
                                     regex_query=regex_query,
+                                    hide_no_match=hide_no_match,
                                     depth=depth)
                 depth -= 1
             except (InvalidItemID, HTTPError):

@@ -93,7 +93,8 @@ class HackerNewsTest(unittest.TestCase):
                                   mock_print_comments):
         self.hn.hiring_and_freelance(self.query, post_id=self.valid_id)
         item = self.hn.hacker_news_api.get_item(self.valid_id)
-        mock_print_comments.assert_called_with(item, self.query)
+        mock_print_comments.assert_called_with(
+            item, self.query, hide_no_match=True)
         self.hn.hiring_and_freelance(self.query, post_id=self.invalid_id)
         mock_print_item_not_found.assert_called_with(self.invalid_id)
 
@@ -226,15 +227,15 @@ class HackerNewsTest(unittest.TestCase):
         items = self.hn.hacker_news_api.items
         self.hn.print_comments(items[0])
         mock_click_echo.assert_any_call(
-            '\x1b[35m\nfoo - just now [!]\x1b[0m')
+            '\x1b[35m\nfoo - just now [!]\x1b[0m\n')
         mock_click_echo.assert_any_call(
             'text foo')
         mock_click_echo.assert_any_call(
-            '\x1b[35m\n  bar - just now [!]\x1b[0m')
+            '\x1b[35m\n  bar - just now [!]\x1b[0m\n')
         mock_click_echo.assert_any_call(
             '  text bar')
         mock_click_echo.assert_any_call(
-            '\x1b[35m\n    baz - just now [!]\x1b[0m')
+            '\x1b[35m\n    baz - just now [!]\x1b[0m\n')
         mock_click_echo.assert_any_call(
             '    text baz')
 
@@ -244,15 +245,15 @@ class HackerNewsTest(unittest.TestCase):
         regex_query = 'foo'
         self.hn.print_comments(items[0], regex_query)
         mock_click_echo.assert_any_call(
-            '\x1b[35m\nfoo - just now [!]\x1b[0m')
+            '\x1b[35m\nfoo - just now [!]\x1b[0m\n')
         mock_click_echo.assert_any_call(
             'text foo')
         mock_click_echo.assert_any_call(
-            '\x1b[35m\n  bar - just now [!]\x1b[0m')
+            '\x1b[35m\n  bar - just now [!]\x1b[0m\n')
         mock_click_echo.assert_any_call(
             '  text bar [...]')
         mock_click_echo.assert_any_call(
-            '\x1b[35m\n    baz - just now [!]\x1b[0m')
+            '\x1b[35m\n    baz - just now [!]\x1b[0m\n')
         mock_click_echo.assert_any_call(
             '    text baz [...]')
 
@@ -264,7 +265,7 @@ class HackerNewsTest(unittest.TestCase):
         self.hn.item_cache.append(str(item.item_id))
         self.hn.print_comments(item, regex_query)
         mock_click_echo.assert_any_call(
-            '\x1b[33m\nbaz - just now\x1b[0m')
+            '\x1b[33m\nbaz - just now\x1b[0m\n')
         mock_click_echo.assert_any_call(
             'text baz [...]')
 
