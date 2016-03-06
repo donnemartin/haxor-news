@@ -88,11 +88,13 @@ class HackerNewsTest(unittest.TestCase):
 
     @mock.patch('hncli.hacker_news.HackerNews.print_comments')
     @mock.patch('hncli.hacker_news.HackerNews.print_item_not_found')
-    def test_hiring(self, mock_print_item_not_found, mock_print_comments):
-        self.hn.hiring(self.query, post_id=self.valid_id)
+    def test_hiring_and_freelance(self,
+                                  mock_print_item_not_found,
+                                  mock_print_comments):
+        self.hn.hiring_and_freelance(self.query, post_id=self.valid_id)
         item = self.hn.hacker_news_api.get_item(self.valid_id)
         mock_print_comments.assert_called_with(item, self.query)
-        self.hn.hiring(self.query, post_id=self.invalid_id)
+        self.hn.hiring_and_freelance(self.query, post_id=self.invalid_id)
         mock_print_item_not_found.assert_called_with(self.invalid_id)
 
     @mock.patch('hncli.hacker_news.HackerNews.print_items')
