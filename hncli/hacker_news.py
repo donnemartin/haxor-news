@@ -631,18 +631,19 @@ class HackerNews(object):
         """Loads the item ids and the item cache from ~/.hncliconfig.
 
         Args:
-            * list_sections: A list of sections to load.
+            * section: A string representing the section to load.
 
         Returns:
             A list of caches.
         """
-        config = self._config(self.CONFIG)
+        config_file_path = self._config(self.CONFIG)
         parser = configparser.RawConfigParser()
         try:
-            parser.readfp(open(config))
-            return self.load_section(parser, section)
-        except Exception as e:
-            # There might not be a cache yet, just silently return
+            with open(config_file_path) as config_file:
+                parser.readfp(config_file)
+                return self.load_section(parser, section)
+        except IOError:
+            # There might not be a cache yet, just silently return.
             return None
 
     def view(self, index, comments_query, comments, browser):
