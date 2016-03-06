@@ -100,7 +100,7 @@ class HackerNews(object):
     CONFIG_IDS = 'item_ids'
     CONFIG_CACHE = 'item_cache'
     MAX_LIST_INDEX = 1000
-    MAX_SNIPPET_LENGTH = 40
+    MAX_SNIPPET_LENGTH = 60
     MSG_ASK = 'Ask HN'
     MSG_BEST = 'Best'
     MSG_ITEM_NOT_FOUND = 'Item with id {0} not found.'
