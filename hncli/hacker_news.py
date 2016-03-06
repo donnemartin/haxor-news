@@ -530,6 +530,23 @@ class HackerNews(object):
             'Viewing ' + url + '\n\n', fg='magenta') + contents
         return contents
 
+    def match_comment_unseen(self, regex_query, header_adornment):
+        """Determines if a comment is unseen based on the query and header.
+
+        Args:
+            * regex_query: A string that specifies the regex query to match.
+            * header_adornment: A string that represents the header adornment,
+                if present.
+
+        Returns:
+            A boolean that specifies if there is a match found.
+        """
+        if regex_query == self.QUERY_UNSEEN and \
+            header_adornment == self.COMMENT_UNSEEN:
+            return True
+        else:
+            return False
+
     def match_regex(self, item, regex_query):
         """Determines if there is a match with the given regex_query.
 
