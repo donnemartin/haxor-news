@@ -243,6 +243,16 @@ class HackerNewsTest(unittest.TestCase):
         mock_requests.get.assert_called_with('foo')
         assert result == formatted_url
 
+    def test_match_comment_unseen(self):
+        regex_query = ''
+        header_adornment = ''
+        match = self.hn.match_comment_unseen(regex_query, header_adornment)
+        assert not match
+        regex_query = self.hn.QUERY_UNSEEN
+        header_adornment = self.hn.COMMENT_UNSEEN
+        match = self.hn.match_comment_unseen(regex_query, header_adornment)
+        assert match
+
     def test_regex_match(self):
         regex_query = '(?i)(Python|JavaScript).*(rockstar)'
         item = self.hn.hacker_news_api.get_item(self.valid_id)
