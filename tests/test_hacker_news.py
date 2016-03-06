@@ -203,9 +203,10 @@ class HackerNewsTest(unittest.TestCase):
             index, self.hn.QUERY_UNSEEN, comments_expected, browser)
 
     def test_format_comment(self):
-        item = self.hn.hacker_news_api.get_item(0)
+        item = self.hn.hacker_news_api.get_item(self.valid_id)
         item.text = raw_comment
-        heading, comment = self.hn.format_comment(item, depth=3)
+        heading, comment = self.hn.format_comment(
+            item, depth=3, header_color='yellow', header_adornment='')
         assert heading == formatted_heading
         assert comment == formatted_comment
 
