@@ -108,9 +108,9 @@ class HackerNews(object):
     MSG_SUBMISSIONS = 'User submissions:'
     QUERY_RECENT = 'minutes ago'
     QUERY_UNSEEN = '\[!\]'
-    TIP0 = 'Tip: View the page or comments for '
+    TIP0 = '  Tip: View the page or comments for '
     TIP1 = ' with the following command:\n'
-    TIP2 = '  hn view [#] '
+    TIP2 = '    hn view [#] '
     TIP3 = 'optional: [comment_filter] [-c] [-cr] [-cu] [-b] [--help]'
     URL_POST = 'https://news.ycombinator.com/item?id='
 
