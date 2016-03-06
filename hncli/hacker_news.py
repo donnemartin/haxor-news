@@ -324,16 +324,22 @@ class HackerNews(object):
         """
         comment_ids = item.kids
         if item.text is not None:
-            new_comment = False
+            header_color = 'yellow'
+            header_color_highlight = 'magenta'
+            header_adornment = ''
             if str(item.item_id) not in self.item_cache:
+                header_color = header_color_highlight
+                header_adornment = self.COMMENT_UNSEEN
                 self.item_cache.append(item.item_id)
-                new_comment = True
             print_comment = True
-            if regex_query and not self.match_regex(
-                item, new_comment, regex_query):
-                print_comment = False
+            if regex_query is not None:
+                if self.match_comment_unseen(regex_query, header_adornment) or \
+                    self.match_regex(item, regex_query):
+                    header_color = header_color_highlight
+                else:
+                    print_comment = False
             formatted_heading, formatted_comment = self.format_comment(
-                    item, depth, new_comment)
+                    item, depth, header_color, header_adornment)
             click.echo(formatted_heading)
             if print_comment:
                 click.echo('')
@@ -342,7 +348,7 @@ class HackerNews(object):
                 num_chars = len(formatted_comment)
                 if num_chars > self.MAX_SNIPPET_LENGTH:
                     num_chars = self.MAX_SNIPPET_LENGTH
-                click.echo(formatted_comment[0:num_chars] + '...')
+                click.echo(formatted_comment[0:num_chars] + ' [...]')
         if not comment_ids:
             return
         for comment_id in comment_ids:
