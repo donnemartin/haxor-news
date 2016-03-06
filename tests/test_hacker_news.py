@@ -222,21 +222,21 @@ class HackerNewsTest(unittest.TestCase):
             assert result == formatted_items[index]
 
     @mock.patch('hncli.hacker_news.click.echo')
-    def test_print_comments(self, mock_click_echo):
+    def test_print_comments_unseen(self, mock_click_echo):
         items = self.hn.hacker_news_api.items
         self.hn.print_comments(items[0])
         mock_click_echo.assert_any_call(
-            '\x1b[33m\nfoo - just now\n\x1b[0m')
+            '\x1b[35m\nfoo - just now [!]\x1b[0m')
         mock_click_echo.assert_any_call(
             'text foo')
         mock_click_echo.assert_any_call(
-            '\x1b[33m\n    bar - just now\n\x1b[0m')
+            '\x1b[35m\n  bar - just now [!]\x1b[0m')
         mock_click_echo.assert_any_call(
-            '    text bar')
+            '  text bar')
         mock_click_echo.assert_any_call(
-            '\x1b[33m\n        baz - just now\n\x1b[0m')
+            '\x1b[35m\n    baz - just now [!]\x1b[0m')
         mock_click_echo.assert_any_call(
-            '        text baz')
+            '    text baz')
 
     @mock.patch('hncli.hacker_news.click.echo')
     def test_print_comments_regex(self, mock_click_echo):
