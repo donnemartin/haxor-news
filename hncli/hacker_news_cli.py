@@ -258,9 +258,10 @@ class HackerNewsCli(object):
     @click.option('-cr', '--comments_recent', is_flag=True)
     @click.option('-cu', '--comments_unseen', is_flag=True)
     @click.option('-b', '--browser', is_flag=True)
+    @click.option('-cc', '--clear_cache', is_flag=True)
     @pass_hacker_news
     def view(hacker_news, index, comments_regex_query, comments,
-             comments_recent, comments_unseen, browser):
+             comments_recent, comments_unseen, clear_cache, browser):
         """Views the post index or id, hn view --help.
 
         Args:
@@ -285,8 +286,10 @@ class HackerNewsCli(object):
                 recently comments (posted within the past 59 minutes or less)
             * comments_unseen: A boolean that determines whether to view only
                 comments that you have not yet seen.
+            * clear_cache: A boolean that clears the comment cache before
+                running the view command.
             * browser: A boolean that determines whether to view the url
-                 in a browser.
+                in a browser.
 
         Example(s):
             hn top
@@ -299,6 +302,7 @@ class HackerNewsCli(object):
             hn view 3 --comments_unseen
             hn view 3 --browser
             hn view 3 -b -c
+            hn view 3 -comments -clear_cache
             hn view 3 "(?i)case insensitive match" --comments
             hn view 3 "(?i)programmer" --comments
             hn view 3 "(?i)programmer" --comments | less
@@ -315,4 +319,5 @@ class HackerNewsCli(object):
                                comments,
                                comments_recent,
                                comments_unseen,
+                               clear_cache,
                                browser)
