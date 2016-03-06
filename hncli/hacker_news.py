@@ -462,7 +462,6 @@ class HackerNews(object):
         Returns:
             None.
         """
-        click.secho('\n' + message + '\n', fg='blue')
         index = 1
         for item_id in item_ids:
             try:
