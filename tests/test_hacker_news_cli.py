@@ -54,7 +54,7 @@ class HackerNewsCliTest(unittest.TestCase):
         mock_hn_call.assert_called_with(self.limit)
         assert result.exit_code == 0
 
-    @mock.patch('hncli.hacker_news_cli.HackerNews.hiring')
+    @mock.patch('hncli.hacker_news_cli.HackerNews.hiring_and_freelance')
     def test_hiring(self, mock_hn_call):
         result = self.runner.invoke(
             self.hacker_news_cli.cli, ['hiring', self.dummy, '-i', 0])
