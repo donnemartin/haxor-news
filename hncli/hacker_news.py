@@ -241,7 +241,7 @@ class HackerNews(object):
         """
         return 'Fetching {0} Headlines...'.format(message)
 
-    def hiring(self, regex_query, post_id):
+    def hiring_and_freelance(self, regex_query, post_id):
         """Displays comments matching the monthly who is hiring post.
 
         Searches the monthly Hacker News who is hiring post for comments
