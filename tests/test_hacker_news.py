@@ -47,7 +47,7 @@ class HackerNewsTest(unittest.TestCase):
 
     def top(self, limit=2):
         self.hn.print_items(
-            message='Fetching Top Headlines...',
+            message=self.headlines_message(self.MSG_TOP),
             item_ids=self.hn.hacker_news_api.top_stories(limit))
 
     def test_config(self):
