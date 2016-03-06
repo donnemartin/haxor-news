@@ -329,7 +329,7 @@ class HackerNews(object):
                 self.item_cache.append(item.item_id)
                 new_comment = True
             print_comment = True
-            if regex_query and not self.regex_match(
+            if regex_query and not self.match_regex(
                 item, new_comment, regex_query):
                 print_comment = False
             formatted_heading, formatted_comment = self.format_comment(
@@ -512,20 +512,16 @@ class HackerNews(object):
             'Viewing ' + url + '\n\n', fg='magenta') + contents
         return contents
 
-    def regex_match(self, item, new_comment, regex_query):
+    def match_regex(self, item, regex_query):
         """Determines if there is a match with the given regex_query.
 
         Args:
             * item: An instance of haxor.Item.
-            * new_comment: A boolean that represents whether a comment has been
-                seen before, determines comment styling.
             * regex_query: A string that specifies the regex query to match.
 
         Returns:
             A boolean that specifies whether there is a match.
         """
-        if regex_query == self.QUERY_UNSEEN and new_comment:
-            return True
         match_time = re.search(
             regex_query,
             str(pretty_date_time(item.submission_time)))
