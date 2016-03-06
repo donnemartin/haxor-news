@@ -183,6 +183,19 @@ class HackerNews(object):
             message=self.headlines_message(self.MSG_BEST),
             item_ids=self.hacker_news_api.best_stories(limit))
 
+    def clear_item_cache(self):
+        """Clears the item cache.
+
+        Args:
+            * None.
+
+        Returns:
+            None.
+        """
+        self.item_ids = self.load_cache(self.CONFIG_IDS)
+        self.item_cache = []
+        self.save_cache()
+
     def format_markdown(self, text):
         """Adds color to the input markdown using click.style.
 
