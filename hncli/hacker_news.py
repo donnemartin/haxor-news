@@ -424,15 +424,15 @@ class HackerNews(object):
             formatted_item += click.style('(' + netloc + ')',
                                           fg='magenta')
         formatted_item += '\n'
-        formatted_item += click.style('      ' + str(item.score) + ' points ',
+        formatted_item += click.style('        ' + str(item.score) + ' points ',
                                       fg='green')
         formatted_item += click.style('by ' + item.by + ' ',
-                                      fg='yellow')
+                                      fg='cyan')
         formatted_item += click.style(
             str(pretty_date_time(item.submission_time)) + ' ',
-            fg='cyan')
+            fg='yellow')
         num_comments = str(item.descendants) if item.descendants else '0'
-        formatted_item += click.style('| ' + num_comments + ' comments\n',
+        formatted_item += click.style('| ' + num_comments + ' comments',
                                       fg='green')
         self.item_ids.append(item.item_id)
         return formatted_item
