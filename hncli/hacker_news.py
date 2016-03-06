@@ -686,7 +686,7 @@ class HackerNews(object):
             click.echo('')
 
     def view_setup(self, index, comments_regex_query, comments,
-                   comments_recent, comments_unseen, browser):
+                   comments_recent, comments_unseen, clear_cache, browser):
         """Sets up the call to views the given index comments or url.
 
         This method is meant to be called after a command that outputs a
@@ -705,6 +705,8 @@ class HackerNews(object):
                 recently comments (posted within the past 59 minutes or less)
             * comments_unseen: A boolean that determines whether to view only
                 comments that you have not yet seen.
+            * clear_cache: A boolean that clears the comment cache before
+                running the view command.
             * browser: A boolean that determines whether to view the url
                 in a browser.
 
@@ -719,6 +721,8 @@ class HackerNews(object):
         if comments_unseen:
             comments_regex_query = self.QUERY_UNSEEN
             comments = True
+        if clear_cache:
+            self.clear_item_cache()
         self.view(int(index),
                   comments_regex_query,
                   comments,
