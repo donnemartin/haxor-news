@@ -49,6 +49,8 @@ class HackerNews(object):
 
     Attributes:
         * COMMENT_INDENT: A string representing the indent amount for comments.
+        * COMMENT_UNSEEN: A string representing the adornment for unseen
+            comments.
         * CONFIG: A string representing the config file name.
         * CONFIG_SECTION: A string representing the main config file section.
         * CONFIG_IDS: A string representing the last post ids seen.
@@ -91,6 +93,7 @@ class HackerNews(object):
     """
 
     COMMENT_INDENT = '  '
+    COMMENT_UNSEEN = ' [!]'
     CONFIG = '.hncliconfig'
     CONFIG_SECTION = 'hncli'
     CONFIG_IDS = 'item_ids'
