@@ -55,6 +55,7 @@ class HackerNews(object):
         * CONFIG_SECTION: A string representing the main config file section.
         * CONFIG_IDS: A string representing the last post ids seen.
         * CONFIG_CACHE: A string representing the last item ids seen.
+        * html: An instance of html or HTMLParser.
         * MAX_LIST_INDEX: An int representing the maximum 1-based index value
             hn view will use to match item_ids.  Any value larger than
             MAX_LIST_INDEX will result in hn view treating that index as an
