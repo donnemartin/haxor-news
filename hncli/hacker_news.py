@@ -247,7 +247,7 @@ class HackerNews(object):
         try:
             item = self.hacker_news_api.get_item(post_id)
             self.print_comments(item, regex_query)
-            self.save_item_ids()
+            self.save_cache()
         except InvalidItemID:
             self.print_item_not_found(post_id)
 
@@ -460,7 +460,7 @@ class HackerNews(object):
                     index += 1
             except InvalidItemID:
                 self.print_item_not_found(item_id)
-        self.save_item_ids()
+        self.save_cache()
         click.secho(self.tip_view(str(index-1)))
 
     def tip_view(self, max_index):
@@ -523,8 +523,8 @@ class HackerNews(object):
         else:
             return True
 
-    def save_item_ids(self):
-        """Saves the current set of item ids to ~/.hncliconfig.
+    def save_cache(self):
+        """Saves the current set of item ids and cache to ~/.hncliconfig.
 
         Args:
             * None
@@ -532,12 +532,14 @@ class HackerNews(object):
         Returns:
             None.
         """
-        config = self._config(self.CONFIG)
+        config_file_path = self._config(self.CONFIG)
         parser = configparser.RawConfigParser()
         parser.add_section(self.CONFIG_SECTION)
         parser.set(self.CONFIG_SECTION, self.CONFIG_IDS, self.item_ids)
         parser.set(self.CONFIG_SECTION, self.CONFIG_CACHE, self.item_cache)
-        parser.write(open(config, 'w+'))
+        config_file = open(config_file_path, 'w+')
+        parser.write(config_file)
+        config_file.close()
 
     def show(self, limit):
         """Displays Show HN posts.
@@ -674,7 +676,7 @@ class HackerNews(object):
                 webbrowser.open(comments_url)
             else:
                 self.print_comments(item, regex_query=comments_query)
-                self.save_item_ids()
+                self.save_cache()
             click.echo('')
         else:
             click.secho('\nOpening ' + item.url + '...', fg='blue')
