@@ -120,9 +120,12 @@ class HackerNewsTest(unittest.TestCase):
 
     def test_save_and_load_item_ids(self):
         self.hn.item_ids = [0, 1, 2]
-        self.hn.save_item_ids()
-        item_ids = self.hn.load_item_ids()
+        self.hn.item_cache = [3, 4, 5]
+        self.hn.save_cache()
+        item_ids = self.hn.load_cache(self.hn.CONFIG_IDS)
         assert item_ids == ['0', '1', '2']
+        item_cache = self.hn.load_cache(self.hn.CONFIG_CACHE)
+        assert item_cache == ['3', '4', '5']
 
     @mock.patch('hncli.hacker_news.HackerNews.print_items')
     def test_show(self, mock_print_items):
