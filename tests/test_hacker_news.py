@@ -160,9 +160,12 @@ class HackerNewsTest(unittest.TestCase):
         index = 0
         comments = False
         comments_recent = True
+        comments_unseen = False
+        comments_clear_cache = False
         browser = False
         self.hn.view_setup(
-            index, self.query, comments, comments_recent, browser)
+            index, self.query, comments, comments_recent,
+            comments_unseen, comments_clear_cache, browser)
         comments_expected = True
         mock_view.assert_called_with(
             index, self.hn.QUERY_RECENT, comments_expected, browser)
