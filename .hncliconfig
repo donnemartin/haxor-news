@@ -1,3 +1,4 @@
 [hncli]
-item_ids = [10376974]
+item_ids = ['0', '1', '2']
+item_cache = ['3', '4', '5']
 
