@@ -19,7 +19,7 @@ from __future__ import division
 import click
 
 from .hacker_news import HackerNews
-from .settings import who_is_hiring_post_id
+from .settings import freelancer_post_id, who_is_hiring_post_id
 
 
 pass_hacker_news = click.make_pass_decorator(HackerNews)
@@ -92,6 +92,47 @@ class HackerNewsCli(object):
     @cli.command()
     @click.argument('regex_query', required=False)
     @click.option('-i', '--id_post', required=False,
+                  default=freelancer_post_id)
+    @pass_hacker_news
+    def freelance(hacker_news, regex_query, id_post):
+        """Displays comments from the seeking freelancer posts.
+
+        Searches the monthly Hacker News seeking freelancer post for comments
+        matching the given regex_query.  Defaults to searching the latest
+        post based on your installed version of hncli.  Update to the latest
+        version of hncli to get the latest who is hiring post by:
+
+            pip install --upgrade hncli
+
+        TODO: Provide a more dynamic way of getting the latest who is hiring
+        post id.
+
+        You can search any post by providing a freelancer_post_id:
+            Example: https://news.ycombinator.com/item?id=10492087
+            freelancer_post_id = 10492087
+
+        Args:
+            * hacker_news: An instance of Hacker News.
+            * regex_query: A string that specifies the regex query to match.
+            * id_post: A string that specifies the who is hiring post id.
+                Optional, defaults to the latest post based on your installed
+                version of hncli.
+
+        Example(s):
+            hn freelance
+            hn freelance "Python"
+            hn freelance "(?i)Python|JavaScript"  # (?i) case insensitive
+            hn freelance "(?i)Python" -i 8394339  # search post 8394339
+            hn freelance "(?i)(Python|JavaScript).*(rockstar)" > rockstars.txt
+
+        Returns:
+            None.
+        """
+        hacker_news.hiring_and_freelance(regex_query, id_post)
+
+    @cli.command()
+    @click.argument('regex_query', required=False)
+    @click.option('-i', '--id_post', required=False,
                   default=who_is_hiring_post_id)
     @pass_hacker_news
     def hiring(hacker_news, regex_query, id_post):
@@ -128,7 +169,7 @@ class HackerNewsCli(object):
         Returns:
             None.
         """
-        hacker_news.hiring(regex_query, id_post)
+        hacker_news.hiring_and_freelance(regex_query, id_post)
 
     @cli.command()
     @click.argument('limit', required=False, default=10)
