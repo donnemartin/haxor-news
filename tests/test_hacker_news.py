@@ -154,6 +154,21 @@ class HackerNewsTest(unittest.TestCase):
         mock_view.assert_called_with(
             index, self.hn.QUERY_RECENT, comments_expected, browser)
 
+    @mock.patch('hncli.hacker_news.HackerNews.view')
+    def test_view_setup_query_unseen(self, mock_view):
+        index = 0
+        comments = False
+        comments_recent = False
+        comments_unseen = True
+        comments_clear_cache = False
+        browser = False
+        self.hn.view_setup(
+            index, self.query, comments, comments_recent,
+            comments_unseen, comments_clear_cache, browser)
+        comments_expected = True
+        mock_view.assert_called_with(
+            index, self.hn.QUERY_UNSEEN, comments_expected, browser)
+
     def test_format_comment(self):
         item = self.hn.hacker_news_api.get_item(0)
         item.text = raw_comment
