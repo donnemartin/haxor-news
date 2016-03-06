@@ -357,34 +357,38 @@ class HackerNews(object):
                 click.echo('')
                 self.print_item_not_found(comment_id)
 
-    def format_comment(self, item, depth, new_comment):
+    def format_comment(self, item, depth, header_color, header_adornment):
         """Formats a given item's comment.
 
         Args:
             * item: An instance of haxor.Item.
             * depth: An int that represents the current recursion depth,
                 used to indent the comment.
-            * new_comment: A boolean that represents whether a comment has been
-                seen before, determines comment styling.
+            * header_color: A string that represents the header color.
+            * header_adornment: A string that the header adornment, if present.
 
         Returns:
             A tuple of the following:
                 * A string representing the formatted comment header.
                 * A string representing the formatted comment.
         """
-        color = 'magenta' if new_comment else 'yellow'
-        color = 'yellow'
-        text_adornment = ''
-        if new_comment:
-            color = 'magenta'
-            text_adornment = ' [!]'
         indent = self.COMMENT_INDENT * depth
         formatted_heading = click.style(
             '\n' + indent + item.by + ' - ' +
-            str(pretty_date_time(item.submission_time)) + text_adornment,
-            fg=color)
+            str(pretty_date_time(item.submission_time)) + header_adornment,
+            fg=header_color)
+        unescaped_text = self.html.unescape(item.text)
+        regex_paragraph = re.compile(r'<p>')
+        unescaped_text = regex_paragraph.sub(click.style(
+            '\n\n' + indent), unescaped_text)
+        regex_url = re.compile(r'(<a href=(".*") .*</a>)')
+        unescaped_text = regex_url.sub(click.style(
+            r'\2', fg='blue'), unescaped_text)
+        regex_tag = re.compile(r'(<(.*)>.*?<\/\2>)')
+        unescaped_text = regex_tag.sub(click.style(
+            r'\1', fg='green'), unescaped_text)
         formatted_comment = click.wrap_text(
-            text=item.text,
+            text=unescaped_text,
             initial_indent=indent,
             subsequent_indent=indent)
         return formatted_heading, formatted_comment
