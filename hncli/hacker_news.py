@@ -106,7 +106,7 @@ class HackerNews(object):
     MSG_SHOW = 'Show HN'
     MSG_TOP = 'Top'
     MSG_SUBMISSIONS = 'User submissions:'
-    QUERY_RECENT = 'minutes ago'
+    QUERY_RECENT = 'seconds ago|minutes ago'
     QUERY_UNSEEN = '\[!\]'
     TIP0 = '  Tip: View the page or comments for '
     TIP1 = ' with the following command:\n'
