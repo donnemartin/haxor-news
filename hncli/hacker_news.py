@@ -18,6 +18,7 @@ from __future__ import division
 
 import os
 import re
+import sys
 import urllib
 import webbrowser
 try:
@@ -28,6 +29,10 @@ except ImportError:
     # Python 2
     import ConfigParser as configparser
     from urlparse import urlparse
+if sys.version_info < (3, 3):
+    import HTMLParser
+else:
+    import html as HTMLParser
 
 import click
 import requests
@@ -119,6 +124,10 @@ class HackerNews(object):
             None.
         """
         self.hacker_news_api = HackerNewsApi()
+        try:
+            self.html = HTMLParser.HTMLParser()
+        except:
+            self.html = HTMLParser
         self.item_ids = []
         self.item_cache = self.load_cache(self.CONFIG_CACHE)
         self.html_to_text = None
