@@ -55,6 +55,12 @@ View and filter Hacker News posts, comments, and linked web content without leav
 * [Contact Info](#contact-info)
 * [License](#license)
 
+## Syntax
+
+Usage:
+
+    $ hn <command> [params] [options]
+
 ## Installation
 
 ### Pip Installation
