@@ -65,6 +65,12 @@ Usage:
 
 ![Imgur](http://i.imgur.com/mzNeWRB.png)
 
+## Auto-Completion and Interactive Help
+
+Fish-style completions plus an auto-completion menu with interactive help.
+
+![Imgur](http://i.imgur.com/o3VsmVu.png)
+
 ## Installation
 
 ### Pip Installation
