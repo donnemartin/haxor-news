@@ -212,6 +212,14 @@ Usage:
 
 ![Imgur](http://i.imgur.com/d8VpmmQ.png)
 
+## View Onions
+
+Usage:
+
+    $ hn onion [limit]  # post limit default: all
+
+![Imgur](http://i.imgur.com/ZdXQXWY.png)
+
 ## Installation
 
 ### Pip Installation
