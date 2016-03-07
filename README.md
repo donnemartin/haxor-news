@@ -130,6 +130,19 @@ Examples:
 
 ![Imgur](http://i.imgur.com/mR4uKY0.png)
 
+### View Only Recent Comments
+
+Filter comments to expand only those **posted within the past 60 minutes**.
+
+Older comments will be truncated with [...] and will be shown to help provide context to recent comments.
+
+Examples:
+
+    $ hn view 8 -cr
+    $ hn view 8 --comments_recent
+
+![Imgur](http://i.imgur.com/LfquzlG.png)
+
 ## Installation
 
 ### Pip Installation
