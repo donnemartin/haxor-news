@@ -357,12 +357,12 @@ class HackerNews(object):
             formatted_heading, formatted_comment = self.format_comment(
                 item, depth, header_color, header_adornment)
             if print_comment:
-                click.echo(formatted_heading + '\n')
+                click.echo(formatted_heading)
                 click.echo(formatted_comment)
             elif hide_no_match:
                 click.secho('.', nl=False, fg='blue')
             else:
-                click.echo(formatted_heading + '\n')
+                click.echo(formatted_heading)
                 num_chars = len(formatted_comment)
                 if num_chars > self.MAX_SNIPPET_LENGTH:
                     num_chars = self.MAX_SNIPPET_LENGTH
