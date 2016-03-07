@@ -104,6 +104,19 @@ Example:
 
 ![Imgur](http://i.imgur.com/XbDdfTc.png)
 
+## View and Filter a Post's Comments
+
+### View All Comments
+
+After viewing a list of posts, you can view a post's comments by referencing the post `#`.
+
+Examples:
+
+    $ hn view 8 -c
+    $ hn view 8 --comments
+
+![Imgur](http://i.imgur.com/fcBUnim.png)
+
 ## Installation
 
 ### Pip Installation
