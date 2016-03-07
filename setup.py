@@ -28,7 +28,7 @@ setup(
         ],
     },
     entry_points={
-        'console_scripts': 'haxor = hncli.main:cli'
+        'console_scripts': 'hn = hncli.main:cli'
     },
     packages=find_packages(),
     scripts=[],
