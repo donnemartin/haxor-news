@@ -156,6 +156,30 @@ Example:
 
 ![Imgur](http://i.imgur.com/1IpPwZF.png)
 
+## Filter the Monthly Hiring Post
+
+Hacker News hosts a monthly hiring post where employers post the latest job openings.
+
+Usage:
+
+    $ hn hiring [regex filter]
+
+Examples:
+
+    $ hn hiring ""
+    $ hn hiring "(?i)JavaScript|Python"
+    $ hn hiring "(?i)(Python|JavaScript).*(rockstar)" > rockstars.txt
+
+*Case insensitive regex: `(?i)`*
+
+![Imgur](http://i.imgur.com/Lwz8iwG.png)
+
+To search a different monthly hiring post other than the latest, use the hiring post id.
+
+Usage:
+
+    $ hn hiring [regex filter] [post id]
+
 ## Installation
 
 ### Pip Installation
