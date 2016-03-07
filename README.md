@@ -48,6 +48,13 @@ View and filter Hacker News posts, comments, and linked web content without leav
     * [Unit Tests and Code Coverage](#unit-tests-and-code-coverage)
     * [Documentation](#documentation)
 
+### Misc
+
+* [Contributing](#contributing)
+* [Credits](#credits)
+* [Contact Info](#contact-info)
+* [License](#license)
+
 ## Installation
 
 ### Pip Installation
