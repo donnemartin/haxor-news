@@ -143,6 +143,19 @@ Examples:
 
 ![Imgur](http://i.imgur.com/LfquzlG.png)
 
+### Filter Post Comments with Regex
+
+Filter comments based on a given regular expression.
+
+Example:
+
+    $ hn view 2 -cq "(?i)programmer"
+    $ hn view 2 --comments_regex_query "(?i)programmer"
+
+*Case insensitive regex: `(?i)`*
+
+![Imgur](http://i.imgur.com/1IpPwZF.png)
+
 ## Installation
 
 ### Pip Installation
