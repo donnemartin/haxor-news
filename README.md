@@ -36,6 +36,18 @@ View and filter Hacker News posts, comments, and linked web content without leav
     * [Search Posts and Comments]()
     * [Customize Color Scheme]()
 
+### Installation and Tests
+
+* [Installation](#installation)
+    * [Pip Installation](#pip-installation)
+    * [Virtual Environment Installation](#virtual-environment-installation)
+    * [Supported Python Versions](#supported-python-versions)
+    * [Supported Platforms](#supported-platforms)
+* [Developer Installation](#developer-installation)
+    * [Continuous Integration](#continuous-integration)
+    * [Unit Tests and Code Coverage](#unit-tests-and-code-coverage)
+    * [Documentation](#documentation)
+
 ## Installation
 
 ### Pip Installation
