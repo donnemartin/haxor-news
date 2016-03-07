@@ -36,13 +36,11 @@ class ToolbarTest(unittest.TestCase):
     def test_toolbar_on(self):
         self.haxor.set_fuzzy_match(True)
         expected = [
-            (Token.Toolbar.On, ' [F2] Fuzzy: ON '),
             (Token.Toolbar, ' [F10] Exit ')]
         assert expected == self.toolbar.handler(None)
 
     def test_toolbar_off(self):
         self.haxor.set_fuzzy_match(False)
         expected = [
-            (Token.Toolbar.Off, ' [F2] Fuzzy: OFF '),
             (Token.Toolbar, ' [F10] Exit ')]
         assert expected == self.toolbar.handler(None)

@@ -62,7 +62,6 @@ class Toolbar(object):
                 fuzzy_token = Token.Toolbar.Off
                 fuzzy = 'OFF'
             return [
-                (fuzzy_token, ' [F2] Fuzzy: {0} '.format(fuzzy)),
                 (Token.Toolbar, ' [F10] Exit ')
             ]
 
