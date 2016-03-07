@@ -220,6 +220,15 @@ Usage:
 
 ![Imgur](http://i.imgur.com/ZdXQXWY.png)
 
+## View in a Browser
+
+View the linked web content or comments in your default browser instead of your terminal.
+
+Usage:
+
+    $ hn <command> [params] [options] -b
+    $ hn <command> [params] [options] --browser
+
 ## Installation
 
 ### Pip Installation
