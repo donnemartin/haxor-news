@@ -180,6 +180,30 @@ Usage:
 
     $ hn hiring [regex filter] [post id]
 
+## Filter the Freelancers Post
+
+Hacker News hosts a monthly freelancers post where employers and freelancers post availabilities.
+
+Usage:
+
+    $ hn freelancer [regex filter]
+
+Examples:
+
+    $ hn freelancer ""
+    $ hn freelancer "(?i)JavaScript|Python"
+    $ hn freelancer "(?i)(Python|JavaScript).*(rockstar)" > rockstars.txt
+
+*Case insensitive regex: `(?i)`*
+
+![Imgur](http://i.imgur.com/TnBDFGk.png)
+
+To search a different monthly hiring post other than the latest, use the hiring post id.
+
+Usage:
+
+    $ hn freelancer [regex filter] [post id]
+
 ## Installation
 
 ### Pip Installation
