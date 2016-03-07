@@ -9,6 +9,14 @@ View and filter Hacker News posts, comments, and linked web content without leav
 >
 > *-[Source](https://www.reddit.com/user/foxingworth)*
 
+## Index
+
+### General
+
+* [Syntax](#syntax)
+* [Commands](#commands)
+* [Auto-Completion and Interactive Help](#auto-completion-and-interactive-help)
+
 ## Installation
 
 ### Pip Installation
