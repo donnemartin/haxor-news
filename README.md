@@ -71,6 +71,21 @@ Fish-style completions plus an auto-completion menu with interactive help.
 
 ![Imgur](http://i.imgur.com/o3VsmVu.png)
 
+## View Posts
+
+View Top, Best, Show, Show, Ask, Jobs, New, and Onion posts.
+
+Usage:
+
+    $ hn [command] [limit]  # post limit default: 10
+
+Examples:
+
+    $ hn top
+    $ hn show 20
+
+![Imgur](http://i.imgur.com/6kZG84S.png)
+
 ## Installation
 
 ### Pip Installation
