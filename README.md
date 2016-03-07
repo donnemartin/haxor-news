@@ -61,6 +61,10 @@ Usage:
 
     $ hn <command> [params] [options]
 
+## Commands
+
+![Imgur](http://i.imgur.com/mzNeWRB.png)
+
 ## Installation
 
 ### Pip Installation
