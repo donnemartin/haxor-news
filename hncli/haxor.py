@@ -144,7 +144,7 @@ class Haxor(object):
             eventloop=eventloop)
 
     def _process_command(self, args):
-        """Executes the gh command.
+        """Executes the command.
 
         Calls the dispatch to execute the command.
         If no command is given, it lists all available commands.
