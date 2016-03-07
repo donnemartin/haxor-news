@@ -204,6 +204,14 @@ Usage:
 
     $ hn freelancer [regex filter] [post id]
 
+## View User Info
+
+Usage:
+
+    $ hn user [user id]
+
+![Imgur](http://i.imgur.com/d8VpmmQ.png)
+
 ## Installation
 
 ### Pip Installation
