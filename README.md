@@ -86,6 +86,24 @@ Examples:
 
 ![Imgur](http://i.imgur.com/6kZG84S.png)
 
+## View a Post's Linked Web Content in a Terminal
+
+After viewing a list of posts, you can view a post's linked web content by referencing the post `#`.
+
+The HTML contents of the post's link are **formatted for easy-viewing within your terminal**.  If available, the formatted output is sent to a pager.
+
+See the [View in a Browser](#viewing-results-in-a-browser) section to view the contents in a browser instead.
+
+Usage:
+
+    $ hn view [#]
+
+Example:
+
+    $ hn view 8
+
+![Imgur](http://i.imgur.com/XbDdfTc.png)
+
 ## Installation
 
 ### Pip Installation
