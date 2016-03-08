@@ -201,8 +201,8 @@ Usage:
 Examples:
 
     $ hn freelancer ""
-    $ hn freelancer "(?i)JavaScript|Python"
-    $ hn freelancer "(?i)(Python|JavaScript).*(rockstar)" > rockstars.txt
+    $ hn freelancer "(?i)JavaScript|Node"
+    $ hn freelancer "(?i)(Node|JavaScript).*(remote)" > remote_jobs.txt
 
 *Case insensitive regex: `(?i)`*
 
