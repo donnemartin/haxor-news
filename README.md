@@ -19,6 +19,7 @@ View and filter Hacker News posts, comments, and linked web content without leav
 * [Auto-Completer and Interactive Help (Optional)](#auto-completer-and-interactive-help-optional)
 * [Commands](#commands)
 
+
 ### Features
 
 * [View Posts](#view-posts)
@@ -247,6 +248,12 @@ Usage:
 
     $ hn <command> [params] [options] -b
     $ hn <command> [params] [options] --browser
+
+## TODO
+
+* Submit posts and comments
+* Search posts and comments
+* Customize color scheme
 
 ## Installation
 
