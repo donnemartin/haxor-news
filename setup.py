@@ -28,7 +28,10 @@ setup(
         ],
     },
     entry_points={
-        'console_scripts': 'hn = hncli.main:cli'
+        'console_scripts': [
+            'haxor-news = hncli.main:cli',
+            'hn = hncli.main_cli:cli'
+        ]
     },
     packages=find_packages(),
     scripts=[],
