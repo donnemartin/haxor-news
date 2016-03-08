@@ -22,21 +22,22 @@ View and filter Hacker News posts, comments, and linked web content without leav
 ### Features
 
 * [View Posts](#view-posts)
-* [View a Post's Linked Web Content in a Terminal](#view-a-posts-linked-web-content-in-a-terminal)
+* [View a Post's Linked Web Content](#view-a-posts-linked-web-content)
 * [View and Filter a Post's Comments](#view-and-filter-a-posts-comments)
     * [View All Comments](#view-all-comments)
-    * [View Only Unseen Comments](#view-only-unseen-comments)
-    * [View Only Recent Comments](#view-only-recent-comments)
-    * [Filter Post Comments with Regex](#filter-post-comments-with-regex)
+    * [Filter on Unseen Comments](#filter-on-unseen-comments)
+    * [Filter on Recent Comments](#filter-on-recent-comments)
+    * [Filter with Regex](#filter-with-regex)
 * [View and Filter the Monthly Hiring Post](#filter-the-monthly-hiring-post)
 * [View and Filter the Monthly Freelancer Post](#filter-the-monthly-hiring-post)
+* [Combine With Pipes and Redirects](#combine-with-pipes-and-redirects)
 * [View User Info](#view-user-info)
 * [View Onions](#view-onions)
 * [View in a Browser](#viewing-results-in-a-browser)
-* [TODO]()
-    * [Submit Posts and Comments]()
-    * [Search Posts and Comments]()
-    * [Customize Color Scheme]()
+* [TODO](#todo)
+    * [Submit Posts and Comments](#todo)
+    * [Search Posts and Comments](#todo)
+    * [Customize Color Scheme](#todo)
 
 ### Installation and Tests
 
