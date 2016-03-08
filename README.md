@@ -16,8 +16,8 @@ View and filter Hacker News posts, comments, and linked web content without leav
 ### General
 
 * [Syntax](#syntax)
+* [Auto-Completer and Interactive Help (Optional)](#auto-completer-and-interactive-help-optional)
 * [Commands](#commands)
-* [Auto-Completion and Interactive Help](#auto-completion-and-interactive-help)
 
 ### Features
 
