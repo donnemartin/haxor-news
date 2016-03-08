@@ -1,3 +1,5 @@
+![Imgur](http://i.imgur.com/SLw1Cc6.gif)
+
 haxor-news
 =================
 
