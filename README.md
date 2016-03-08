@@ -64,6 +64,18 @@ Usage:
 
     $ hn <command> [params] [options]
 
+## Auto-Completer and Interactive Help (Optional)
+
+Optionally, you can enable fish-style completions plus an auto-completion menu with interactive help:
+
+    $ haxor-news
+
+Within the auto-completer, the same syntax applies:
+
+    haxor> hn <command> [params] [options]
+
+![Imgur](http://i.imgur.com/L2rzgb3.png)
+
 ## Commands
 
 ![Imgur](http://i.imgur.com/mzNeWRB.png)
