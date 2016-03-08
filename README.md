@@ -140,7 +140,7 @@ Examples:
 
 ![Imgur](http://i.imgur.com/mR4uKY0.png)
 
-### View Only Recent Comments
+### Filter on Recent Comments
 
 Filter comments to expand only those **posted within the past 60 minutes**.
 
