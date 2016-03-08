@@ -123,7 +123,7 @@ After viewing a list of posts, you can view a post's comments by referencing the
 Examples:
 
     $ hn view 8 -c
-    $ hn view 8 --comments
+    $ hn view 8 --comments > comments.txt
 
 ![Imgur](http://i.imgur.com/fcBUnim.png)
 
