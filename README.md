@@ -177,8 +177,8 @@ Usage:
 Examples:
 
     $ hn hiring ""
-    $ hn hiring "(?i)JavaScript|Python"
-    $ hn hiring "(?i)(Python|JavaScript).*(rockstar)" > rockstars.txt
+    $ hn hiring "(?i)JavaScript|Node"
+    $ hn hiring "(?i)(Node|JavaScript).*(remote)" > remote_jobs.txt
 
 *Case insensitive regex: `(?i)`*
 
