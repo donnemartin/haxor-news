@@ -143,53 +143,6 @@ class Haxor(object):
             application=application,
             eventloop=eventloop)
 
-    def _process_command(self, args):
-        """Executes the command.
-
-        Calls the dispatch to execute the command.
-        If no command is given, it lists all available commands.
-        Prints the rate limit if it starts to get low.
-
-        Args:
-            * args: A list of user supplied args.
-
-        Returns:
-            None.
-        """
-        old_sys_args = list(sys.argv)
-        if args:
-            # HackerNewsCli uses click, which looks for args in sys.argv.
-            # Update sys.argv with our arguments before sending the command
-            # off to HackerNewsCli.
-            # TODO: Determine if there is a cleaner way to do this.
-            sys.argv.extend(args)
-        try:
-            # Send the command to HackerNewsCli.
-            self.hacker_news_cli.cli()
-        except SystemExit:
-            pass
-        if args:
-            # Restore sys.argv to its original state.
-            sys.argv = old_sys_args
-
-    def process_hn(self, text):
-        """Process the hn command if found.
-
-        Args:
-            * text: A string representing the input text.
-
-        Returns:
-            A boolean specifies whether the hn command was found and processed.
-        """
-        text = text.strip('\n')
-        text = text.strip()
-        args = self.text_utils.get_tokens(text)
-        if len(args) > 0 and args[0].lower() == 'hn':
-            self._process_command(args[1:])
-            return True
-        else:
-            return False
-
     def run_cli(self):
         """Runs the main loop.
 
@@ -204,8 +157,7 @@ class Haxor(object):
         while True:
             document = self.cli.run()
             try:
-                if not self.process_hn(document.text):
-                    subprocess.call(document.text, shell=True)
-                    click.echo('')
+                subprocess.call(document.text, shell=True)
+                click.echo('')
             except Exception as e:
                 click.secho(e, fg='red')
