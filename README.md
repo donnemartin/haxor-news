@@ -78,7 +78,7 @@ Within the auto-completer, the same syntax applies:
 
 ## Commands
 
-![Imgur](http://i.imgur.com/mzNeWRB.png)
+![Imgur](http://i.imgur.com/oqvUbj8.png)
 
 ## Auto-Completion and Interactive Help
 
