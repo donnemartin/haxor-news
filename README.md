@@ -80,12 +80,6 @@ Within the auto-completer, the same syntax applies:
 
 ![Imgur](http://i.imgur.com/oqvUbj8.png)
 
-## Auto-Completion and Interactive Help
-
-Fish-style completions plus an auto-completion menu with interactive help.
-
-![Imgur](http://i.imgur.com/o3VsmVu.png)
-
 ## View Posts
 
 View Top, Best, Show, Show, Ask, Jobs, New, and Onion posts.
