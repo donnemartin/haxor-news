@@ -95,7 +95,7 @@ Examples:
 
 ![Imgur](http://i.imgur.com/6kZG84S.png)
 
-## View a Post's Linked Web Content in a Terminal
+## View a Post's Linked Web Content
 
 After viewing a list of posts, you can view a post's linked web content by referencing the post `#`.
 
@@ -109,9 +109,10 @@ Usage:
 
 Example:
 
+    $ hn view 1
     $ hn view 8
 
-![Imgur](http://i.imgur.com/XbDdfTc.png)
+![Imgur](http://i.imgur.com/yWKASiQ.png)
 
 ## View and Filter a Post's Comments
 
