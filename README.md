@@ -91,7 +91,7 @@ Usage:
 Examples:
 
     $ hn top
-    $ hn show 20
+    $ hn show 30 | less
 
 ![Imgur](http://i.imgur.com/6kZG84S.png)
 
