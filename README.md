@@ -127,7 +127,7 @@ Examples:
 
 ![Imgur](http://i.imgur.com/fcBUnim.png)
 
-### View Only Unseen Comments
+### Filter on Unseen Comments
 
 Filter comments to expand only those you have not yet seen.  Unseen comments are denoted with a `[!]` and are fully expanded.
 
@@ -136,7 +136,7 @@ Seen comments will be truncated with [...] and will be shown to help provide con
 Examples:
 
     $ hn view 8 -cu
-    $ hn view 8 --comments_unseen
+    $ hn view 8 --comments_unseen | less
 
 ![Imgur](http://i.imgur.com/mR4uKY0.png)
 
