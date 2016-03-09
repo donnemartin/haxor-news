@@ -3,9 +3,7 @@
 haxor-news
 =================
 
->View and filter Hacker News posts, comments, and linked web content without leaving the command line.  Comes with auto-completion and interactive help.
-
-## Motivation
+View and filter Hacker News posts, comments, and linked web content without leaving the command line.  Comes with auto-completion and interactive help.
 
 > *Coworker who sees me looking at something in a browser: "Glad you're not busy; I need you to do this, this, this..."*
 >
