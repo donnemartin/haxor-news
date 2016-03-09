@@ -101,6 +101,7 @@ Within the auto-completer, the same syntax applies:
     haxor> hn <command> [params] [options]
 
 ![Imgur](http://i.imgur.com/L2rzgb3.png)
+![Imgur](http://i.imgur.com/FL2pyC0.png)
 
 ## Commands
 
