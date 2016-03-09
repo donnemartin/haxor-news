@@ -250,7 +250,7 @@ Examples:
     $ hn view 1 -c | less
     $ hn freelancer "(?i)(Node|JavaScript).*(remote)" > remote_jobs.txt
 
-![Imgur](http://i.imgur.com/54CDe9O.png)
+![Imgur](http://i.imgur.com/x2aj7SM.png)
 
 ## View User Info
 
