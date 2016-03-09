@@ -243,6 +243,8 @@ Usage:
 
 ## Combine With Pipes and Redirects
 
+Output to pagers, write to files, automate with cron, etc.
+
 Examples:
 
     $ hn view 1 -c | less
