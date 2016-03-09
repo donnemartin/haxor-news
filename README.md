@@ -5,11 +5,36 @@ haxor-news
 
 >View and filter Hacker News posts, comments, and linked web content without leaving the command line.  Comes with auto-completion and interactive help.
 
+## Motivation
+
 > *Coworker who sees me looking at something in a browser: "Glad you're not busy; I need you to do this, this, this..."*
 >
 > *Coworker who sees me staring intently at a command prompt: Backs away, slowly...*
 >
 > *-[Source](https://www.reddit.com/user/foxingworth)*
+
+Spend a lot of time on the terminal?  Spend a lot of time on Hacker News?
+
+`haxor-news` brings Hacker News to the terminal, allowing you to view and filter linked web pages and comments without leaving your command line.
+
+* Want to expand only previously unseen comments?
+    * `-cu/--comments_unseen`
+* How about comments recently posted in the past 60 minutes?
+    * `-cr/--comments_recent`
+* Filter comments with a regex query?
+    * `-cq/--comments_query [query]`
+
+Need help remembering these options?
+
+![Imgur](http://i.imgur.com/MuUO5wW.png)
+
+Job hunting or just curious what's out there?  Filter the monthly who's hiring or freelancers post:
+
+    $ hn hiring "(?i)(Node|JavaScript).*(remote)" > remote_web_jobs.txt
+
+Combine `haxor-news` with pipes, redirects, and other command line utilities: Output to pagers, write to files, automate with cron, etc.
+
+![Imgur](http://i.imgur.com/F08ywcD.png)
 
 ## Index
 
