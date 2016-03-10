@@ -320,6 +320,12 @@ Once installed, run `hncli`:
 * Windows
     * Tested on Windows 7 and 10
 
+### Continuous Integration
+
+[![Build Status](https://travis-ci.org/donnemartin/saws.svg?branch=master)](https://travis-ci.org/donnemartin/saws)
+
+Continuous integration details are available on [Travis CI](https://travis-ci.org/donnemartin/saws).
+
 ### Unit Tests and Code Coverage
 
 [![Codecov](https://img.shields.io/codecov/c/github/donnemartin/saws.svg)](https://codecov.io/github/donnemartin/saws/saws)
