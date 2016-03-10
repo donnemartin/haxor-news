@@ -324,7 +324,7 @@ Once installed, run `hncli`:
 
 Contributions are welcome!
 
-Review the [Contributing Guidelines](https://github.com/donnemartin/hacker-news-cli/blob/master/CONTRIBUTING.md) for details on how to:
+Review the [Contributing Guidelines](https://github.com/donnemartin/haxor-news/blob/master/CONTRIBUTING.md) for details on how to:
 
 * Submit issues
 * Submit pull requests
