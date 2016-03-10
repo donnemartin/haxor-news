@@ -320,6 +320,16 @@ Once installed, run `hncli`:
 * Windows
     * Tested on Windows 7 and 10
 
+## Developer Installation
+
+If you're interested in contributing to `haxor-news`, run the following commands:
+
+    $ git clone https://github.com/donnemartin/haxor-news.git
+    $ pip install -e .
+    $ pip install -r requirements-dev.txt
+    $ haxor-news
+    $ hn <command> [params] [options]
+
 ### Continuous Integration
 
 [![Build Status](https://travis-ci.org/donnemartin/saws.svg?branch=master)](https://travis-ci.org/donnemartin/saws)
