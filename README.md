@@ -329,6 +329,14 @@ Review the [Contributing Guidelines](https://github.com/donnemartin/hacker-news-
 * Submit issues
 * Submit pull requests
 
+## Credits
+
+* [click](https://github.com/mitsuhiko/click) by [mitsuhiko](https://github.com/mitsuhiko)
+* [haxor](https://github.com/avinassh/haxor) by [avinassh](https://github.com/avinassh)
+* [html2text](https://github.com/aaronsw/html2text) by [aaronsw](https://github.com/aaronsw)
+* [python-prompt-toolkit](https://github.com/jonathanslenders/python-prompt-toolkit) by [jonathanslenders](https://github.com/jonathanslenders)
+* [requests](https://github.com/kennethreitz/requests) by [kennethreitz](https://github.com/kennethreitz)
+
 ## Contact Info
 
 Feel free to contact me to discuss any issues, questions, or comments.
