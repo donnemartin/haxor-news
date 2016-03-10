@@ -58,6 +58,7 @@ Combine `haxor-news` with pipes, redirects, and other command line utilities: Ou
 * [View User Info](#view-user-info)
 * [View Onions](#view-onions)
 * [View in a Browser](#viewing-results-in-a-browser)
+* [Windows Support](#windows-support)
 * [TODO](#todo)
     * [Submit Posts and Comments](#todo)
     * [Search Posts and Comments](#todo)
@@ -274,6 +275,12 @@ Usage:
 
     $ hn <command> [params] [options] -b
     $ hn <command> [params] [options] --browser
+
+## Windows Support
+
+`haxor-news` has been tested on Windows 7 and Windows 10.
+
+Although you can use the standard Windows command prompt, you'll probably have a better experience with either [cmder](https://github.com/cmderdev/cmder) or [conemu](https://github.com/Maximus5/ConEmu).
 
 ## TODO
 
