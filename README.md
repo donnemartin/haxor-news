@@ -320,6 +320,16 @@ Once installed, run `hncli`:
 * Windows
     * Tested on Windows 7 and 10
 
+### Documentation
+
+[![Documentation Status](https://readthedocs.org/projects/saws/badge/?version=latest)](http://saws.readthedocs.org/en/latest/?badge=latest)
+
+Source code documentation is available on [Readthedocs.org](http://saws.readthedocs.org/en/latest/?badge=latest).
+
+Run the following to build the docs:
+
+    $ scripts/update_docs.sh
+
 ## Contributing
 
 Contributions are welcome!
