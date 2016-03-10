@@ -287,21 +287,25 @@ Usage:
 
 [![PyPI version](https://badge.fury.io/py/saws.svg)](http://badge.fury.io/py/saws) [![PyPI](https://img.shields.io/pypi/pyversions/saws.svg)](https://pypi.python.org/pypi/saws/)
 
-`hncli` is hosted on [PyPI](https://pypi.python.org/pypi/hncli).  The following command will install `hncli`:
+`haxor-news` is hosted on [PyPI](https://pypi.python.org/pypi/haxor-news).  The following command will install `haxor-news`:
 
-    $ pip install hncli
+    $ pip install haxor-news
 
-You can also install the latest `hncli` from GitHub source which can contain changes not yet pushed to PyPI:
+You can also install the latest `haxor-news` from GitHub source which can contain changes not yet pushed to PyPI:
 
-    $ pip install git+https://github.com/donnemartin/hacker-news-cli.git
+    $ pip install git+https://github.com/donnemartin/hacker-news.git
 
 If you are not installing in a virtualenv, run with `sudo`:
 
-    $ sudo pip install hncli
+    $ sudo pip install haxor-news
 
-Once installed, run `hncli`:
+Once installed, run the optional `haxor-news` auto-completer with interactive help:
 
-    $ hn [command] [options]
+    $ haxor-news
+
+Run commands:
+
+    $ hn <command> [params] [options]
 
 ### Supported Python Versions
 
