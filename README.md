@@ -320,6 +320,22 @@ Once installed, run `hncli`:
 * Windows
     * Tested on Windows 7 and 10
 
+### Unit Tests and Code Coverage
+
+[![Codecov](https://img.shields.io/codecov/c/github/donnemartin/saws.svg)](https://codecov.io/github/donnemartin/saws/saws)
+
+![](http://codecov.io/github/donnemartin/saws/branch.svg?branch=master)
+
+Code coverage details are available on [Codecov](https://codecov.io/github/donnemartin/saws/saws).
+
+Run unit tests in your active Python environment:
+
+    $ python tests/run_tests.py
+
+Run unit tests with [tox](https://pypi.python.org/pypi/tox) on multiple Python environments:
+
+    $ tox
+
 ### Documentation
 
 [![Documentation Status](https://readthedocs.org/projects/saws/badge/?version=latest)](http://saws.readthedocs.org/en/latest/?badge=latest)
