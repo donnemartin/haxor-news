@@ -355,10 +355,15 @@ class HackerNewsCli(object):
         Returns:
             None.
         """
-        hacker_news.view_setup(int(index),
-                               comments_regex_query,
-                               comments,
-                               comments_recent,
-                               comments_unseen,
-                               clear_cache,
-                               browser)
+        try:
+            post_index = int(index)
+        except ValueError:
+            click.secho('Error: Expected an integer post index', fg='red')
+        else:
+            hacker_news.view_setup(post_index,
+                                   comments_regex_query,
+                                   comments,
+                                   comments_recent,
+                                   comments_unseen,
+                                   clear_cache,
+                                   browser)
