@@ -324,9 +324,9 @@ class HackerNews(object):
             index += 1
         click.echo('')
 
-    def print_comments(self, item, regex_query='',
-                       hide_no_match=False, depth=0):
-        """Recursively print comments and subcomments for the given item.
+    def print_comment(self, item, regex_query='',
+                      hide_no_match=False, depth=0):
+        """Prints the comments for the given item.
 
         Args:
             * item: An instance of haxor.Item.
@@ -338,7 +338,6 @@ class HackerNews(object):
         Returns:
             None.
         """
-        comment_ids = item.kids
         if item.text is not None:
             header_color = 'yellow'
             header_color_highlight = 'magenta'
@@ -367,6 +366,23 @@ class HackerNews(object):
                 if num_chars > self.MAX_SNIPPET_LENGTH:
                     num_chars = self.MAX_SNIPPET_LENGTH
                 click.echo(formatted_comment[0:num_chars] + ' [...]')
+
+    def print_comments(self, item, regex_query='',
+                       hide_no_match=False, depth=0):
+        """Recursively print comments and subcomments for the given item.
+
+        Args:
+            * item: An instance of haxor.Item.
+            * regex_query: A string that specifies the regex query to match.
+            * hide_no_match: A bool that determines whether to hide comments
+                that don't match (False) or truncate them (True).
+            * depth: The current recursion depth, used to indent the comment.
+
+        Returns:
+            None.
+        """
+        self.print_comment(item, regex_query, hide_no_match, depth)
+        comment_ids = item.kids
         if not comment_ids:
             return
         for comment_id in comment_ids:
