@@ -31,16 +31,22 @@ class ToolbarTest(unittest.TestCase):
 
     def setUp(self):
         self.haxor = Haxor()
-        self.toolbar = Toolbar(self.haxor.get_fuzzy_match)
+        self.toolbar = Toolbar(lambda: self.haxor.paginate_comments)
 
     def test_toolbar_on(self):
-        self.haxor.set_fuzzy_match(True)
+        self.haxor.paginate_comments = True
         expected = [
-            (Token.Toolbar, ' [F10] Exit ')]
+            (Token.Toolbar.On,
+             ' [F2] Paginate Comments: {0} '.format('ON')),
+            (Token.Toolbar, ' [F10] Exit ')
+        ]
         assert expected == self.toolbar.handler(None)
 
     def test_toolbar_off(self):
-        self.haxor.set_fuzzy_match(False)
+        self.haxor.paginate_comments = False
         expected = [
-            (Token.Toolbar, ' [F10] Exit ')]
+            (Token.Toolbar.Off,
+             ' [F2] Paginate Comments: {0} '.format('OFF')),
+            (Token.Toolbar, ' [F10] Exit ')
+        ]
         assert expected == self.toolbar.handler(None)

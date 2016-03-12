@@ -24,27 +24,29 @@ class Toolbar(object):
         * handler: A callable get_toolbar_items.
     """
 
-    def __init__(self, fuzzy_cfg):
+    def __init__(self, paginate_comments_cfg):
         """Initializes ToolBar.
 
         Args:
-            * fuzzy_cfg: A boolean that spedifies whether to do fuzzy matching.
+            * paginate_comments_cfg: A boolean that spedifies whether to
+                paginate comments.
 
         Returns:
             None
         """
-        self.handler = self._create_toolbar_handler(fuzzy_cfg)
+        self.handler = self._create_toolbar_handler(paginate_comments_cfg)
 
-    def _create_toolbar_handler(self, fuzzy_cfg):
+    def _create_toolbar_handler(self, paginate_comments_cfg):
         """Creates the toolbar handler.
 
         Args:
-            * fuzzy_cfg: A boolean that spedifies whether to do fuzzy matching.
+            * paginate_comments_cfg: A boolean that spedifies whether to
+                paginate comments.
 
         Returns:
             A callable get_toolbar_items.
         """
-        assert callable(fuzzy_cfg)
+        assert callable(paginate_comments_cfg)
 
         def get_toolbar_items(_):
             """Returns bottom menu items.
@@ -55,13 +57,15 @@ class Toolbar(object):
             Returns:
                 A list of Token.Toolbar.
             """
-            if fuzzy_cfg():
-                fuzzy_token = Token.Toolbar.On
-                fuzzy = 'ON'
+            if paginate_comments_cfg():
+                paginate_comments_token = Token.Toolbar.On
+                paginate_comments = 'ON'
             else:
-                fuzzy_token = Token.Toolbar.Off
-                fuzzy = 'OFF'
+                paginate_comments_token = Token.Toolbar.Off
+                paginate_comments = 'OFF'
             return [
+                (paginate_comments_token,
+                 ' [F2] Paginate Comments: {0} '.format(paginate_comments)),
                 (Token.Toolbar, ' [F10] Exit ')
             ]
 
