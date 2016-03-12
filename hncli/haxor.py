@@ -49,9 +49,35 @@ class Haxor(object):
     """Encapsulates the Hacker News CLI.
 
     Attributes:
+        * BROWSER_FLAGS: A list of browser option flags.
+        * COMMENT_FLAGS_CMDS: A list of comment option flags and commands that
+            invoke comments.
         * key_manager: An instance of KeyManager.
+        * PAGINATE_CMD: A string representing the command to enable pagination.
+        * paginate_comments: A bool that determines whether to paginate
+            comments.
         * theme: A string representing the lexer theme.
     """
+
+    BROWSER_FLAGS = [
+        '-b',
+        '--browser'
+    ]
+    COMMENT_FLAGS_CMDS = [
+        '-cq',
+        '--comments_regex_query',
+        '-c',
+        '--comments',
+        '-cr',
+        '--comments_recent',
+        '-cu',
+        '--comments_unseen',
+        '-ch',
+        '--comments_hide_non_matching',
+        'hiring',
+        'freelance',
+    ]
+    PAGINATE_CMD = '| less -r'
 
     def __init__(self):
         """Inits Saws.
@@ -66,41 +92,40 @@ class Haxor(object):
         self.key_manager = None
         self.color = False
         self.theme = 'vim'
+        self.paginate_comments = True
         self.hacker_news_cli = HackerNewsCli()
         self.text_utils = TextUtils()
         self.completer = Completer(fuzzy_match=False,
                                    text_utils=self.text_utils)
         self._create_cli()
 
-    def set_fuzzy_match(self, fuzzy_match):
-        """Setter for fuzzy matching mode
+    def _create_key_manager(self):
+        """Creates the :class:`KeyManager`.
 
-        Used by prompt_toolkit's KeyBindingManager.
-        KeyBindingManager expects this function to be callable so we can't use
-        @property and @attrib.setter.
-
-        Args:
-            * fuzzy_match: A boolean that represents the fuzzy flag.
-
-        Returns:
-            None.
-        """
-        self.completer.fuzzy_match = fuzzy_match
-
-    def get_fuzzy_match(self):
-        """Getter for fuzzy matching mode
-
-        Used by prompt_toolkit's KeyBindingManager.
-        KeyBindingManager expects this function to be callable so we can't use
-        @property and @attrib.setter.
+        The inputs to KeyManager are expected to be callable, so we can't
+        use the standard @property and @attrib.setter for these attributes.
+        Lambdas cannot contain assignments so we're forced to define setters.
 
         Args:
             * None.
 
         Returns:
-            A boolean that represents the fuzzy flag.
+            A KeyManager with callables to set the toolbar options.
         """
-        return self.completer.fuzzy_match
+
+        def set_paginate_comments(paginate_comments):
+            """Setter for paginating comments mode.
+
+            Args:
+                * paginate: A bool that represents the paginate comments mode.
+
+            Returns:
+                None.
+            """
+            self.paginate_comments = paginate_comments
+
+        return KeyManager(
+            set_paginate_comments, lambda: self.paginate_comments)
 
     def _create_cli(self):
         """Creates the prompt_toolkit's CommandLineInterface.
@@ -112,7 +137,7 @@ class Haxor(object):
             None.
         """
         history = FileHistory(os.path.expanduser('~/.hnclihistory'))
-        toolbar = Toolbar(self.get_fuzzy_match)
+        toolbar = Toolbar(lambda: self.paginate_comments)
         layout = create_default_layout(
             message=u'haxor> ',
             reserve_space_for_menu=True,
@@ -125,9 +150,7 @@ class Haxor(object):
             completer=self.completer,
             complete_while_typing=Always(),
             accept_action=AcceptAction.RETURN_DOCUMENT)
-        self.key_manager = KeyManager(
-            self.set_fuzzy_match,
-            self.get_fuzzy_match)
+        self.key_manager = self._create_key_manager()
         style_factory = StyleFactory(self.theme)
         application = Application(
             mouse_support=False,
@@ -143,6 +166,24 @@ class Haxor(object):
             application=application,
             eventloop=eventloop)
 
+    def add_comment_pagination(self, document_text):
+        """Adds the command to enable comment pagination where applicable.
+
+        Pagination is enabled if the command views comments and the
+        browser flag is not enabled.
+
+        Args:
+            * document_text: A string representing the input command.
+
+        Returns:
+            document_text: A string representing the input command with
+                pagination enabled.
+        """
+        if not any(sub in document_text for sub in self.BROWSER_FLAGS):
+            if any(sub in document_text for sub in self.COMMENT_FLAGS_CMDS):
+                document_text += self.PAGINATE_CMD
+        return document_text
+
     def run_cli(self):
         """Runs the main loop.
 
@@ -157,6 +198,8 @@ class Haxor(object):
         while True:
             document = self.cli.run()
             try:
+                if self.paginate_comments:
+                    document.text = self.add_comment_pagination(document.text)
                 subprocess.call(document.text, shell=True)
                 click.echo('')
             except Exception as e:

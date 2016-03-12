@@ -32,8 +32,13 @@ class HaxorTest(unittest.TestCase):
     def setUp(self):
         self.haxor = Haxor()
 
-    def test_set_get_fuzzy(self):
-        self.haxor.set_fuzzy_match(True)
-        assert self.haxor.get_fuzzy_match()
-        self.haxor.set_fuzzy_match(False)
-        assert not self.haxor.get_fuzzy_match()
+    def test_add_comment_pagination(self):
+        text = 'hn view 1'
+        result = self.haxor.add_comment_pagination(text)
+        assert result == text
+        text = 'hn view 1 -c'
+        result = self.haxor.add_comment_pagination(text)
+        assert result == text + self.haxor.PAGINATE_CMD
+        text = 'hn view 1 -c -b'
+        result = self.haxor.add_comment_pagination(text)
+        assert result == text
