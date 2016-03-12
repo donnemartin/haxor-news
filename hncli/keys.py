@@ -25,31 +25,35 @@ class KeyManager(object):
         * manager: An instance of a prompt_toolkit's KeyBindingManager.
     """
 
-    def __init__(self, set_fuzzy_match, get_fuzzy_match):
+    def __init__(self, set_paginate_comments, get_paginate_comments):
         """Initializes KeyManager.
 
         Args:
-            * set_fuzzy_match: A function setting the fuzzy match config.
-            * get_fuzzy_match: A function getting the fuzzy match config.
+            * set_paginate_comments: A function setting the paginate comments
+                config.
+            * get_paginate_comments: A function setting the paginate comments
+                config.
 
         Returns:
             None.
         """
         self.manager = None
-        self._create_key_manager(set_fuzzy_match, get_fuzzy_match)
+        self._create_key_manager(set_paginate_comments, get_paginate_comments)
 
-    def _create_key_manager(self, set_fuzzy_match, get_fuzzy_match):
+    def _create_key_manager(self, set_paginate_comments, get_paginate_comments):
         """Creates and initializes the keybinding manager.
 
         Args:
-            * set_fuzzy_match: A function setting the fuzzy match config.
-            * get_fuzzy_match: A function getting the fuzzy match config.
+            * set_paginate_comments: A function setting the paginate comments
+                config.
+            * get_paginate_comments: A function setting the paginate comments
+                config.
 
         Returns:
             A KeyBindingManager.
         """
-        assert callable(set_fuzzy_match)
-        assert callable(get_fuzzy_match)
+        assert callable(set_paginate_comments)
+        assert callable(get_paginate_comments)
         self.manager = KeyBindingManager(
             enable_search=True,
             enable_abort_and_exit_bindings=True,
@@ -58,7 +62,7 @@ class KeyManager(object):
 
         @self.manager.registry.add_binding(Keys.F2)
         def handle_f2(_):
-            """Enables/Disables fuzzy matching.
+            """Enables/Disables paginate comments mode.
 
             Args:
                 * _: An instance of prompt_toolkit's Event (not used).
@@ -66,7 +70,7 @@ class KeyManager(object):
             Returns:
                 None.
             """
-            set_fuzzy_match(not get_fuzzy_match())
+            set_paginate_comments(not get_paginate_comments())
 
         @self.manager.registry.add_binding(Keys.F10)
         def handle_f10(_):
