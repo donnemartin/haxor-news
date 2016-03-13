@@ -41,6 +41,7 @@ from .lib.haxor.haxor import HackerNewsApi, HTTPError, InvalidItemID, \
     InvalidUserID
 from .lib.html2text.html2text import HTML2Text
 from .lib.pretty_date_time import pretty_date_time
+from .settings import freelancer_post_id, who_is_hiring_post_id
 from .onions import onions
 
 
@@ -55,6 +56,10 @@ class HackerNews(object):
         * CONFIG_SECTION: A string representing the main config file section.
         * CONFIG_IDS: A string representing the last list of seen post ids.
         * CONFIG_CACHE: A string representing the list of seen comments.
+        * CONFIG_HIRING_ID: A string representing the monthly freelancer
+            post id.
+        * CONFIG_FREELANCE_ID: A string representing the monthly who's hiring
+            post id.
         * html: An instance of html or HTMLParser.
         * MAX_ITEM_CACHE_SIZE: An int representing the maximum number of
             seen comment ids.
@@ -83,7 +88,9 @@ class HackerNews(object):
         * MSG_SUBMISSIONS: A string representing the message displayed for
             repositories when the command hn user is executed.
         * hacker_news_api: An instance of HackerNews.
+        * freelance_id: An int representing the monthly freelancer post id.
         * html_to_text: An instance of HTML2Text.
+        * hiring_id: An int representing the monthly who's hiring post id.
         * item_cache: A list of seen comment ids.
             TODO: Look into an OrderedSet for improved lookup performance
             http://code.activestate.com/recipes/576694/
@@ -104,6 +111,8 @@ class HackerNews(object):
     CONFIG_SECTION = 'hncli'
     CONFIG_IDS = 'item_ids'
     CONFIG_CACHE = 'item_cache'
+    CONFIG_HIRING_ID = 'hiring_id'
+    CONFIG_FREELANCE_ID = 'freelance_id'
     MAX_LIST_INDEX = 1000
     MAX_ITEM_CACHE_SIZE = 20000
     MAX_SNIPPET_LENGTH = 60
@@ -140,6 +149,8 @@ class HackerNews(object):
             self.html = HTMLParser
         self.item_ids = []
         self.item_cache = self.load_cache(self.CONFIG_CACHE)
+        self.hiring_id, self.freelance_id = \
+            self._load_hiring_and_freelance_ids()
         self.html_to_text = None
         self._init_html_to_text()
 
@@ -215,6 +226,39 @@ class HackerNews(object):
         self.item_cache = []
         self.save_cache()
 
+    def _load_hiring_and_freelance_ids(self):
+        """Loads the latest who's hiring and freelancer post ids.
+
+        The latest ids are updated monthly on the repo and are then cached.
+        If fetching the latest ids from the repo fails, the cache is checked.
+        If fetching the cache fails, the default ids set during installation
+        are used.
+
+        Args:
+            * None.
+
+        Returns:
+            None.
+        """
+        try:
+            url = 'https://raw.githubusercontent.com/donnemartin/donnemartin.github.io/master/tmp/settings.py'
+            file_name = 'downloaded_settings.py'
+            urllib.request.urlretrieve(url, file_name)
+            with open(file_name, 'r') as f:
+                for line in f:
+                    if line.startswith('who_is_hiring_post_id'):
+                        hiring_id = line.split(' = ')[1].strip('\n')
+                    if line.startswith('freelancer_post_id'):
+                        freelance_id = line.split(' = ')[1].strip('\n')
+        except:
+            try:
+                hiring_id = self.load_cache(self.CONFIG_HIRING_ID)
+                freelance_id = self.load_cache(self.CONFIG_FREELANCE_ID)
+            except configparser.NoOptionError:
+                hiring_id = who_is_hiring_post_id
+                freelance_id = freelancer_post_id
+        return hiring_id, freelance_id
+
     def format_markdown(self, text):
         """Adds color to the input markdown using click.style.
 
@@ -269,7 +313,7 @@ class HackerNews(object):
 
         Args:
             * regex_query: A string that specifies the regex query to match.
-            * id: An int that specifies the who is hiring post id.
+            * post_id: An int that specifies the who is hiring post id.
                 Optional, defaults to the latest post based on your installed
                 version of hncli.
 
@@ -278,7 +322,9 @@ class HackerNews(object):
         """
         try:
             item = self.hacker_news_api.get_item(post_id)
-            self.print_comments(item, regex_query, hide_no_match=True)
+            self.print_comments(item,
+                                regex_query,
+                                comments_hide_non_matching=True)
             self.save_cache()
         except InvalidItemID:
             self.print_item_not_found(post_id)
@@ -615,6 +661,12 @@ class HackerNews(object):
         parser.add_section(self.CONFIG_SECTION)
         parser.set(self.CONFIG_SECTION, self.CONFIG_IDS, self.item_ids)
         parser.set(self.CONFIG_SECTION, self.CONFIG_CACHE, self.item_cache)
+        parser.set(self.CONFIG_SECTION,
+                        self.CONFIG_HIRING_ID,
+                        self.hiring_id)
+        parser.set(self.CONFIG_SECTION,
+                        self.CONFIG_FREELANCE_ID,
+                        self.freelance_id)
         config_file = open(config_file_path, 'w+')
         parser.write(config_file)
         config_file.close()
