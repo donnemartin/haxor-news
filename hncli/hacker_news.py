@@ -410,16 +410,17 @@ class HackerNews(object):
             formatted_heading, formatted_comment = self.format_comment(
                 item, depth, header_color, header_adornment)
             if print_comment:
-                click.echo(formatted_heading)
-                click.echo(formatted_comment)
+                click.echo(formatted_heading, color=True)
+                click.echo(formatted_comment, color=True)
             elif comments_hide_non_matching:
                 click.secho('.', nl=False, fg='blue')
             else:
-                click.echo(formatted_heading)
+                click.echo(formatted_heading, color=True)
                 num_chars = len(formatted_comment)
                 if num_chars > self.MAX_SNIPPET_LENGTH:
                     num_chars = self.MAX_SNIPPET_LENGTH
-                click.echo(formatted_comment[0:num_chars] + ' [...]')
+                click.echo(formatted_comment[0:num_chars] + ' [...]',
+                           color=True)
 
     def print_comments(self, item, regex_query='',
                        comments_hide_non_matching=False, depth=0):

@@ -236,17 +236,17 @@ class HackerNewsTest(unittest.TestCase):
         items = self.hn.hacker_news_api.items
         self.hn.print_comments(items[0])
         mock_click_echo.assert_any_call(
-            '\x1b[35m\nfoo - just now [!]\x1b[0m')
+            '\x1b[35m\nfoo - just now [!]\x1b[0m', color=True)
         mock_click_echo.assert_any_call(
-            'text foo')
+            'text foo', color=True)
         mock_click_echo.assert_any_call(
-            '\x1b[35m\n  bar - just now [!]\x1b[0m')
+            '\x1b[35m\n  bar - just now [!]\x1b[0m', color=True)
         mock_click_echo.assert_any_call(
-            '  text bar')
+            '  text bar', color=True)
         mock_click_echo.assert_any_call(
-            '\x1b[35m\n    baz - just now [!]\x1b[0m')
+            '\x1b[35m\n    baz - just now [!]\x1b[0m', color=True)
         mock_click_echo.assert_any_call(
-            '    text baz')
+            '    text baz', color=True)
 
     @mock.patch('hncli.hacker_news.click.echo')
     def test_print_comments_regex(self, mock_click_echo):
@@ -254,17 +254,17 @@ class HackerNewsTest(unittest.TestCase):
         regex_query = 'foo'
         self.hn.print_comments(items[0], regex_query)
         mock_click_echo.assert_any_call(
-            '\x1b[35m\nfoo - just now [!]\x1b[0m')
+            '\x1b[35m\nfoo - just now [!]\x1b[0m', color=True)
         mock_click_echo.assert_any_call(
-            'text foo')
+            'text foo', color=True)
         mock_click_echo.assert_any_call(
-            '\x1b[35m\n  bar - just now [!]\x1b[0m')
+            '\x1b[33m\n  bar - just now [!]\x1b[0m', color=True)
         mock_click_echo.assert_any_call(
-            '  text bar [...]')
+            '  text bar [...]', color=True)
         mock_click_echo.assert_any_call(
-            '\x1b[35m\n    baz - just now [!]\x1b[0m')
+            '\x1b[33m\n    baz - just now [!]\x1b[0m', color=True)
         mock_click_echo.assert_any_call(
-            '    text baz [...]')
+            '    text baz [...]', color=True)
 
     @mock.patch('hncli.hacker_news.click.echo')
     def test_print_comments_regex_seen(self, mock_click_echo):
@@ -274,9 +274,9 @@ class HackerNewsTest(unittest.TestCase):
         self.hn.item_cache.append(str(item.item_id))
         self.hn.print_comments(item, regex_query)
         mock_click_echo.assert_any_call(
-            '\x1b[33m\nbaz - just now\x1b[0m')
+            '\x1b[33m\nbaz - just now\x1b[0m', color=True)
         mock_click_echo.assert_any_call(
-            'text baz [...]')
+            'text baz [...]', color=True)
 
     @mock.patch('hncli.hacker_news.click')
     def test_print_item_not_found(self, mock_click):
