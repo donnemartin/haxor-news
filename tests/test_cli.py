@@ -31,7 +31,7 @@ class CliTest(unittest.TestCase):
         """Make sure haxor is in installed packages.
         """
         dists = set([di.key for di in pip.get_installed_distributions()])
-        assert 'hncli' in dists
+        assert 'haxor-news' in dists
 
     def step_run_cli(self):
         """Run the process using pexpect.

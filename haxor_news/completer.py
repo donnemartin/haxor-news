@@ -25,7 +25,7 @@ from .completions import ARG_POST_LIMIT, ARG_HIRING_REGEX_QUERY, \
 
 
 class Completer(Completer):
-    """Completer hncli.
+    """Completer haxor-news.
 
     Attributes:
         * text_utils: An instance of TextUtils.

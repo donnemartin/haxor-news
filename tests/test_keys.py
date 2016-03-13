@@ -20,7 +20,7 @@ from tests.compat import unittest
 from prompt_toolkit.key_binding.input_processor import KeyPress
 from prompt_toolkit.keys import Keys
 
-from hncli.haxor import Haxor
+from haxor_news.haxor import Haxor
 
 
 class KeysTest(unittest.TestCase):

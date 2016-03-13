@@ -98,8 +98,8 @@ class HackerNews(object):
 
     COMMENT_INDENT = '  '
     COMMENT_UNSEEN = ' [!]'
-    CONFIG = '.hncliconfig'
-    CONFIG_SECTION = 'hncli'
+    CONFIG = '.haxornewsconfig'
+    CONFIG_SECTION = 'haxor-news'
     CONFIG_IDS = 'item_ids'
     CONFIG_CACHE = 'item_cache'
     CONFIG_HIRING_ID = 'hiring_id'
@@ -300,13 +300,13 @@ class HackerNews(object):
 
         Searches the monthly Hacker News who is hiring post for comments
         matching the given regex_query.  Defaults to searching the latest
-        post based on your installed version of hncli.
+        post based on your installed version of haxor-news.
 
         Args:
             * regex_query: A string that specifies the regex query to match.
             * post_id: An int that specifies the who is hiring post id.
                 Optional, defaults to the latest post based on your installed
-                version of hncli.
+                version of haxor-news.
 
         Returns:
             None.
@@ -641,7 +641,7 @@ class HackerNews(object):
             return True
 
     def save_cache(self):
-        """Saves the current set of item ids and cache to ~/.hncliconfig.
+        """Saves the current set of item ids and cache to ~/.haxornewsconfig.
 
         Args:
             * None
@@ -649,7 +649,8 @@ class HackerNews(object):
         Returns:
             None.
         """
-        if len(self.item_cache) > self.MAX_ITEM_CACHE_SIZE:
+        if self.item_cache is not None and \
+                len(self.item_cache) > self.MAX_ITEM_CACHE_SIZE:
             self.item_cache = self.item_cache[-self.MAX_ITEM_CACHE_SIZE//2:]
         config_file_path = self._config(self.CONFIG)
         parser = configparser.RawConfigParser()
@@ -720,7 +721,7 @@ class HackerNews(object):
             self.print_item_not_found(user_id)
 
     def load_section(self, parser, section):
-        """Loads the given section from the ~/.hncliconfig.
+        """Loads the given section from the ~/.haxornewsconfig.
 
         Args:
             * parser: An instance of ConfigParser.RawConfigParser.
@@ -740,7 +741,7 @@ class HackerNews(object):
         return items_ids.split(', ')
 
     def load_cache(self, section):
-        """Loads the item ids and the item cache from ~/.hncliconfig.
+        """Loads the item ids and the item cache from ~/.haxornewsconfig.
 
         Args:
             * section: A string representing the section to load.
@@ -762,7 +763,7 @@ class HackerNews(object):
              comments_hide_non_matching, browser):
         """Views the given index in a browser.
 
-        Uses ids from ~/.hncliconfig stored in self.item_ids.
+        Uses ids from ~/.haxornewsconfig stored in self.item_ids.
         If url is True, opens a browser with the url based on the given index.
         Else, displays the post's comments.
 

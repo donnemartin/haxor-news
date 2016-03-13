@@ -130,7 +130,7 @@ class Haxor(object):
         Returns:
             None.
         """
-        history = FileHistory(os.path.expanduser('~/.hnclihistory'))
+        history = FileHistory(os.path.expanduser('~/.haxornewshistory'))
         toolbar = Toolbar(lambda: self.paginate_comments)
         layout = create_default_layout(
             message=u'haxor> ',

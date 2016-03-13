@@ -20,7 +20,7 @@ import mock
 import os
 from tests.compat import unittest
 
-from hncli.hacker_news import HackerNews
+from haxor_news.hacker_news import HackerNews
 from tests.data.comment import formatted_comment, formatted_heading, raw_comment
 from tests.data.item import formatted_items
 from tests.data.markdown import formatted_markdown, raw_markdown
@@ -51,21 +51,21 @@ class HackerNewsTest(unittest.TestCase):
                                 self.hn.CONFIG)
         assert self.hn._config(self.hn.CONFIG) == expected
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_items')
+    @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_ask(self, mock_print_items):
         self.hn.ask(self.limit)
         mock_print_items.assert_called_with(
             message=self.hn.headlines_message(self.hn.MSG_ASK),
             item_ids=self.hn.hacker_news_api.ask_stories(self.limit))
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_items')
+    @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_best(self, mock_print_items):
         self.hn.best(self.limit)
         mock_print_items.assert_called_with(
             message=self.hn.headlines_message(self.hn.MSG_BEST),
             item_ids=self.hn.hacker_news_api.best_stories(self.limit))
 
-    @mock.patch('hncli.hacker_news.HackerNews.save_cache')
+    @mock.patch('haxor_news.hacker_news.HackerNews.save_cache')
     def test_clear_item_cache(self, mock_save_cache):
         item_ids = self.hn.load_cache(self.hn.CONFIG_IDS)
         self.hn.clear_item_cache()
@@ -82,8 +82,8 @@ class HackerNewsTest(unittest.TestCase):
         headlines_message = self.hn.headlines_message(message)
         assert message in headlines_message
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_comments')
-    @mock.patch('hncli.hacker_news.HackerNews.print_item_not_found')
+    @mock.patch('haxor_news.hacker_news.HackerNews.print_comments')
+    @mock.patch('haxor_news.hacker_news.HackerNews.print_item_not_found')
     def test_hiring_and_freelance(self,
                                   mock_print_item_not_found,
                                   mock_print_comments):
@@ -94,22 +94,22 @@ class HackerNewsTest(unittest.TestCase):
         self.hn.hiring_and_freelance(self.query, post_id=self.invalid_id)
         mock_print_item_not_found.assert_called_with(self.invalid_id)
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_items')
+    @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_jobs(self, mock_print_items):
         self.hn.jobs(self.limit)
         mock_print_items.assert_called_with(
             message=self.hn.headlines_message(self.hn.MSG_JOBS),
             item_ids=self.hn.hacker_news_api.ask_stories(self.limit))
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_items')
+    @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_new(self, mock_print_items):
         self.hn.new(self.limit)
         mock_print_items.assert_called_with(
             message=self.hn.headlines_message(self.hn.MSG_NEW),
             item_ids=self.hn.hacker_news_api.new_stories(self.limit))
 
-    @mock.patch('hncli.hacker_news.HackerNews.format_index_title')
-    @mock.patch('hncli.hacker_news.click')
+    @mock.patch('haxor_news.hacker_news.HackerNews.format_index_title')
+    @mock.patch('haxor_news.hacker_news.click')
     def test_onion(self, mock_click, mock_format_index_title):
         self.hn.onion(self.limit)
         assert len(mock_format_index_title.mock_calls) == self.limit
@@ -124,23 +124,23 @@ class HackerNewsTest(unittest.TestCase):
         item_cache = self.hn.load_cache(self.hn.CONFIG_CACHE)
         assert item_cache == ['3', '4', '5']
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_items')
+    @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_show(self, mock_print_items):
         self.hn.show(self.limit)
         mock_print_items.assert_called_with(
             message=self.hn.headlines_message(self.hn.MSG_SHOW),
             item_ids=self.hn.hacker_news_api.show_stories(self.limit))
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_items')
+    @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_top(self, mock_print_items):
         self.hn.top(self.limit)
         mock_print_items.assert_called_with(
             message=self.hn.headlines_message(self.hn.MSG_TOP),
             item_ids=self.hn.hacker_news_api.top_stories(self.limit))
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_items')
-    @mock.patch('hncli.hacker_news.click')
-    @mock.patch('hncli.hacker_news.HackerNews.print_item_not_found')
+    @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
+    @mock.patch('haxor_news.hacker_news.click')
+    @mock.patch('haxor_news.hacker_news.HackerNews.print_item_not_found')
     def test_user(self, mock_print_item_not_found,
                   mock_click, mock_print_items):
         user_id = 'foo'
@@ -152,7 +152,7 @@ class HackerNewsTest(unittest.TestCase):
         self.hn.user(self.invalid_id, self.limit)
         mock_print_item_not_found.assert_called_with(self.invalid_id)
 
-    @mock.patch('hncli.hacker_news.HackerNews.view')
+    @mock.patch('haxor_news.hacker_news.HackerNews.view')
     def test_view_setup_query_recent(self, mock_view):
         index = 0
         comments = False
@@ -170,7 +170,7 @@ class HackerNewsTest(unittest.TestCase):
             index, self.hn.QUERY_RECENT, comments_expected,
             comments_hide_non_matching, browser)
 
-    @mock.patch('hncli.hacker_news.HackerNews.view')
+    @mock.patch('haxor_news.hacker_news.HackerNews.view')
     def test_view_setup_query_unseen(self, mock_view):
         index = 0
         comments = False
@@ -188,8 +188,8 @@ class HackerNewsTest(unittest.TestCase):
             index, self.hn.QUERY_UNSEEN, comments_expected,
             comments_hide_non_matching, browser)
 
-    @mock.patch('hncli.hacker_news.HackerNews.view')
-    @mock.patch('hncli.hacker_news.HackerNews.clear_item_cache')
+    @mock.patch('haxor_news.hacker_news.HackerNews.view')
+    @mock.patch('haxor_news.hacker_news.HackerNews.clear_item_cache')
     def test_view_comment_clear_cache(self, mock_clear_item_cache, mock_view):
         index = 0
         comments = False
@@ -227,7 +227,7 @@ class HackerNewsTest(unittest.TestCase):
             result = self.hn.format_item(items[index], index+1)
             assert result == formatted_items[index]
 
-    @mock.patch('hncli.hacker_news.click.echo')
+    @mock.patch('haxor_news.hacker_news.click.echo')
     def test_print_comments_unseen(self, mock_click_echo):
         items = self.hn.hacker_news_api.items
         self.hn.print_comments(items[0])
@@ -244,7 +244,7 @@ class HackerNewsTest(unittest.TestCase):
         mock_click_echo.assert_any_call(
             '    text baz', color=True)
 
-    @mock.patch('hncli.hacker_news.click.echo')
+    @mock.patch('haxor_news.hacker_news.click.echo')
     def test_print_comments_regex(self, mock_click_echo):
         items = self.hn.hacker_news_api.items
         regex_query = 'foo'
@@ -262,7 +262,7 @@ class HackerNewsTest(unittest.TestCase):
         mock_click_echo.assert_any_call(
             '    text baz [...]', color=True)
 
-    @mock.patch('hncli.hacker_news.click.echo')
+    @mock.patch('haxor_news.hacker_news.click.echo')
     def test_print_comments_regex_hide_non_matching(self, mock_click_echo):
         items = self.hn.hacker_news_api.items
         regex_query = 'foo'
@@ -274,7 +274,7 @@ class HackerNewsTest(unittest.TestCase):
         mock_click_echo.assert_any_call(
             'text foo', color=True)
 
-    @mock.patch('hncli.hacker_news.click.echo')
+    @mock.patch('haxor_news.hacker_news.click.echo')
     def test_print_comments_regex_seen(self, mock_click_echo):
         items = self.hn.hacker_news_api.items
         item = items[2]
@@ -286,14 +286,14 @@ class HackerNewsTest(unittest.TestCase):
         mock_click_echo.assert_any_call(
             'text baz [...]', color=True)
 
-    @mock.patch('hncli.hacker_news.click')
+    @mock.patch('haxor_news.hacker_news.click')
     def test_print_item_not_found(self, mock_click):
         self.hn.print_item_not_found(self.invalid_id)
         mock_click.secho.assert_called_with(
             self.hn.MSG_ITEM_NOT_FOUND.format(self.invalid_id), fg='red')
 
-    @mock.patch('hncli.hacker_news.click')
-    @mock.patch('hncli.hacker_news.HackerNews.format_item')
+    @mock.patch('haxor_news.hacker_news.click')
+    @mock.patch('haxor_news.hacker_news.HackerNews.format_item')
     def test_print_items(self, mock_format_item, mock_click):
         items = self.hn.hacker_news_api.items
         item_ids = [item.item_id for item in items]
@@ -307,7 +307,7 @@ class HackerNewsTest(unittest.TestCase):
         result = self.hn.tip_view(max_index=10)
         assert result == formatted_tip
 
-    @mock.patch('hncli.hacker_news.requests')
+    @mock.patch('haxor_news.hacker_news.requests')
     def test_url_contents(self, mock_requests):
         self.hn.html_to_text = mock.Mock(handle=lambda _: 'bar')
         result = self.hn.url_contents('foo')
@@ -345,8 +345,8 @@ class HackerNewsTest(unittest.TestCase):
         regex_query = 'minutes ago'
         assert not self.hn.match_regex(item, regex_query)
 
-    @mock.patch('hncli.hacker_news.HackerNews.url_contents')
-    @mock.patch('hncli.hacker_news.click')
+    @mock.patch('haxor_news.hacker_news.HackerNews.url_contents')
+    @mock.patch('haxor_news.hacker_news.click')
     def test_view(self, mock_click, mock_url_contents):
         items = self.hn.hacker_news_api.items
         self.hn.item_ids = [int(item.item_id) for item in items]
@@ -362,8 +362,8 @@ class HackerNewsTest(unittest.TestCase):
         assert mock_click.secho.mock_calls
         assert mock_click.echo_via_pager.mock_calls
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_comments')
-    @mock.patch('hncli.hacker_news.click')
+    @mock.patch('haxor_news.hacker_news.HackerNews.print_comments')
+    @mock.patch('haxor_news.hacker_news.click')
     def test_view_comments(self, mock_click, mock_print_comments):
         items = self.hn.hacker_news_api.items
         self.hn.item_ids = [int(item.item_id) for item in items]
@@ -380,8 +380,8 @@ class HackerNewsTest(unittest.TestCase):
             regex_query=comments_query)
         assert mock_click.mock_calls
 
-    @mock.patch('hncli.hacker_news.HackerNews.print_comments')
-    @mock.patch('hncli.hacker_news.click')
+    @mock.patch('haxor_news.hacker_news.HackerNews.print_comments')
+    @mock.patch('haxor_news.hacker_news.click')
     def test_view_no_url(self, mock_click, mock_print_comments):
         self.hn.hacker_news_api.items[0].url = None
         items = self.hn.hacker_news_api.items
@@ -399,8 +399,8 @@ class HackerNewsTest(unittest.TestCase):
             regex_query=comments_query)
         assert mock_click.mock_calls
 
-    @mock.patch('hncli.hacker_news.webbrowser')
-    @mock.patch('hncli.hacker_news.click')
+    @mock.patch('haxor_news.hacker_news.webbrowser')
+    @mock.patch('haxor_news.hacker_news.click')
     def test_view_browser_url(self, mock_click, mock_webbrowser):
         items = self.hn.hacker_news_api.items
         self.hn.item_ids = [int(item.item_id) for item in items]
@@ -414,8 +414,8 @@ class HackerNewsTest(unittest.TestCase):
         mock_webbrowser.open.assert_called_with(items[self.valid_id].url)
         assert mock_click.mock_calls
 
-    @mock.patch('hncli.hacker_news.webbrowser')
-    @mock.patch('hncli.hacker_news.click')
+    @mock.patch('haxor_news.hacker_news.webbrowser')
+    @mock.patch('haxor_news.hacker_news.click')
     def test_view_browser_comments(self, mock_click, mock_webbrowser):
         items = self.hn.hacker_news_api.items
         self.hn.item_ids = [int(item.item_id) for item in items]

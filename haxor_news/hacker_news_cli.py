@@ -108,7 +108,7 @@ class HackerNewsCli(object):
             * regex_query: A string that specifies the regex query to match.
             * id_post: A string that specifies the who is hiring post id.
                 Optional, defaults to the latest post based on your installed
-                version of hncli.
+                version of haxor-news.
 
         Example(s):
             hn freelance
@@ -144,7 +144,7 @@ class HackerNewsCli(object):
             * regex_query: A string that specifies the regex query to match.
             * id_post: A string that specifies the who is hiring post id.
                 Optional, defaults to the latest post based on your installed
-                version of hncli.
+                version of haxor-news.
 
         Example(s):
             hn hiring

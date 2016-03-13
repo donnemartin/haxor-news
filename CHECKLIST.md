@@ -7,8 +7,8 @@ Note, you can't seem to script the virtualenv calls, see:
 https://bitbucket.org/dhellmann/virtualenvwrapper/issues/219/cant-deactivate-active-virtualenv-from
 
     $ deactivate
-    $ rmvirtualenv hncli
-    $ mkvirtualenv hncli
+    $ rmvirtualenv haxor-news
+    $ mkvirtualenv haxor-news
     $ pip install -e .
     $ pip install -r requirements-dev.txt
     $ rm -rf .tox && tox
@@ -19,7 +19,7 @@ B. Run code checks
 
 C. Run manual [smoke tests](#smoke-tests) on Mac, Ubuntu, Windows
 
-D. Update and review `README.rst` and `Sphinx` docs, then check hncli/docs/build/html/index.html
+D. Update and review `README.rst` and `Sphinx` docs, then check haxor-news/docs/build/html/index.html
 
     $ scripts/update_docs.sh
 
@@ -31,7 +31,7 @@ G. Start a new release branch
 
     $ git flow release start x.y.z
 
-H. Increment the version number in `hncli/__init__.py`
+H. Increment the version number in `haxor-news/__init__.py`
 
 I. Update and review `CHANGELOG`
 
@@ -71,7 +71,7 @@ R. Restore `README.md`
 
 S. Review newly released package from PyPi
 
-T. Release on GitHub: https://github.com/donnemartin/hacker-news-hncli/tags
+T. Release on GitHub: https://github.com/donnemartin/haxor-news/tags
 
     1. Click "Add release notes" for latest release
     2. Copy release notes from `CHANGELOG.md`
@@ -84,8 +84,8 @@ U. Install in a new venv and run manual [smoke tests](#smoke-tests) on Mac, Ubun
 Run the following on Python 2.7 and Python 3.4:
 
 * Craete a new `virtualenv`
-* Pip install `hncli` into new `virtualenv`
-* Run `hncli`
+* Pip install `haxor-news` into new `virtualenv`
+* Run `haxor-news`
 * Check initial resource load
 * Check resource load from cache
 * Force refresh of resources

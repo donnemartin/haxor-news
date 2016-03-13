@@ -28,8 +28,8 @@ def cli():
     Returns:
         None.
     """
-    hncli = HackerNewsCli()
-    hncli.cli()
+    haxor_news = HackerNewsCli()
+    haxor_news.cli()
 
 
 if __name__ == "__main__":

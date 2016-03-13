@@ -22,12 +22,12 @@ from tests.compat import unittest
 
 from prompt_toolkit.document import Document
 
-from hncli.completions import ARG_POST_LIMIT, ARG_HIRING_REGEX_QUERY, \
+from haxor_news.completions import ARG_POST_LIMIT, ARG_HIRING_REGEX_QUERY, \
     ARG_VIEW_POST_INDEX, ARG_USER_ID, COMMAND, SUBCOMMAND_VIEW, \
     OPTIONS_HIRING, OPTIONS_USER, OPTIONS_VIEW, OPTION_BROWSER, \
     OPTIONS_FREELANCE
-from hncli.completer import Completer
-from hncli.utils import TextUtils
+from haxor_news.completer import Completer
+from haxor_news.utils import TextUtils
 
 
 class CompleterTest(unittest.TestCase):

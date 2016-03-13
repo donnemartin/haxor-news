@@ -19,8 +19,8 @@ from tests.compat import unittest
 
 from pygments.token import Token
 
-from hncli.haxor import Haxor
-from hncli.toolbar import Toolbar
+from haxor_news.haxor import Haxor
+from haxor_news.toolbar import Toolbar
 
 
 class ToolbarTest(unittest.TestCase):

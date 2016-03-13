@@ -18,7 +18,7 @@ from __future__ import division
 
 from tests.compat import unittest
 
-from hncli.haxor import Haxor
+from haxor_news.haxor import Haxor
 
 
 class HaxorTest(unittest.TestCase):

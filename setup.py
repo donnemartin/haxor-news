@@ -1,4 +1,4 @@
-from hncli.__init__ import __version__
+from haxor_news.__init__ import __version__
 try:
     from setuptools import setup, find_packages
 except ImportError:
@@ -7,8 +7,8 @@ except ImportError:
 setup(
     description='A Hacker News command line interface (CLI).',
     author='Donne Martin',
-    url='https://github.com/donnemartin/hncli',
-    download_url='https://pypi.python.org/pypi/hncli',
+    url='https://github.com/donnemartin/haxor-news',
+    download_url='https://pypi.python.org/pypi/haxor-news',
     author_email='donne.martin@gmail.com',
     version=__version__,
     license='Apache License 2.0',
@@ -29,13 +29,13 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'haxor-news = hncli.main:cli',
-            'hn = hncli.main_cli:cli'
+            'haxor-news = haxor_news.main:cli',
+            'hn = haxor_news.main_cli:cli'
         ]
     },
     packages=find_packages(),
     scripts=[],
-    name='hncli',
+    name='haxor-news',
     classifiers=[
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
