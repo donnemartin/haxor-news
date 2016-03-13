@@ -57,15 +57,15 @@ class HackerNewsCliTest(unittest.TestCase):
     @mock.patch('hncli.hacker_news_cli.HackerNews.hiring_and_freelance')
     def test_hiring(self, mock_hn_call):
         result = self.runner.invoke(
-            self.hacker_news_cli.cli, ['hiring', self.dummy, '-i', 0])
-        mock_hn_call.assert_called_with(self.dummy, 0)
+            self.hacker_news_cli.cli, ['hiring', self.dummy, '-i', 1])
+        mock_hn_call.assert_called_with(self.dummy, 1)
         assert result.exit_code == 0
 
     @mock.patch('hncli.hacker_news_cli.HackerNews.hiring_and_freelance')
     def test_freelance(self, mock_hn_call):
         result = self.runner.invoke(
-            self.hacker_news_cli.cli, ['freelance', self.dummy, '-i', 0])
-        mock_hn_call.assert_called_with(self.dummy, 0)
+            self.hacker_news_cli.cli, ['freelance', self.dummy, '-i', 1])
+        mock_hn_call.assert_called_with(self.dummy, 1)
         assert result.exit_code == 0
 
     @mock.patch('hncli.hacker_news_cli.HackerNews.jobs')
