@@ -56,6 +56,8 @@ class HackerNews(object):
         * CONFIG_IDS: A string representing the last post ids seen.
         * CONFIG_CACHE: A string representing the last item ids seen.
         * html: An instance of html or HTMLParser.
+        * MAX_ITEM_CACHE_SIZE: An int representing the maximum number of
+            seen comment ids.
         * MAX_LIST_INDEX: An int representing the maximum 1-based index value
             hn view will use to match item_ids.  Any value larger than
             MAX_LIST_INDEX will result in hn view treating that index as an
@@ -100,6 +102,7 @@ class HackerNews(object):
     CONFIG_IDS = 'item_ids'
     CONFIG_CACHE = 'item_cache'
     MAX_LIST_INDEX = 1000
+    MAX_ITEM_CACHE_SIZE = 20000
     MAX_SNIPPET_LENGTH = 60
     MSG_ASK = 'Ask HN'
     MSG_BEST = 'Best'
@@ -602,6 +605,8 @@ class HackerNews(object):
         Returns:
             None.
         """
+        if len(self.item_cache) > self.MAX_ITEM_CACHE_SIZE:
+            self.item_cache = self.item_cache[-self.MAX_ITEM_CACHE_SIZE//2:]
         config_file_path = self._config(self.CONFIG)
         parser = configparser.RawConfigParser()
         parser.add_section(self.CONFIG_SECTION)
