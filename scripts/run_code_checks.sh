@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-flake8 --max-line-length=80 --exclude=build,scratch,docs,haxor,onions.py .
+flake8 --max-line-length=80 --exclude=build,docs,scratch,docs,haxor,html2text,onions.py,compat.py .
