@@ -94,7 +94,6 @@ class Haxor(object):
         """
         self.cli = None
         self.key_manager = None
-        self.color = False
         self.theme = 'vim'
         self.paginate_comments = True
         self.hacker_news_cli = HackerNewsCli()
