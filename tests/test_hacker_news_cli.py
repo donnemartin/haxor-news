@@ -112,5 +112,5 @@ class HackerNewsCliTest(unittest.TestCase):
         index = '0'
         result = self.runner.invoke(
             self.hacker_news_cli.cli, ['view', index])
-        mock_hn_call.assert_called_with(int(index), None, dummy, dummy)
+        mock_hn_call.assert_called_with(int(index), None, dummy, dummy, dummy)
         assert result.exit_code == 0

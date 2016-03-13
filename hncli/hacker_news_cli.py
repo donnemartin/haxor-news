@@ -289,9 +289,11 @@ class HackerNewsCli(object):
     @click.option('-cu', '--comments_unseen', is_flag=True)
     @click.option('-b', '--browser', is_flag=True)
     @click.option('-cc', '--clear_cache', is_flag=True)
+    @click.option('-ch', '--comments_hide_non_matching', is_flag=True)
     @pass_hacker_news
     def view(hacker_news, index, comments_regex_query, comments,
-             comments_recent, comments_unseen, clear_cache, browser):
+             comments_recent, comments_unseen,
+             comments_hide_non_matching, clear_cache, browser):
         """Views the post index or id, hn view --help.
 
         Args:
@@ -316,6 +318,8 @@ class HackerNewsCli(object):
                 recently comments (posted within the past 59 minutes or less)
             * comments_unseen: A boolean that determines whether to view only
                 comments that you have not yet seen.
+            * comments_hide_non_matching: A bool that determines whether to
+                hide comments that don't match (False) or truncate them (True).
             * clear_cache: A boolean that clears the comment cache before
                 running the view command.
             * browser: A boolean that determines whether to view the url
@@ -330,6 +334,8 @@ class HackerNewsCli(object):
             hn view 3 --comments_recent
             hn view 3 -cu
             hn view 3 --comments_unseen
+            hn view 3 -cu -ch
+            hn view 3 --comments_unseen --comments_hide_non_matching
             hn view 3 --browser
             hn view 3 -b -c
             hn view 3 -comments -clear_cache
@@ -354,5 +360,6 @@ class HackerNewsCli(object):
                                    comments,
                                    comments_recent,
                                    comments_unseen,
+                                   comments_hide_non_matching,
                                    clear_cache,
                                    browser)
