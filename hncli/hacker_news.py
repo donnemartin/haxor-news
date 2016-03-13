@@ -185,6 +185,39 @@ class HackerNews(object):
         self.html_to_text.inline_links = False
         self.html_to_text.links_each_paragraph = False
 
+    def _load_hiring_and_freelance_ids(self):
+        """Loads the latest who's hiring and freelancer post ids.
+
+        The latest ids are updated monthly on the repo and are then cached.
+        If fetching the latest ids from the repo fails, the cache is checked.
+        If fetching the cache fails, the default ids set during installation
+        are used.
+
+        Args:
+            * None.
+
+        Returns:
+            None.
+        """
+        try:
+            url = 'https://raw.githubusercontent.com/donnemartin/donnemartin.github.io/master/tmp/settings.py'
+            file_name = 'downloaded_settings.py'
+            urllib.request.urlretrieve(url, file_name)
+            with open(file_name, 'r') as f:
+                for line in f:
+                    if line.startswith('who_is_hiring_post_id'):
+                        hiring_id = line.split(' = ')[1].strip('\n')
+                    if line.startswith('freelancer_post_id'):
+                        freelance_id = line.split(' = ')[1].strip('\n')
+        except:
+            try:
+                hiring_id = self.load_cache(self.CONFIG_HIRING_ID)
+                freelance_id = self.load_cache(self.CONFIG_FREELANCE_ID)
+            except configparser.NoOptionError:
+                hiring_id = who_is_hiring_post_id
+                freelance_id = freelancer_post_id
+        return hiring_id, freelance_id
+
     def ask(self, limit):
         """Displays Ask HN posts.
 
@@ -225,39 +258,6 @@ class HackerNews(object):
         self.item_ids = self.load_cache(self.CONFIG_IDS)
         self.item_cache = []
         self.save_cache()
-
-    def _load_hiring_and_freelance_ids(self):
-        """Loads the latest who's hiring and freelancer post ids.
-
-        The latest ids are updated monthly on the repo and are then cached.
-        If fetching the latest ids from the repo fails, the cache is checked.
-        If fetching the cache fails, the default ids set during installation
-        are used.
-
-        Args:
-            * None.
-
-        Returns:
-            None.
-        """
-        try:
-            url = 'https://raw.githubusercontent.com/donnemartin/donnemartin.github.io/master/tmp/settings.py'
-            file_name = 'downloaded_settings.py'
-            urllib.request.urlretrieve(url, file_name)
-            with open(file_name, 'r') as f:
-                for line in f:
-                    if line.startswith('who_is_hiring_post_id'):
-                        hiring_id = line.split(' = ')[1].strip('\n')
-                    if line.startswith('freelancer_post_id'):
-                        freelance_id = line.split(' = ')[1].strip('\n')
-        except:
-            try:
-                hiring_id = self.load_cache(self.CONFIG_HIRING_ID)
-                freelance_id = self.load_cache(self.CONFIG_FREELANCE_ID)
-            except configparser.NoOptionError:
-                hiring_id = who_is_hiring_post_id
-                freelance_id = freelancer_post_id
-        return hiring_id, freelance_id
 
     def format_markdown(self, text):
         """Adds color to the input markdown using click.style.
