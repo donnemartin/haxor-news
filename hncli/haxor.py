@@ -201,6 +201,5 @@ class Haxor(object):
                 if self.paginate_comments:
                     document.text = self.add_comment_pagination(document.text)
                 subprocess.call(document.text, shell=True)
-                click.echo('')
             except Exception as e:
                 click.secho(e, fg='red')
