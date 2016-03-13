@@ -28,27 +28,23 @@ class CliTest(unittest.TestCase):
         self.step_send_ctrld()
 
     def step_cli_installed(self):
-        """
-        Make sure haxor is in installed packages.
+        """Make sure haxor is in installed packages.
         """
         dists = set([di.key for di in pip.get_installed_distributions()])
-        assert 'haxor' in dists
+        assert 'hncli' in dists
 
     def step_run_cli(self):
+        """Run the process using pexpect.
         """
-        Run the process using pexpect.
-        """
-        self.cli = pexpect.spawnu('haxor')
+        self.cli = pexpect.spawnu('haxor-news')
 
     def step_see_prompt(self):
-        """
-        Expect to see prompt.
+        """Expect to see prompt.
         """
         self.cli.expect('haxor> ')
 
     def step_send_ctrld(self):
-        """
-        Send Ctrl + D to exit.
+        """Send Ctrl + D to exit.
         """
         self.cli.sendcontrol('d')
         self.cli.expect(pexpect.EOF)
