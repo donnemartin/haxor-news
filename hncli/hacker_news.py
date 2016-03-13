@@ -328,6 +328,8 @@ class HackerNews(object):
             self.save_cache()
         except InvalidItemID:
             self.print_item_not_found(post_id)
+        except BrokenPipeError:
+            sys.stderr.close()
 
     def jobs(self, limit):
         """Displays job posts.
@@ -813,12 +815,15 @@ class HackerNews(object):
             if browser:
                 webbrowser.open(comments_url)
             else:
-                self.print_comments(
-                    item,
-                    regex_query=comments_query,
-                    comments_hide_non_matching=comments_hide_non_matching)
+                try:
+                    self.print_comments(
+                        item,
+                        regex_query=comments_query,
+                        comments_hide_non_matching=comments_hide_non_matching)
+                    click.echo('')
+                except BrokenPipeError:
+                    sys.stderr.close()
                 self.save_cache()
-            click.echo('')
         else:
             click.secho('\nOpening ' + item.url + '...', fg='blue')
             if browser:
