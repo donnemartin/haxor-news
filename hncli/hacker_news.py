@@ -53,8 +53,8 @@ class HackerNews(object):
             comments.
         * CONFIG: A string representing the config file name.
         * CONFIG_SECTION: A string representing the main config file section.
-        * CONFIG_IDS: A string representing the last post ids seen.
-        * CONFIG_CACHE: A string representing the last item ids seen.
+        * CONFIG_IDS: A string representing the last list of seen post ids.
+        * CONFIG_CACHE: A string representing the list of seen comments.
         * html: An instance of html or HTMLParser.
         * MAX_ITEM_CACHE_SIZE: An int representing the maximum number of
             seen comment ids.
