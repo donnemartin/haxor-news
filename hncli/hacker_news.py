@@ -780,6 +780,8 @@ class HackerNews(object):
             * comments_query: A string that specifies the regex query to match.
             * comments: A boolean that determines whether to view the comments
                 or a simplified version of the post url.
+            * comments_hide_non_matching: A bool that determines whether to
+                hide comments that don't match (False) or truncate them (True).
             * browser: A boolean that determines whether to view the url
                  in a browser.
 
@@ -855,6 +857,8 @@ class HackerNews(object):
                 recently comments (posted within the past 59 minutes or less)
             * comments_unseen: A boolean that determines whether to view only
                 comments that you have not yet seen.
+            * comments_hide_non_matching: A bool that determines whether to
+                hide comments that don't match (False) or truncate them (True).
             * clear_cache: A boolean that clears the comment cache before
                 running the view command.
             * browser: A boolean that determines whether to view the url
