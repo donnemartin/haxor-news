@@ -84,6 +84,9 @@ class HackerNews(object):
             repositories when the command hn user is executed.
         * hacker_news_api: An instance of HackerNews.
         * html_to_text: An instance of HTML2Text.
+        * item_cache: A list of seen comment ids.
+            TODO: Look into an OrderedSet for improved lookup performance
+            http://code.activestate.com/recipes/576694/
         * item_ids: A list containing the last set of ids the user has seen,
             which allows the user to quickly access an item with the
             gh view [#] [-u/--url] command.
