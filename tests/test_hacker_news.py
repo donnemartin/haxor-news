@@ -267,6 +267,18 @@ class HackerNewsTest(unittest.TestCase):
             '    text baz [...]', color=True)
 
     @mock.patch('hncli.hacker_news.click.echo')
+    def test_print_comments_regex_hide_non_matching(self, mock_click_echo):
+        items = self.hn.hacker_news_api.items
+        regex_query = 'foo'
+        self.hn.print_comments(items[0],
+                               regex_query,
+                               comments_hide_non_matching=True)
+        mock_click_echo.assert_any_call(
+            '\x1b[35m\nfoo - just now [!]\x1b[0m', color=True)
+        mock_click_echo.assert_any_call(
+            'text foo', color=True)
+
+    @mock.patch('hncli.hacker_news.click.echo')
     def test_print_comments_regex_seen(self, mock_click_echo):
         items = self.hn.hacker_news_api.items
         item = items[2]
