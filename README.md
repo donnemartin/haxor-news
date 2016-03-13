@@ -25,7 +25,7 @@ Spend a lot of time on the terminal?  Spend a lot of time on Hacker News?
     * `-cu/--comments_unseen`
 * How about **recent comments** posted in the past 60 minutes?
     * `-cr/--comments_recent`
-* Filter comments with a **regex query**?
+* Filter comments matching a **regex query**?
     * `-cq/--comments_query [query]`
 
 Need help remembering these options?  `haxor-news` comes with an **optional auto-completer and interactive help**:
