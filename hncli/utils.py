@@ -22,7 +22,7 @@ import six
 import shlex
 from prompt_toolkit.completion import Completion
 
-from .completions import META_LOOKUP, OPTIONS_VIEW
+from .completions import META_LOOKUP
 
 
 class TextUtils(object):
@@ -130,7 +130,9 @@ class TextUtils(object):
             for suggestion in self._fuzzy_finder(word,
                                                  collection,
                                                  case_sensitive=False):
-                yield Completion(suggestion, -len(word), display_meta='display_meta')
+                yield Completion(suggestion,
+                                 -len(word),
+                                 display_meta='display_meta')
         else:
             for name in sorted(collection):
                 if name.lower().startswith(word) or not word:

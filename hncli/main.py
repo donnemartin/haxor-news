@@ -16,8 +16,6 @@
 
 from __future__ import print_function
 
-import click
-
 from .haxor import Haxor
 
 

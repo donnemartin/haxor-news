@@ -16,13 +16,9 @@
 from __future__ import print_function
 from __future__ import division
 
+from .compat import unittest
 import mock
 import os
-import sys
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
 
 from hncli.hacker_news import HackerNews
 from tests.data.comment import formatted_comment, formatted_heading, raw_comment

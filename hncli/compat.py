@@ -13,4 +13,17 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-formatted_tip = '\x1b[34m  Tip: View the page or comments for \x1b[0m\x1b[35m1 through \x1b[0m\x1b[35m10\x1b[0m\x1b[34m with the following command:\n\x1b[0m\x1b[35m    hn view [#] \x1b[0m\x1b[34moptional: [comment_filter] [-c] [-cr] [-cu] [-b] [--help]\n\x1b[0m'  # NOQA
+import sys
+import urllib
+try:
+    # Python 3
+    import configparser
+    from urllib.parse import urlparse
+except ImportError:
+    # Python 2
+    import ConfigParser as configparser
+    from urlparse import urlparse
+if sys.version_info < (3, 3):
+    import HTMLParser
+else:
+    import html as HTMLParser

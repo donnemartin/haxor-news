@@ -21,6 +21,7 @@ if sys.version_info < (2, 7):
 else:
     import unittest
 
+
 class CliTest(unittest.TestCase):
 
     def test_run_cli(self):

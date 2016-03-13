@@ -17,20 +17,14 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import division
 
+from .compat import unittest
 import mock
-import os
-import sys
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
 
 from prompt_toolkit.document import Document
 
 from hncli.completions import ARG_POST_LIMIT, ARG_HIRING_REGEX_QUERY, \
-    ARG_VIEW_POST_INDEX, ARG_USER_ID, COMMAND, SUBCOMMAND_HIRING, \
-    SUBCOMMAND_USER, SUBCOMMAND_VIEW, OPTIONS_HIRING, OPTIONS_USER, \
-    OPTIONS_VIEW, SUBCOMMANDS, OPTION_BROWSER, SUBCOMMAND_FREELANCE, \
+    ARG_VIEW_POST_INDEX, ARG_USER_ID, COMMAND, SUBCOMMAND_VIEW, \
+    OPTIONS_HIRING, OPTIONS_USER, OPTIONS_VIEW, OPTION_BROWSER, \
     OPTIONS_FREELANCE
 from hncli.completer import Completer
 from hncli.utils import TextUtils
@@ -152,4 +146,3 @@ class CompleterTest(unittest.TestCase):
         expected = [SUBCOMMAND_VIEW]
         self.completer.fuzzy_match = True
         self.verify_completions(text, expected)
-

@@ -16,13 +16,7 @@
 from __future__ import unicode_literals
 from __future__ import print_function
 
-import re
-import sys
-import traceback
-
-import click
 from prompt_toolkit.completion import Completer
-from six.moves import cStringIO
 
 from .completions import ARG_POST_LIMIT, ARG_HIRING_REGEX_QUERY, \
     ARG_VIEW_POST_INDEX, ARG_USER_ID, COMMAND, SUBCOMMAND_HIRING, \
@@ -82,7 +76,7 @@ class Completer(Completer):
                 subcommand.
         """
         if (len(words) == 1 and word_before_cursor == '') \
-            or (len(words) == 2 and word_before_cursor != ''):
+                or (len(words) == 2 and word_before_cursor != ''):
             return True
         else:
             return False
@@ -99,7 +93,7 @@ class Completer(Completer):
             A boolean that specifies whether we are currently completing an arg.
         """
         if (len(words) == 2 and word_before_cursor == '') \
-            or (len(words) == 3 and word_before_cursor != ''):
+                or (len(words) == 3 and word_before_cursor != ''):
             return True
         else:
             return False
@@ -117,7 +111,7 @@ class Completer(Completer):
                 option.
         """
         if option in words and \
-            (words[-2] == option or \
+            (words[-2] == option or
                 self.completing_subcommand_option_util(option, words)):
             return True
         else:
@@ -185,8 +179,7 @@ class Completer(Completer):
         commands = []
         if len(words) == 0:
             return commands
-        if self.completing_command(
-            words, word_before_cursor):
+        if self.completing_command(words, word_before_cursor):
             commands = [COMMAND]
         else:
             if self.completing_subcommand(words, word_before_cursor):
@@ -195,16 +188,16 @@ class Completer(Completer):
                 if self.completing_arg(words, word_before_cursor):
                     commands = self.arg_completions(words, word_before_cursor)
                 elif self.completing_subcommand_option(
-                    SUBCOMMAND_FREELANCE, words, word_before_cursor):
+                        SUBCOMMAND_FREELANCE, words, word_before_cursor):
                     commands = OPTIONS_FREELANCE
                 elif self.completing_subcommand_option(
-                    SUBCOMMAND_HIRING, words, word_before_cursor):
+                        SUBCOMMAND_HIRING, words, word_before_cursor):
                     commands = OPTIONS_HIRING
                 elif self.completing_subcommand_option(
-                    SUBCOMMAND_USER, words, word_before_cursor):
+                        SUBCOMMAND_USER, words, word_before_cursor):
                     commands = OPTIONS_USER
                 elif self.completing_subcommand_option(
-                    SUBCOMMAND_VIEW, words, word_before_cursor):
+                        SUBCOMMAND_VIEW, words, word_before_cursor):
                     commands = OPTIONS_VIEW
                 else:
                     commands = []

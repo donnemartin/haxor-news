@@ -16,24 +16,15 @@
 from __future__ import print_function
 
 import os
-import platform
 import subprocess
-import sys
-import traceback
-import webbrowser
 
 import click
 from prompt_toolkit import AbortAction, Application, CommandLineInterface
-from prompt_toolkit.enums import DEFAULT_BUFFER
-from prompt_toolkit.filters import Always, HasFocus, IsDone
+from prompt_toolkit.filters import Always
 from prompt_toolkit.interface import AcceptAction
-from prompt_toolkit.layout.processors import \
-    HighlightMatchingBracketProcessor, ConditionalProcessor
 from prompt_toolkit.buffer import Buffer
 from prompt_toolkit.shortcuts import create_default_layout, create_eventloop
 from prompt_toolkit.history import FileHistory
-from prompt_toolkit.key_binding.input_processor import KeyPress
-from prompt_toolkit.keys import Keys
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 
 from .__init__ import __version__

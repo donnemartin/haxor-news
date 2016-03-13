@@ -21,20 +21,11 @@ import re
 import sys
 import urllib
 import webbrowser
-try:
-    # Python 3
-    import configparser
-    from urllib.parse import urlparse
-except ImportError:
-    # Python 2
-    import ConfigParser as configparser
-    from urlparse import urlparse
-if sys.version_info < (3, 3):
-    import HTMLParser
-else:
-    import html as HTMLParser
 
 import click
+from .compat import configparser
+from .compat import HTMLParser
+from .compat import urlparse
 import requests
 
 from .lib.haxor.haxor import HackerNewsApi, HTTPError, InvalidItemID, \
@@ -200,7 +191,7 @@ class HackerNews(object):
             None.
         """
         try:
-            url = 'https://raw.githubusercontent.com/donnemartin/donnemartin.github.io/master/tmp/settings.py'
+            url = 'https://raw.githubusercontent.com/donnemartin/donnemartin.github.io/master/tmp/settings.py'  # NOQA
             file_name = 'downloaded_settings.py'
             urllib.request.urlretrieve(url, file_name)
             with open(file_name, 'r') as f:
@@ -397,13 +388,13 @@ class HackerNews(object):
             header_color_highlight = 'magenta'
             header_adornment = ''
             if self.item_cache is not None and \
-                str(item.item_id) not in self.item_cache:
+                    str(item.item_id) not in self.item_cache:
                 header_adornment = self.COMMENT_UNSEEN
                 self.item_cache.append(item.item_id)
             print_comment = True
             if regex_query is not None:
                 if self.match_comment_unseen(regex_query, header_adornment) or \
-                    self.match_regex(item, regex_query):
+                        self.match_regex(item, regex_query):
                     header_color = header_color_highlight
                 else:
                     print_comment = False
@@ -624,7 +615,7 @@ class HackerNews(object):
             A boolean that specifies if there is a match found.
         """
         if regex_query == self.QUERY_UNSEEN and \
-            header_adornment == self.COMMENT_UNSEEN:
+                header_adornment == self.COMMENT_UNSEEN:
             return True
         else:
             return False
@@ -666,11 +657,11 @@ class HackerNews(object):
         parser.set(self.CONFIG_SECTION, self.CONFIG_IDS, self.item_ids)
         parser.set(self.CONFIG_SECTION, self.CONFIG_CACHE, self.item_cache)
         parser.set(self.CONFIG_SECTION,
-                        self.CONFIG_HIRING_ID,
-                        self.hiring_id)
+                   self.CONFIG_HIRING_ID,
+                   self.hiring_id)
         parser.set(self.CONFIG_SECTION,
-                        self.CONFIG_FREELANCE_ID,
-                        self.freelance_id)
+                   self.CONFIG_FREELANCE_ID,
+                   self.freelance_id)
         config_file = open(config_file_path, 'w+')
         parser.write(config_file)
         config_file.close()

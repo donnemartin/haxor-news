@@ -270,7 +270,8 @@ class HackerNewsCli(object):
         Args:
             * hacker_news: An instance of Hacker News.
             * user_id: A string representing the user id.
-            * limit: A string that specifies the number of posts to show.Optional, defaults to 10.
+            * limit: A string that specifies the number of posts to show.
+                Optional, defaults to 10.
 
         Example(s):
             hn user tptacek
