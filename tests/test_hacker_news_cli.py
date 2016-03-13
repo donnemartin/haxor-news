@@ -16,8 +16,8 @@
 from __future__ import print_function
 from __future__ import division
 
-from .compat import unittest
 import mock
+from tests.compat import unittest
 
 from click.testing import CliRunner
 

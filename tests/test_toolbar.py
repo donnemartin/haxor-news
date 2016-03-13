@@ -15,7 +15,7 @@
 
 from __future__ import print_function
 
-from .compat import unittest
+from tests.compat import unittest
 
 from pygments.token import Token
 

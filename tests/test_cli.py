@@ -15,11 +15,7 @@
 
 import pip
 import pexpect
-import sys
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
+from tests.compat import unittest
 
 
 class CliTest(unittest.TestCase):

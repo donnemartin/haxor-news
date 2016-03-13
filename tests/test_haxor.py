@@ -16,7 +16,7 @@
 from __future__ import print_function
 from __future__ import division
 
-from .compat import unittest
+from tests.compat import unittest
 
 from hncli.haxor import Haxor
 

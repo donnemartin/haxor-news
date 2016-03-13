@@ -16,9 +16,9 @@
 from __future__ import print_function
 from __future__ import division
 
-from .compat import unittest
 import mock
 import os
+from tests.compat import unittest
 
 from hncli.hacker_news import HackerNews
 from tests.data.comment import formatted_comment, formatted_heading, raw_comment

@@ -15,7 +15,7 @@
 
 from __future__ import print_function
 
-from .compat import unittest
+from tests.compat import unittest
 
 from prompt_toolkit.key_binding.input_processor import KeyPress
 from prompt_toolkit.keys import Keys
