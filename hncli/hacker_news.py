@@ -345,8 +345,8 @@ class HackerNews(object):
             header_color = 'yellow'
             header_color_highlight = 'magenta'
             header_adornment = ''
-            if str(item.item_id) not in self.item_cache:
-                header_color = header_color_highlight
+            if self.item_cache is not None and \
+                str(item.item_id) not in self.item_cache:
                 header_adornment = self.COMMENT_UNSEEN
                 self.item_cache.append(item.item_id)
             print_comment = True
