@@ -50,12 +50,16 @@ class Haxor(object):
 
     Attributes:
         * BROWSER_FLAGS: A list of browser option flags.
+        * cli: An instance of prompt_toolkit's CommandLineInterface.
         * COMMENT_FLAGS_CMDS: A list of comment option flags and commands that
             invoke comments.
-        * key_manager: An instance of KeyManager.
+        * completer: An instance of Completer.
+        * hacker_news_cli: An instance of HackerNewsCli.
+        * key_manager: An instance of prompt_toolkit's KeyManager.
         * PAGINATE_CMD: A string representing the command to enable pagination.
         * paginate_comments: A bool that determines whether to paginate
             comments.
+        * text_utils: An instance of TextUtils.
         * theme: A string representing the lexer theme.
     """
 
