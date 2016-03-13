@@ -94,7 +94,7 @@ class HackerNewsTest(unittest.TestCase):
         self.hn.hiring_and_freelance(self.query, post_id=self.valid_id)
         item = self.hn.hacker_news_api.get_item(self.valid_id)
         mock_print_comments.assert_called_with(
-            item, self.query, hide_no_match=True)
+            item, self.query, comments_hide_non_matching=True)
         self.hn.hiring_and_freelance(self.query, post_id=self.invalid_id)
         mock_print_item_not_found.assert_called_with(self.invalid_id)
 
@@ -162,14 +162,17 @@ class HackerNewsTest(unittest.TestCase):
         comments = False
         comments_recent = True
         comments_unseen = False
+        comments_hide_non_matching = False
         comments_clear_cache = False
         browser = False
         self.hn.view_setup(
             index, self.query, comments, comments_recent,
-            comments_unseen, comments_clear_cache, browser)
+            comments_unseen, comments_hide_non_matching,
+            comments_clear_cache, browser)
         comments_expected = True
         mock_view.assert_called_with(
-            index, self.hn.QUERY_RECENT, comments_expected, browser)
+            index, self.hn.QUERY_RECENT, comments_expected,
+            comments_hide_non_matching, browser)
 
     @mock.patch('hncli.hacker_news.HackerNews.view')
     def test_view_setup_query_unseen(self, mock_view):
@@ -177,14 +180,17 @@ class HackerNewsTest(unittest.TestCase):
         comments = False
         comments_recent = False
         comments_unseen = True
+        comments_hide_non_matching = False
         comments_clear_cache = False
         browser = False
         self.hn.view_setup(
             index, self.query, comments, comments_recent,
-            comments_unseen, comments_clear_cache, browser)
+            comments_unseen, comments_hide_non_matching,
+            comments_clear_cache, browser)
         comments_expected = True
         mock_view.assert_called_with(
-            index, self.hn.QUERY_UNSEEN, comments_expected, browser)
+            index, self.hn.QUERY_UNSEEN, comments_expected,
+            comments_hide_non_matching, browser)
 
     @mock.patch('hncli.hacker_news.HackerNews.view')
     @mock.patch('hncli.hacker_news.HackerNews.clear_item_cache')
@@ -193,15 +199,18 @@ class HackerNewsTest(unittest.TestCase):
         comments = False
         comments_recent = False
         comments_unseen = True
+        comments_hide_non_matching = False
         comments_clear_cache = True
         browser = False
         self.hn.view_setup(
             index, self.query, comments, comments_recent,
-            comments_unseen, comments_clear_cache, browser)
+            comments_unseen, comments_hide_non_matching,
+            comments_clear_cache, browser)
         comments_expected = True
         mock_clear_item_cache.assert_called_with()
         mock_view.assert_called_with(
-            index, self.hn.QUERY_UNSEEN, comments_expected, browser)
+            index, self.hn.QUERY_UNSEEN, comments_expected,
+            comments_hide_non_matching, browser)
 
     def test_format_comment(self):
         item = self.hn.hacker_news_api.get_item(self.valid_id)
@@ -336,8 +345,10 @@ class HackerNewsTest(unittest.TestCase):
         one_based_index = self.valid_id + 1
         comments_query = ''
         comments = False
+        comments_hide_non_matching = False
         browser = False
-        self.hn.view(one_based_index, comments_query, comments, browser)
+        self.hn.view(one_based_index, comments_query, comments,
+                     comments_hide_non_matching, browser)
         mock_url_contents.assert_called_with(
             items[self.valid_id].url)
         assert mock_click.secho.mock_calls
@@ -351,10 +362,14 @@ class HackerNewsTest(unittest.TestCase):
         one_based_index = self.valid_id + 1
         comments_query = 'foo'
         comments = True
+        comments_hide_non_matching = False
         browser = False
-        self.hn.view(one_based_index, comments_query, comments, browser)
+        self.hn.view(one_based_index, comments_query, comments,
+                     comments_hide_non_matching, browser)
         mock_print_comments.assert_called_with(
-            items[self.valid_id], regex_query=comments_query)
+            items[self.valid_id],
+            comments_hide_non_matching=False,
+            regex_query=comments_query)
         assert mock_click.mock_calls
 
     @mock.patch('hncli.hacker_news.HackerNews.print_comments')
@@ -366,10 +381,14 @@ class HackerNewsTest(unittest.TestCase):
         one_based_index = self.valid_id + 1
         comments_query = 'foo'
         comments = False
+        comments_hide_non_matching = False
         browser = False
-        self.hn.view(one_based_index, comments_query, comments, browser)
+        self.hn.view(one_based_index, comments_query, comments,
+                     comments_hide_non_matching, browser)
         mock_print_comments.assert_called_with(
-            items[self.valid_id], regex_query=comments_query)
+            items[self.valid_id],
+            comments_hide_non_matching=False,
+            regex_query=comments_query)
         assert mock_click.mock_calls
 
     @mock.patch('hncli.hacker_news.webbrowser')
@@ -380,8 +399,10 @@ class HackerNewsTest(unittest.TestCase):
         one_based_index = self.valid_id + 1
         comments_query = 'foo'
         comments = False
+        comments_hide_non_matching = False
         browser = True
-        self.hn.view(one_based_index, comments_query, comments, browser)
+        self.hn.view(one_based_index, comments_query, comments,
+                     comments_hide_non_matching, browser)
         mock_webbrowser.open.assert_called_with(items[self.valid_id].url)
         assert mock_click.mock_calls
 
@@ -393,8 +414,10 @@ class HackerNewsTest(unittest.TestCase):
         one_based_index = self.valid_id + 1
         comments_query = 'foo'
         comments = True
+        comments_hide_non_matching = False
         browser = True
-        self.hn.view(one_based_index, comments_query, comments, browser)
+        self.hn.view(one_based_index, comments_query, comments,
+                     comments_hide_non_matching, browser)
         item = items[self.valid_id]
         comments_url = self.hn.URL_POST + str(item.item_id)
         mock_webbrowser.open.assert_called_with(comments_url)

@@ -377,14 +377,14 @@ class HackerNews(object):
         click.echo('')
 
     def print_comment(self, item, regex_query='',
-                      hide_no_match=False, depth=0):
+                      comments_hide_non_matching=False, depth=0):
         """Prints the comments for the given item.
 
         Args:
             * item: An instance of haxor.Item.
             * regex_query: A string that specifies the regex query to match.
-            * hide_no_match: A bool that determines whether to hide comments
-                that don't match (False) or truncate them (True).
+            * comments_hide_non_matching: A bool that determines whether to
+                hide comments that don't match (False) or truncate them (True).
             * depth: The current recursion depth, used to indent the comment.
 
         Returns:
@@ -410,7 +410,7 @@ class HackerNews(object):
             if print_comment:
                 click.echo(formatted_heading)
                 click.echo(formatted_comment)
-            elif hide_no_match:
+            elif comments_hide_non_matching:
                 click.secho('.', nl=False, fg='blue')
             else:
                 click.echo(formatted_heading)
@@ -420,20 +420,20 @@ class HackerNews(object):
                 click.echo(formatted_comment[0:num_chars] + ' [...]')
 
     def print_comments(self, item, regex_query='',
-                       hide_no_match=False, depth=0):
+                       comments_hide_non_matching=False, depth=0):
         """Recursively print comments and subcomments for the given item.
 
         Args:
             * item: An instance of haxor.Item.
             * regex_query: A string that specifies the regex query to match.
-            * hide_no_match: A bool that determines whether to hide comments
-                that don't match (False) or truncate them (True).
+            * comments_hide_non_matching: A bool that determines whether to
+                hide comments that don't match (False) or truncate them (True).
             * depth: The current recursion depth, used to indent the comment.
 
         Returns:
             None.
         """
-        self.print_comment(item, regex_query, hide_no_match, depth)
+        self.print_comment(item, regex_query, comments_hide_non_matching, depth)
         comment_ids = item.kids
         if not comment_ids:
             return
@@ -441,10 +441,11 @@ class HackerNews(object):
             try:
                 comment = self.hacker_news_api.get_item(comment_id)
                 depth += 1
-                self.print_comments(comment,
-                                    regex_query=regex_query,
-                                    hide_no_match=hide_no_match,
-                                    depth=depth)
+                self.print_comments(
+                    comment,
+                    regex_query=regex_query,
+                    comments_hide_non_matching=comments_hide_non_matching,
+                    depth=depth)
                 depth -= 1
             except (InvalidItemID, HTTPError):
                 click.echo('')
@@ -763,7 +764,8 @@ class HackerNews(object):
             # There might not be a cache yet, just silently return.
             return None
 
-    def view(self, index, comments_query, comments, browser):
+    def view(self, index, comments_query, comments,
+             comments_hide_non_matching, browser):
         """Views the given index in a browser.
 
         Uses ids from ~/.hncliconfig stored in self.item_ids.
@@ -811,7 +813,10 @@ class HackerNews(object):
             if browser:
                 webbrowser.open(comments_url)
             else:
-                self.print_comments(item, regex_query=comments_query)
+                self.print_comments(
+                    item,
+                    regex_query=comments_query,
+                    comments_hide_non_matching=comments_hide_non_matching)
                 self.save_cache()
             click.echo('')
         else:
@@ -824,7 +829,8 @@ class HackerNews(object):
             click.echo('')
 
     def view_setup(self, index, comments_regex_query, comments,
-                   comments_recent, comments_unseen, clear_cache, browser):
+                   comments_recent, comments_unseen,
+                   comments_hide_non_matching, clear_cache, browser):
         """Sets up the call to views the given index comments or url.
 
         This method is meant to be called after a command that outputs a
@@ -864,4 +870,5 @@ class HackerNews(object):
         self.view(int(index),
                   comments_regex_query,
                   comments,
+                  comments_hide_non_matching,
                   browser)
