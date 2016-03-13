@@ -722,6 +722,11 @@ class HackerNews(object):
             None.
         """
         self.item_ids = self.load_cache(self.CONFIG_IDS)
+        if self.item_ids is None:
+            click.secho('There are no posts indexed, run a command such as '
+                        'hn top first',
+                        fg='red')
+            return
         item_id = index
         if index < self.MAX_LIST_INDEX:
             try:
