@@ -8,6 +8,7 @@ haxor-news
 * Posts
 * Post Comments
 * Post Linked Web Content
+* Monthly Hiring and Freelancers Posts
 * User Info
 * Onions
 
@@ -21,6 +22,8 @@ Spend a lot of time on the terminal?  Spend a lot of time on Hacker News?
 
 `haxor-news` brings Hacker News to the terminal, allowing you to view and filter linked web pages and comments without leaving your command line.
 
+![Imgur](http://i.imgur.com/FZjVqoc.png)
+
 * Want to expand only previously **unseen comments**?
     * `-cu/--comments_unseen`
 * How about **recent comments** posted in the past 60 minutes?
@@ -30,15 +33,13 @@ Spend a lot of time on the terminal?  Spend a lot of time on Hacker News?
 
 Need help remembering these options?  `haxor-news` comes with an **optional auto-completer and interactive help**:
 
-![Imgur](http://i.imgur.com/MuUO5wW.png)
+![Imgur](http://i.imgur.com/seKUiur.png)
 
 Job hunting or just curious what's out there?  **Filter the monthly who's hiring and freelancers post**:
 
     $ hn hiring "(?i)(Node|JavaScript).*(remote)" > remote_web_jobs.txt
 
 Combine `haxor-news` with pipes, redirects, and other command line utilities.  Output to pagers, write to files, automate with cron, etc.
-
-![Imgur](http://i.imgur.com/FZjVqoc.png)
 
 ## Index
 
