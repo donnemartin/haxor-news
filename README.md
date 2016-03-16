@@ -41,6 +41,12 @@ Job hunting or just curious what's out there?  **Filter the monthly who's hiring
 
 Combine `haxor-news` with pipes, redirects, and other command line utilities.  Output to pagers, write to files, automate with cron, etc.
 
+## TODO
+
+* Submit posts and comments
+* Search posts and comments
+* Customize color scheme
+
 ## Index
 
 ### General
@@ -66,10 +72,6 @@ Combine `haxor-news` with pipes, redirects, and other command line utilities.  O
 * [View Onions](#view-onions)
 * [View in a Browser](#viewing-results-in-a-browser)
 * [Windows Support](#windows-support)
-* [TODO](#todo)
-    * [Submit Posts and Comments](#todo)
-    * [Search Posts and Comments](#todo)
-    * [Customize Color Scheme](#todo)
 
 ### Installation and Tests
 
@@ -288,12 +290,6 @@ Usage:
 `haxor-news` has been tested on Windows 7 and Windows 10.
 
 Although you can use the standard Windows command prompt, you'll probably have a better experience with either [cmder](https://github.com/cmderdev/cmder) or [conemu](https://github.com/Maximus5/ConEmu).
-
-## TODO
-
-* Submit posts and comments
-* Search posts and comments
-* Customize color scheme
 
 ## Installation
 
