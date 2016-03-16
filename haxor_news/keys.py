@@ -70,7 +70,8 @@ class KeyManager(object):
             Returns:
                 None.
             """
-            set_paginate_comments(not get_paginate_comments())
+            # set_paginate_comments(not get_paginate_comments())
+            pass
 
         @self.manager.registry.add_binding(Keys.F10)
         def handle_f10(_):

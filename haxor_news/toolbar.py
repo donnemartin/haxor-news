@@ -57,15 +57,15 @@ class Toolbar(object):
             Returns:
                 A list of Token.Toolbar.
             """
-            if paginate_comments_cfg():
-                paginate_comments_token = Token.Toolbar.On
-                paginate_comments = 'ON'
-            else:
-                paginate_comments_token = Token.Toolbar.Off
-                paginate_comments = 'OFF'
+            # if paginate_comments_cfg():
+            #     paginate_comments_token = Token.Toolbar.On
+            #     paginate_comments = 'ON'
+            # else:
+            #     paginate_comments_token = Token.Toolbar.Off
+            #     paginate_comments = 'OFF'
             return [
-                (paginate_comments_token,
-                 ' [F2] Paginate Comments: {0} '.format(paginate_comments)),
+                # (paginate_comments_token,
+                #  ' [F2] Paginate Comments: {0} '.format(paginate_comments)),
                 (Token.Toolbar, ' [F10] Exit ')
             ]
 
