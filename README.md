@@ -186,7 +186,7 @@ Examples:
     $ hn view 8 -cr
     $ hn view 8 --comments_recent
 
-![Imgur](http://i.imgur.com/pL1GwtF.png)
+![Imgur](http://i.imgur.com/diOjxIr.png)
 
 ### Filter with Regex
 
