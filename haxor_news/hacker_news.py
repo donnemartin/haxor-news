@@ -121,7 +121,7 @@ class HackerNews(object):
     TIP0 = '  Tip: View the page or comments for '
     TIP1 = ' with the following command:\n'
     TIP2 = '    hn view [#] '
-    TIP3 = 'optional: [-c] [-cr] [-cu] [-cq "regex"] [-b] [--help]'
+    TIP3 = 'optional: [-c] [-cr] [-cu] [-cq "regex"] [-ch] [-b] [--help]'
     URL_POST = 'https://news.ycombinator.com/item?id='
 
     def __init__(self):
