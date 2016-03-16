@@ -22,7 +22,7 @@ Spend a lot of time on the terminal?  Spend a lot of time on Hacker News?
 
 `haxor-news` brings Hacker News to the terminal, allowing you to view and filter linked web pages and comments without leaving your command line.
 
-![Imgur](http://i.imgur.com/FZjVqoc.png)
+![Imgur](http://i.imgur.com/PjY3ClS.png)
 
 * Want to expand only previously **unseen comments**?
     * `-cu/--comments_unseen`
@@ -128,7 +128,7 @@ Examples:
     $ hn top
     $ hn show 30 | less
 
-![Imgur](http://i.imgur.com/6kZG84S.png)
+![Imgur](http://i.imgur.com/bMiQRjx.png)
 
 ## View a Post's Linked Web Content
 
@@ -147,7 +147,7 @@ Example:
     $ hn view 1
     $ hn view 8
 
-![Imgur](http://i.imgur.com/yWKASiQ.png)
+![Imgur](http://i.imgur.com/FoTCPAp.png)
 
 ## View and Filter a Post's Comments
 
@@ -160,7 +160,7 @@ Examples:
     $ hn view 8 -c
     $ hn view 8 --comments > comments.txt
 
-![Imgur](http://i.imgur.com/fcBUnim.png)
+![Imgur](http://i.imgur.com/t32ITvN.png)
 
 ### Filter on Unseen Comments
 
@@ -173,7 +173,7 @@ Examples:
     $ hn view 8 -cu
     $ hn view 8 --comments_unseen | less
 
-![Imgur](http://i.imgur.com/mR4uKY0.png)
+![Imgur](http://i.imgur.com/tCVpSIs.png)
 
 ### Filter on Recent Comments
 
@@ -186,7 +186,7 @@ Examples:
     $ hn view 8 -cr
     $ hn view 8 --comments_recent
 
-![Imgur](http://i.imgur.com/LfquzlG.png)
+![Imgur](http://i.imgur.com/pL1GwtF.png)
 
 ### Filter with Regex
 
@@ -199,7 +199,7 @@ Example:
 
 *Case insensitive regex: `(?i)`*
 
-![Imgur](http://i.imgur.com/1IpPwZF.png)
+![Imgur](http://i.imgur.com/SlKtIpS.png)
 
 ## Filter the Monthly Hiring Post
 
