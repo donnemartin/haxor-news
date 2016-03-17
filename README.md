@@ -128,7 +128,7 @@ Usage:
 Examples:
 
     $ hn top
-    $ hn show 30 | less
+    $ hn show 20
 
 ![Imgur](http://i.imgur.com/bMiQRjx.png)
 
@@ -173,7 +173,7 @@ Seen comments will be truncated with [...] and will be shown to help provide con
 Examples:
 
     $ hn view 8 -cu
-    $ hn view 8 --comments_unseen | less
+    $ hn view 8 --comments_unseen | less -r
 
 ![Imgur](http://i.imgur.com/tCVpSIs.png)
 
@@ -185,7 +185,7 @@ Older comments will be truncated with [...] and will be shown to help provide co
 
 Examples:
 
-    $ hn view 8 -cr
+    $ hn view 8 -cr | less -r
     $ hn view 8 --comments_recent
 
 ![Imgur](http://i.imgur.com/diOjxIr.png)
@@ -194,9 +194,9 @@ Examples:
 
 Filter comments based on a given regular expression query.
 
-Example:
+Examples:
 
-    $ hn view 2 -cq "(?i)programmer"
+    $ hn view 2 -cq "(?i)programmer" | less -r
     $ hn view 2 --comments_regex_query "(?i)programmer" > programmer.txt
 
 *Case insensitive regex: `(?i)`*
