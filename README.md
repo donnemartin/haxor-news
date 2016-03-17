@@ -31,7 +31,7 @@ Spend a lot of time on the terminal?  Spend a lot of time on Hacker News?
 * Filter comments matching a **regex query**?
     * `-cq/--comments_query [query]`
 
-Need help remembering these options?  `haxor-news` comes with an **optional auto-completer and interactive help**:
+`haxor-news` comes with a handy **optional auto-completer with interactive help**:
 
 ![Imgur](http://i.imgur.com/seKUiur.png)
 
@@ -52,7 +52,7 @@ Combine `haxor-news` with pipes, redirects, and other command line utilities.  O
 ### General
 
 * [Syntax](#syntax)
-* [Auto-Completer and Interactive Help (Optional)](#auto-completer-and-interactive-help-optional)
+* [Auto-Completer and Interactive Help](#auto-completer-and-interactive-help)
 * [Commands](#commands)
 
 
@@ -98,11 +98,13 @@ Usage:
 
     $ hn <command> [params] [options]
 
-## Auto-Completer and Interactive Help (Optional)
+## Auto-Completer and Interactive Help
 
-Optionally, you can enable fish-style completions plus an auto-completion menu with interactive help:
+Optionally, you can enable fish-style completions and an auto-completion menu with interactive help:
 
     $ haxor-news
+
+If available, the auto-completer also automatically displays comments through a pager.
 
 Within the auto-completer, the same syntax applies:
 
