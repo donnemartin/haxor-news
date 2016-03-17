@@ -16,6 +16,7 @@
 from __future__ import print_function
 
 import os
+import platform
 import subprocess
 
 import click
@@ -73,6 +74,7 @@ class Haxor(object):
         'freelance',
     ]
     PAGINATE_CMD = '| less -r'
+    PAGINATE_CMD_WIN = '| more'
 
     def __init__(self):
         """Inits Saws.
@@ -175,7 +177,10 @@ class Haxor(object):
         """
         if not any(sub in document_text for sub in self.BROWSER_FLAGS):
             if any(sub in document_text for sub in self.COMMENT_FLAGS_CMDS):
-                document_text += self.PAGINATE_CMD
+                if platform.system() == 'Windows':
+                    document_text += self.PAGINATE_CMD_WIN
+                else:
+                    document_text += self.PAGINATE_CMD
         return document_text
 
     def run_cli(self):

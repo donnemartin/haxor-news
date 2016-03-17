@@ -16,6 +16,8 @@
 from __future__ import print_function
 from __future__ import division
 
+import platform
+
 from tests.compat import unittest
 
 from haxor_news.haxor import Haxor
@@ -32,7 +34,10 @@ class HaxorTest(unittest.TestCase):
         assert result == text
         text = 'hn view 1 -c'
         result = self.haxor.add_comment_pagination(text)
-        assert result == text + self.haxor.PAGINATE_CMD
+        if platform.system() == 'Windows':
+            assert result == text + self.haxor.PAGINATE_CMD_WIN
+        else:
+            assert result == text + self.haxor.PAGINATE_CMD
         text = 'hn view 1 -c -b'
         result = self.haxor.add_comment_pagination(text)
         assert result == text
