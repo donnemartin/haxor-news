@@ -65,6 +65,7 @@ Combine `haxor-news` with pipes, redirects, and other command line utilities.  O
     * [Filter on Unseen Comments](#filter-on-unseen-comments)
     * [Filter on Recent Comments](#filter-on-recent-comments)
     * [Filter with Regex](#filter-with-regex)
+    * [Hide Non-Matching Comments](#hide-non-matching-comments)
 * [View and Filter the Monthly Hiring Post](#filter-the-monthly-hiring-post)
 * [View and Filter the Monthly Freelancer Post](#filter-the-monthly-hiring-post)
 * [Combine With Pipes and Redirects](#combine-with-pipes-and-redirects)
@@ -208,6 +209,16 @@ Examples:
 *Case insensitive regex: `(?i)`*
 
 ![Imgur](http://i.imgur.com/SlKtIpS.png)
+
+### Hide Non-Matching Comments
+
+When filtering comments for unseen, recent, or with regex, non-matching comments are collapsed to provide context.  To instead hide non-matching comments, pass the `-ch\--comments_hide` flag.  Hidden comments will be displayed as `.`.
+
+Example:
+
+    $ hn view 8 -cu | -ch | less -r
+
+![Imgur](http://i.imgur.com/qPopK7X.png)
 
 ## Filter the Monthly Hiring Post
 
