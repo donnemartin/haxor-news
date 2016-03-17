@@ -119,7 +119,7 @@ Within the auto-completer, the same syntax applies:
 
 ## View Posts
 
-View Top, Best, Show, Show, Ask, Jobs, New, and Onion posts.
+View the Top, Best, Show, Show, Ask, Jobs, New, and Onion posts.
 
 Usage:
 
