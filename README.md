@@ -162,6 +162,12 @@ Examples:
     $ hn view 8 -c
     $ hn view 8 --comments > comments.txt
 
+#### Paged Comments
+
+If running with the auto-completer, comments are automatically paginated.  To get the same pagination without the auto-completer, append `| less -r`:
+
+    $ hn view 8 -c | less -r
+
 ![Imgur](http://i.imgur.com/t32ITvN.png)
 
 ### Filter on Unseen Comments
