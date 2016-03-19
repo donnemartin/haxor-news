@@ -471,6 +471,7 @@ class HackerNews(object):
         Returns:
             None.
         """
+        self.config.item_ids = []
         index = 1
         for item_id in item_ids:
             try:
