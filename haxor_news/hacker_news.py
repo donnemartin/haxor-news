@@ -632,7 +632,6 @@ class HackerNews(object):
         Returns:
             None.
         """
-        self.config.item_ids = self.config.load_cache(self.config.CONFIG_IDS)
         if self.config.item_ids is None:
             click.secho('There are no posts indexed, run a command such as '
                         'hn top first',
