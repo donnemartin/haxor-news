@@ -31,7 +31,6 @@ from .lib.haxor.haxor import HackerNewsApi, HTTPError, InvalidItemID, \
 from .lib.html2text.html2text import HTML2Text
 from .lib.pretty_date_time import pretty_date_time
 from .onions import onions
-from .settings import freelancer_post_id, who_is_hiring_post_id
 
 
 class HackerNews(object):

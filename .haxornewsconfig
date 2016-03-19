@@ -1,9 +1,7 @@
 [haxor-news]
-item_ids = ['0', '1', '2']
-item_cache = ['3', '4', '5']
-hiring_id = 11202954
-freelance_id = 11202955
-show_tip = ['False']
+hiring_id = 0
+freelance_id = 0
+show_tip = True
 clr_bold = cyan
 clr_code = cyan
 clr_general = None
@@ -19,4 +17,6 @@ clr_tooltip = None
 clr_user = cyan
 clr_view_link = magenta
 clr_view_index = magenta
+item_ids = [0, 1, 2]
+item_cache = ['3', '4', '5']
 

@@ -67,7 +67,7 @@ class HackerNewsTest(unittest.TestCase):
 
     @mock.patch('haxor_news.config.Config.save_cache')
     def test_clear_item_cache(self, mock_save_cache):
-        item_ids = self.hn.config.load_cache(self.hn.config.CONFIG_IDS)
+        item_ids = self.hn.config.item_ids
         self.hn.config.clear_item_cache()
         assert self.hn.config.item_ids == item_ids
         assert self.hn.config.item_cache == []
@@ -119,10 +119,10 @@ class HackerNewsTest(unittest.TestCase):
         self.hn.config.item_ids = [0, 1, 2]
         self.hn.config.item_cache = [3, 4, 5]
         self.hn.config.save_cache()
-        item_ids = self.hn.config.load_cache(self.hn.config.CONFIG_IDS)
-        assert item_ids == ['0', '1', '2']
-        item_cache = self.hn.config.load_cache(self.hn.config.CONFIG_CACHE)
-        assert item_cache == ['3', '4', '5']
+        item_ids = self.hn.config.item_ids
+        assert item_ids == [0, 1, 2]
+        item_cache = self.hn.config.item_cache
+        assert item_cache == [3, 4, 5]
 
     @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_show(self, mock_print_items):

@@ -21,6 +21,7 @@ import urllib
 
 import click
 from .compat import configparser
+from .settings import freelancer_post_id, who_is_hiring_post_id
 
 
 class Config(object):
@@ -29,7 +30,7 @@ class Config(object):
     Attributes:
         * CONFIG: A string representing the config file name.
         * CONFIG_SECTION: A string representing the main config file section.
-        * CONFIG_CLR_XXX: A string representing the ansi color to use to
+        * CONFIG_CLR_X: A string representing the ansi color to use to
             highlight the specified item.
         * CONFIG_IDS: A string representing the last list of seen post ids.
         * CONFIG_CACHE: A string representing the list of seen comments.
@@ -84,16 +85,42 @@ class Config(object):
             None.
         """
         self.item_ids = []
-        self.item_cache = self.load_cache(self.CONFIG_CACHE)
-        self.hiring_id, self.freelance_id = \
-            self.load_hiring_and_freelance_ids()
-        self.load_colors()
-        try:
-            self.show_tip = self.load_cache(self.CONFIG_SHOW_TIP)
-            if self.show_tip is None:
-                self.show_tip = True
-        except configparser.NoOptionError:
-            self.show_tip = True
+        self.item_cache = []
+        self.hiring_id = 0
+        self.freelance_id = 0
+        self.show_tip = True
+        self.init_colors()
+        self.load_config([
+            self.load_config_item_ids,
+            self.load_config_item_cache,
+            self.load_config_colors,
+            self.load_config_show_tip,
+        ])
+
+    def init_colors(self):
+        """Initializes colors to their defaults.
+
+        Args:
+            * None.
+
+        Returns:
+            None.
+        """
+        self.clr_bold = 'cyan'
+        self.clr_code = 'cyan'
+        self.clr_general = None
+        self.clr_header = 'yellow'
+        self.clr_link = 'green'
+        self.clr_list = 'cyan'
+        self.clr_num_comments = 'green'
+        self.clr_num_points = 'green'
+        self.clr_tag = 'cyan'
+        self.clr_time = 'yellow'
+        self.clr_title = None
+        self.clr_tooltip = None
+        self.clr_user = 'cyan'
+        self.clr_view_link = 'magenta'
+        self.clr_view_index = 'magenta'
 
     def clear_item_cache(self):
         """Clears the item cache.
@@ -104,7 +131,6 @@ class Config(object):
         Returns:
             None.
         """
-        self.item_ids = self.load_cache(self.CONFIG_IDS)
         self.item_cache = []
         self.save_cache()
 
@@ -121,11 +147,11 @@ class Config(object):
         config_file_path = os.path.join(home, config_file_name)
         return config_file_path
 
-    def load_cache(self, section):
-        """Loads the item ids and the item cache from ~/.haxornewsconfig.
+    def load_config(self, config_funcs):
+        """Loads the specified config from ~/.haxornewsconfig.
 
         Args:
-            * section: A string representing the section to load.
+            * config_funcs: A list of config functions to run
 
         Returns:
             A list of caches.
@@ -135,14 +161,76 @@ class Config(object):
         try:
             with open(config_file_path) as config_file:
                 parser.readfp(config_file)
-                return self.load_section(parser, section)
+                for config_func in config_funcs:
+                    config_func(parser)
         except IOError:
             # There might not be a cache yet, just silently return.
             return None
 
-    def load_color(self, config, default):
+    def load_config_colors(self, parser):
+        """Loads the color config from ~/.haxornewsconfig.
+
+        Args:
+            * parser: An instance of ConfigParser.RawConfigParser.
+
+        Returns:
+            None.
+        """
+        self.load_colors(parser)
+
+    def load_config_hiring_and_freelance_ids(self, parser):
+        """Loads the hiring and freelance ids from ~/.haxornewsconfig.
+
+        Args:
+            * parser: An instance of ConfigParser.RawConfigParser.
+
+        Returns:
+            None.
+        """
+        self.hiring_id = parser.getint(self.CONFIG_SECTION,
+                                       self.CONFIG_HIRING_ID)
+        self.freelance_id = parser.getint(self.CONFIG_SECTION,
+                                          self.CONFIG_FREELANCE_ID)
+
+    def load_config_item_cache(self, parser):
+        """Loads the item cache from ~/.haxornewsconfig.
+
+        Args:
+            * parser: An instance of ConfigParser.RawConfigParser.
+
+        Returns:
+            None.
+        """
+        self.item_cache = self.load_section_list(parser,
+                                                 self.CONFIG_CACHE)
+
+    def load_config_item_ids(self, parser):
+        """Loads the item ids from ~/.haxornewsconfig.
+
+        Args:
+            * parser: An instance of ConfigParser.RawConfigParser.
+
+        Returns:
+            None.
+        """
+        self.item_ids = self.load_section_list(parser,
+                                               self.CONFIG_IDS)
+
+    def load_config_show_tip(self, parser):
+        """Loads the show tip config from ~/.haxornewsconfig.
+
+        Args:
+            * parser: An instance of ConfigParser.RawConfigParser.
+
+        Returns:
+            None.
+        """
+        self.show_tip = parser.getboolean(self.CONFIG_SECTION,
+                                          self.CONFIG_SHOW_TIP)
+
+    def load_color(self, parser, config, default):
         try:
-            color = self.load_cache(config)[0].lower()
+            color = parser.get(self.CONFIG_SECTION, config)
             if color == 'none':
                 color = None
             # Check if the user input a valid color.
@@ -152,50 +240,65 @@ class Config(object):
             return default
         return color
 
-    def load_colors(self):
+    def load_colors(self, parser):
         self.clr_bold = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_BOLD,
             default='cyan')
         self.clr_code = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_CODE,
             default='cyan')
         self.clr_general = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_GENERAL,
             default=None)
         self.clr_header = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_HEADER,
             default='yellow')
         self.clr_link = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_LINK,
             default='green')
         self.clr_list = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_LIST,
             default='cyan')
         self.clr_num_comments = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_NUM_COMMENTS,
             default='green')
         self.clr_num_points = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_NUM_POINTS,
             default='green')
         self.clr_tag = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_TAG,
             default='cyan')
         self.clr_time = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_TIME,
             default='yellow')
         self.clr_title = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_TITLE,
             default=None)
         self.clr_tooltip = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_TOOLTIP,
             default=None)
         self.clr_user = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_USER,
             default='cyan')
         self.clr_view_link = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_VIEW_LINK,
             default='magenta')
         self.clr_view_index = self.load_color(
+            parser=parser,
             config=self.CONFIG_CLR_VIEW_INDEX,
             default='magenta')
 
@@ -220,20 +323,17 @@ class Config(object):
             with open(file_name, 'r') as f:
                 for line in f:
                     if line.startswith('who_is_hiring_post_id'):
-                        hiring_id = line.split(' = ')[1].strip('\n')
+                        self.hiring_id = line.split(' = ')[1].strip('\n')
                     if line.startswith('freelancer_post_id'):
-                        freelance_id = line.split(' = ')[1].strip('\n')
-        except:
-            try:
-                hiring_id = self.load_cache(self.CONFIG_HIRING_ID)
-                freelance_id = self.load_cache(self.CONFIG_FREELANCE_ID)
-            except configparser.NoOptionError:
-                hiring_id = who_is_hiring_post_id
-                freelance_id = freelancer_post_id
-        return hiring_id, freelance_id
+                        self.freelance_id = line.split(' = ')[1].strip('\n')
+        except urllib.error.URLError:
+            self.load_config([self.load_config_hiring_and_freelance_ids])
+            if self.hiring_id == 0 or self.freelance_id == 0:
+                self.hiring_id = who_is_hiring_post_id
+                self.freelance_id = freelancer_post_id
 
-    def load_section(self, parser, section):
-        """Loads the given section from ~/.haxornewsconfig.
+    def load_section_list(self, parser, section):
+        """Loads the given section containing a list from ~/.haxornewsconfig.
 
         Args:
             * parser: An instance of ConfigParser.RawConfigParser.
@@ -267,12 +367,6 @@ class Config(object):
         config_file_path = self.get_config_path(self.CONFIG)
         parser = configparser.RawConfigParser()
         parser.add_section(self.CONFIG_SECTION)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_IDS,
-                   self.item_ids)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CACHE,
-                   self.item_cache)
         parser.set(self.CONFIG_SECTION,
                    self.CONFIG_HIRING_ID,
                    self.hiring_id)
@@ -327,6 +421,12 @@ class Config(object):
         parser.set(self.CONFIG_SECTION,
                    self.CONFIG_CLR_VIEW_INDEX,
                    self.clr_view_index)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_IDS,
+                   self.item_ids)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CACHE,
+                   self.item_cache)
         config_file = open(config_file_path, 'w+')
         parser.write(config_file)
         config_file.close()
