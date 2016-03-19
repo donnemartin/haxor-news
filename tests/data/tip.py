@@ -13,4 +13,4 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-formatted_tip = '\x1b[34m  Tip: View the page or comments for \x1b[0m\x1b[35m1 through \x1b[0m\x1b[35m10\x1b[0m\x1b[34m with the following command:\n\x1b[0m\x1b[35m    hn view [#] \x1b[0m\x1b[34moptional: [-c] [-cr] [-cu] [-cq "regex"] [-ch] [-b] [--help]\n\x1b[0m'  # NOQA
+formatted_tip = '  Tip: View the page or comments for \x1b[0m\x1b[35m1 through \x1b[0m\x1b[35m10\x1b[0m with the following command:\n\x1b[0m\x1b[35m    hn view [#] \x1b[0moptional: [-c] [-cr] [-cu] [-cq "regex"] [-ch] [-b] [--help]\n\x1b[0m'  # NOQA

@@ -15,4 +15,4 @@
 
 raw_title = u'The secret message hidden in every HTTP/2 connection'
 
-formatted_title = u'\x1b[35m  1.  \x1b[0m\x1b[34mThe secret message hidden in every HTTP/2 connection \x1b[0m'  # NOQA
+formatted_title = u'\x1b[35m  1.  \x1b[0mThe secret message hidden in every HTTP/2 connection \x1b[0m'  # NOQA

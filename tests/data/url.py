@@ -13,4 +13,4 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-formatted_url = '\x1b[35mViewing foo\n\n\x1b[0mbar'
+formatted_url = 'Viewing foo\n\n\x1b[0mbar'

@@ -45,12 +45,15 @@ class HackerNews(object):
             comments.
         * CONFIG: A string representing the config file name.
         * CONFIG_SECTION: A string representing the main config file section.
+        * CONFIG_CLR_XXX: A string representing the ansi color to use to
+            highlight the specified item.
         * CONFIG_IDS: A string representing the last list of seen post ids.
         * CONFIG_CACHE: A string representing the list of seen comments.
         * CONFIG_HIRING_ID: A string representing the monthly freelancer
             post id.
         * CONFIG_FREELANCE_ID: A string representing the monthly who's hiring
             post id.
+        * CONFIG_SHOW_TIP: A boolean that determines whether to show the tip.
         * html: An instance of html or HTMLParser.
         * MAX_ITEM_CACHE_SIZE: An int representing the maximum number of
             seen comment ids.
@@ -99,11 +102,27 @@ class HackerNews(object):
     COMMENT_INDENT = '  '
     COMMENT_UNSEEN = ' [!]'
     CONFIG = '.haxornewsconfig'
+    CONFIG_CLR_BOLD = 'clr_bold'
+    CONFIG_CLR_CODE = 'clr_code'
+    CONFIG_CLR_GENERAL = 'clr_general'
+    CONFIG_CLR_HEADER = 'clr_header'
+    CONFIG_CLR_LINK = 'clr_link'
+    CONFIG_CLR_LIST = 'clr_list'
+    CONFIG_CLR_NUM_COMMENTS = 'clr_num_comments'
+    CONFIG_CLR_NUM_POINTS = 'clr_num_points'
+    CONFIG_CLR_TAG = 'clr_tag'
+    CONFIG_CLR_TIME = 'clr_time'
+    CONFIG_CLR_TITLE = 'clr_title'
+    CONFIG_CLR_TOOLTIP = 'clr_tooltip'
+    CONFIG_CLR_USER = 'clr_user'
+    CONFIG_CLR_VIEW_LINK = 'clr_view_link'
+    CONFIG_CLR_VIEW_INDEX = 'clr_view_index'
     CONFIG_SECTION = 'haxor-news'
     CONFIG_IDS = 'item_ids'
     CONFIG_CACHE = 'item_cache'
     CONFIG_HIRING_ID = 'hiring_id'
     CONFIG_FREELANCE_ID = 'freelance_id'
+    CONFIG_SHOW_TIP = 'show_tip'
     MAX_LIST_INDEX = 1000
     MAX_ITEM_CACHE_SIZE = 20000
     MAX_SNIPPET_LENGTH = 60
@@ -144,6 +163,87 @@ class HackerNews(object):
             self._load_hiring_and_freelance_ids()
         self.html_to_text = None
         self._init_html_to_text()
+        self._load_colors()
+        try:
+            self.show_tip = self.load_cache(self.CONFIG_SHOW_TIP)
+            if self.show_tip is None:
+                self.show_tip = True
+        except configparser.NoOptionError:
+            self.show_tip = True
+
+    def _load_color(self, config, default):
+        try:
+            color = self.load_cache(config)[0].lower()
+            if color == 'none':
+                color = None
+            # Check if the user input a valid color.
+            # If invalid, this will throw a TypeError
+            dummy = click.style('', fg=color)
+        except TypeError:
+            return default
+        return color
+
+    def _load_colors(self):
+        self.clr_bold = 'cyan'
+        self.clr_bold = self._load_color(
+            config=self.CONFIG_CLR_BOLD,
+            default=self.clr_bold)
+        self.clr_code = 'cyan'
+        self.clr_code = self._load_color(
+            config=self.CONFIG_CLR_CODE,
+            default=self.clr_code)
+        self.clr_general = None
+        self.clr_general = self._load_color(
+            config=self.CONFIG_CLR_GENERAL,
+            default=self.clr_general)
+        self.clr_header = 'yellow'
+        self.clr_header = self._load_color(
+            config=self.CONFIG_CLR_HEADER,
+            default=self.clr_header)
+        self.clr_link = 'green'
+        self.clr_link = self._load_color(
+            config=self.CONFIG_CLR_LINK,
+            default=self.clr_link)
+        self.clr_list = 'cyan'
+        self.clr_list = self._load_color(
+            config=self.CONFIG_CLR_LIST,
+            default=self.clr_list)
+        self.clr_num_comments = 'green'
+        self.clr_num_comments = self._load_color(
+            config=self.CONFIG_CLR_NUM_COMMENTS,
+            default=self.clr_num_comments)
+        self.clr_num_points = 'green'
+        self.clr_num_points = self._load_color(
+            config=self.CONFIG_CLR_NUM_POINTS,
+            default=self.clr_num_points)
+        self.clr_tag = 'cyan'
+        self.clr_tag = self._load_color(
+            config=self.CONFIG_CLR_TAG,
+            default=self.clr_tag)
+        self.clr_time = 'yellow'
+        self.clr_time = self._load_color(
+            config=self.CONFIG_CLR_TIME,
+            default=self.clr_time)
+        self.clr_title = None
+        self.clr_title = self._load_color(
+            config=self.CONFIG_CLR_TITLE,
+            default=self.clr_title)
+        self.clr_tooltip = None
+        self.clr_tooltip = self._load_color(
+            config=self.CONFIG_CLR_TOOLTIP,
+            default=self.clr_tooltip)
+        self.clr_user = 'cyan'
+        self.clr_user = self._load_color(
+            config=self.CONFIG_CLR_USER,
+            default=self.clr_user)
+        self.clr_view_link = 'magenta'
+        self.clr_view_link = self._load_color(
+            config=self.CONFIG_CLR_VIEW_LINK,
+            default=self.clr_view_link)
+        self.clr_view_index = 'magenta'
+        self.clr_view_index = self._load_color(
+            config=self.CONFIG_CLR_VIEW_INDEX,
+            default=self.clr_view_index)
 
     def _config(self, config_file_name):
         """Gets the config file path.
@@ -265,22 +365,22 @@ class HackerNews(object):
             pattern_url_name,
             pattern_url_link)
         regex_url = re.compile(pattern_url)
-        text = regex_url.sub(click.style(r'\1', fg='green'), text)
+        text = regex_url.sub(click.style(r'\1', fg=self.clr_link), text)
         pattern_url_ref_name = r'[^]]*'
         pattern_url_ref_link = r'[^]]+'
         pattern_url_ref = r'([!]*\[{0}]\[\s*{1}\s*\])'.format(
             pattern_url_ref_name,
             pattern_url_ref_link)
         regex_url_ref = re.compile(pattern_url_ref)
-        text = regex_url_ref.sub(click.style(r'\1', fg='green'), text)
+        text = regex_url_ref.sub(click.style(r'\1', fg=self.clr_link), text)
         regex_list = re.compile(r'(  \*.*)')
-        text = regex_list.sub(click.style(r'\1', fg='blue'), text)
+        text = regex_list.sub(click.style(r'\1', fg=self.clr_list), text)
         regex_header = re.compile(r'(#+) (.*)')
-        text = regex_header.sub(click.style(r'\2', fg='yellow'), text)
+        text = regex_header.sub(click.style(r'\2', fg=self.clr_header), text)
         regex_bold = re.compile(r'(\*\*|__)(.*?)\1')
-        text = regex_bold.sub(click.style(r'\2', fg='cyan'), text)
+        text = regex_bold.sub(click.style(r'\2', fg=self.clr_bold), text)
         regex_code = re.compile(r'(`)(.*?)\1')
-        text = regex_code.sub(click.style(r'\1\2\1', fg='cyan'), text)
+        text = regex_code.sub(click.style(r'\1\2\1', fg=self.clr_code), text)
         text = re.sub(r'(\s*\r?\n\s*){2,}', r'\n\n', text)
         return text
 
@@ -361,7 +461,7 @@ class HackerNews(object):
             None.
         """
         click.secho('\n' + self.headlines_message(self.MSG_ONION) + '\n',
-                    fg='blue')
+                    fg=self.clr_title)
         index = 1
         for onion in onions[0:limit]:
             formatted_index_title = self.format_index_title(index, onion)
@@ -404,7 +504,7 @@ class HackerNews(object):
                 click.echo(formatted_heading, color=True)
                 click.echo(formatted_comment, color=True)
             elif comments_hide_non_matching:
-                click.secho('.', nl=False, fg='blue')
+                click.secho('.', nl=False)
             else:
                 click.echo(formatted_heading, color=True)
                 num_chars = len(formatted_comment)
@@ -471,10 +571,10 @@ class HackerNews(object):
             '\n\n' + indent), unescaped_text)
         regex_url = re.compile(r'(<a href=(".*") .*</a>)')
         unescaped_text = regex_url.sub(click.style(
-            r'\2', fg='blue'), unescaped_text)
+            r'\2', fg=self.clr_link), unescaped_text)
         regex_tag = re.compile(r'(<(.*)>.*?<\/\2>)')
         unescaped_text = regex_tag.sub(click.style(
-            r'\1', fg='green'), unescaped_text)
+            r'\1', fg=self.clr_tag), unescaped_text)
         formatted_comment = click.wrap_text(
             text=unescaped_text,
             initial_indent=indent,
@@ -493,9 +593,9 @@ class HackerNews(object):
         """
         space = '  ' if index < 10 else ' '
         formatted_index_title = click.style('  ' + str(index) + '.' + space,
-                                            fg='magenta')
+                                            fg=self.clr_view_index)
         formatted_index_title += click.style(title + ' ',
-                                             fg='blue')
+                                             fg=self.clr_title)
         return formatted_index_title
 
     def format_item(self, item, index):
@@ -514,18 +614,18 @@ class HackerNews(object):
             netloc = urlparse(item.url).netloc
             netloc = re.sub('www.', '', netloc)
             formatted_item += click.style('(' + netloc + ')',
-                                          fg='magenta')
+                                          fg=self.clr_view_link)
         formatted_item += '\n'
         formatted_item += click.style('        ' + str(item.score) + ' points ',
-                                      fg='green')
+                                      fg=self.clr_num_points)
         formatted_item += click.style('by ' + item.by + ' ',
-                                      fg='cyan')
+                                      fg=self.clr_user)
         formatted_item += click.style(
             str(pretty_date_time(item.submission_time)) + ' ',
-            fg='yellow')
+            self.clr_time)
         num_comments = str(item.descendants) if item.descendants else '0'
         formatted_item += click.style('| ' + num_comments + ' comments',
-                                      fg='green')
+                                      fg=self.clr_num_comments)
         self.item_ids.append(item.item_id)
         return formatted_item
 
@@ -565,7 +665,8 @@ class HackerNews(object):
             except InvalidItemID:
                 self.print_item_not_found(item_id)
         self.save_cache()
-        click.secho(self.tip_view(str(index-1)))
+        if self.show_tip:
+            click.secho(self.tip_view(str(index-1)))
 
     def tip_view(self, max_index):
         """Creates the tip about the view command.
@@ -576,12 +677,12 @@ class HackerNews(object):
         Returns:
             A string representation of the formatted tip.
         """
-        tip = click.style(self.TIP0, fg='blue')
-        tip += click.style('1 through ', fg='magenta')
-        tip += click.style(str(max_index), fg='magenta')
-        tip += click.style(self.TIP1, fg='blue')
-        tip += click.style(self.TIP2, fg='magenta')
-        tip += click.style(self.TIP3 + '\n', fg='blue')
+        tip = click.style(self.TIP0, fg=self.clr_tooltip)
+        tip += click.style('1 through ', fg=self.clr_view_index)
+        tip += click.style(str(max_index), fg=self.clr_view_index)
+        tip += click.style(self.TIP1, fg=self.clr_tooltip)
+        tip += click.style(self.TIP2, fg=self.clr_view_index)
+        tip += click.style(self.TIP3 + '\n', fg=self.clr_tooltip)
         return tip
 
     def url_contents(self, url):
@@ -600,7 +701,7 @@ class HackerNews(object):
         contents = self.html_to_text.handle(raw_response.text)
         contents = self.format_markdown(contents)
         contents = click.style(
-            'Viewing ' + url + '\n\n', fg='magenta') + contents
+            'Viewing ' + url + '\n\n', fg=self.clr_general) + contents
         return contents
 
     def match_comment_unseen(self, regex_query, header_adornment):
@@ -663,6 +764,54 @@ class HackerNews(object):
         parser.set(self.CONFIG_SECTION,
                    self.CONFIG_FREELANCE_ID,
                    self.freelance_id)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_SHOW_TIP,
+                   self.show_tip)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_BOLD,
+                   self.clr_bold)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_CODE,
+                   self.clr_code)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_GENERAL,
+                   self.clr_general)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_HEADER,
+                   self.clr_header)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_LINK,
+                   self.clr_link)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_LIST,
+                   self.clr_list)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_NUM_COMMENTS,
+                   self.clr_num_comments)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_NUM_POINTS,
+                   self.clr_num_points)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_TAG,
+                   self.clr_tag)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_TIME,
+                   self.clr_time)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_TITLE,
+                   self.clr_title)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_TOOLTIP,
+                   self.clr_tooltip)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_USER,
+                   self.clr_user)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_VIEW_LINK,
+                   self.clr_view_link)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_CLR_VIEW_INDEX,
+                   self.clr_view_index)
         config_file = open(config_file_path, 'w+')
         parser.write(config_file)
         config_file.close()
@@ -709,12 +858,12 @@ class HackerNews(object):
         """
         try:
             user = self.hacker_news_api.get_user(user_id)
-            click.secho('\nUser Id: ', nl=False, fg='magenta')
-            click.secho(user_id, fg='yellow')
-            click.secho('Created: ', nl=False, fg='magenta')
-            click.secho(str(user.created), fg='yellow')
-            click.secho('Karma: ', nl=False, fg='magenta')
-            click.secho(str(user.karma), fg='yellow')
+            click.secho('\nUser Id: ', nl=False, fg=self.clr_general)
+            click.secho(user_id, fg=self.clr_user)
+            click.secho('Created: ', nl=False, fg=self.clr_general)
+            click.secho(str(user.created), fg=self.clr_user)
+            click.secho('Karma: ', nl=False, fg=self.clr_general)
+            click.secho(str(user.karma), fg=self.clr_user)
             self.print_items(self.MSG_SUBMISSIONS,
                              user.submitted[0:submission_limit])
         except InvalidUserID:
@@ -801,12 +950,12 @@ class HackerNews(object):
         if not comments and item.url is None:
             click.secho('\nNo url associated with post.',
                         nl=False,
-                        fg='blue')
+                        fg=self.clr_general)
             comments = True
         if comments:
             comments_url = self.URL_POST + str(item.item_id)
             click.secho('\nFetching Comments from ' + comments_url,
-                        fg='blue')
+                        fg=self.clr_general)
             if browser:
                 webbrowser.open(comments_url)
             else:
@@ -820,7 +969,7 @@ class HackerNews(object):
                     sys.stderr.close()
                 self.save_cache()
         else:
-            click.secho('\nOpening ' + item.url + '...', fg='blue')
+            click.secho('\nOpening ' + item.url + '...', fg=self.clr_general)
             if browser:
                 webbrowser.open(item.url)
             else:
