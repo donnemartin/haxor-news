@@ -460,12 +460,12 @@ class HackerNews(object):
         click.secho(self.MSG_ITEM_NOT_FOUND.format(item_id), fg='red')
 
     def print_items(self, message, item_ids):
-        """Prints the items and headers with tabulate.
+        """Prints the items.
 
         Args:
             * message: A string to print out to the user before outputting
                 the results.
-            * item_ids: A collection of items to print as rows with tabulate.
+            * item_ids: A collection of items to print.
                 Can be a list or dictionary.
 
         Returns:
