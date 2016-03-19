@@ -162,7 +162,7 @@ class Haxor(object):
             application=application,
             eventloop=eventloop)
 
-    def add_comment_pagination(self, document_text):
+    def _add_comment_pagination(self, document_text):
         """Adds the command to enable comment pagination where applicable.
 
         Pagination is enabled if the command views comments and the
@@ -198,7 +198,7 @@ class Haxor(object):
             document = self.cli.run()
             try:
                 if self.paginate_comments:
-                    document.text = self.add_comment_pagination(document.text)
+                    document.text = self._add_comment_pagination(document.text)
                 subprocess.call(document.text, shell=True)
             except Exception as e:
                 click.secho(e, fg='red')

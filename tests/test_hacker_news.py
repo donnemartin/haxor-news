@@ -48,8 +48,8 @@ class HackerNewsTest(unittest.TestCase):
 
     def test_config(self):
         expected = os.path.join(os.path.abspath(os.environ.get('HOME', '')),
-                                self.hn.CONFIG)
-        assert self.hn._config(self.hn.CONFIG) == expected
+                                self.hn.config.CONFIG)
+        assert self.hn.config.get_config_path(self.hn.config.CONFIG) == expected
 
     @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_ask(self, mock_print_items):
@@ -65,12 +65,12 @@ class HackerNewsTest(unittest.TestCase):
             message=self.hn.headlines_message(self.hn.MSG_BEST),
             item_ids=self.hn.hacker_news_api.best_stories(self.limit))
 
-    @mock.patch('haxor_news.hacker_news.HackerNews.save_cache')
+    @mock.patch('haxor_news.config.Config.save_cache')
     def test_clear_item_cache(self, mock_save_cache):
-        item_ids = self.hn.load_cache(self.hn.CONFIG_IDS)
-        self.hn.clear_item_cache()
-        assert self.hn.item_ids == item_ids
-        assert self.hn.item_cache == []
+        item_ids = self.hn.config.load_cache(self.hn.config.CONFIG_IDS)
+        self.hn.config.clear_item_cache()
+        assert self.hn.config.item_ids == item_ids
+        assert self.hn.config.item_cache == []
         mock_save_cache.assert_called_with()
 
     def test_format_markdown(self):
@@ -116,12 +116,12 @@ class HackerNewsTest(unittest.TestCase):
         assert mock_click.mock_calls
 
     def test_save_and_load_item_ids(self):
-        self.hn.item_ids = [0, 1, 2]
-        self.hn.item_cache = [3, 4, 5]
-        self.hn.save_cache()
-        item_ids = self.hn.load_cache(self.hn.CONFIG_IDS)
+        self.hn.config.item_ids = [0, 1, 2]
+        self.hn.config.item_cache = [3, 4, 5]
+        self.hn.config.save_cache()
+        item_ids = self.hn.config.load_cache(self.hn.config.CONFIG_IDS)
         assert item_ids == ['0', '1', '2']
-        item_cache = self.hn.load_cache(self.hn.CONFIG_CACHE)
+        item_cache = self.hn.config.load_cache(self.hn.config.CONFIG_CACHE)
         assert item_cache == ['3', '4', '5']
 
     @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
@@ -189,7 +189,7 @@ class HackerNewsTest(unittest.TestCase):
             comments_hide_non_matching, browser)
 
     @mock.patch('haxor_news.hacker_news.HackerNews.view')
-    @mock.patch('haxor_news.hacker_news.HackerNews.clear_item_cache')
+    @mock.patch('haxor_news.config.Config.clear_item_cache')
     def test_view_comment_clear_cache(self, mock_clear_item_cache, mock_view):
         index = 0
         comments = False
@@ -279,7 +279,7 @@ class HackerNewsTest(unittest.TestCase):
         items = self.hn.hacker_news_api.items
         item = items[2]
         regex_query = 'foo'
-        self.hn.item_cache.append(str(item.item_id))
+        self.hn.config.item_cache.append(str(item.item_id))
         self.hn.print_comments(item, regex_query)
         mock_click_echo.assert_any_call(
             '\x1b[33m\nbaz - just now\x1b[0m', color=True)
@@ -349,7 +349,7 @@ class HackerNewsTest(unittest.TestCase):
     @mock.patch('haxor_news.hacker_news.click')
     def test_view(self, mock_click, mock_url_contents):
         items = self.hn.hacker_news_api.items
-        self.hn.item_ids = [int(item.item_id) for item in items]
+        self.hn.config.item_ids = [int(item.item_id) for item in items]
         one_based_index = self.valid_id + 1
         comments_query = ''
         comments = False
@@ -366,7 +366,7 @@ class HackerNewsTest(unittest.TestCase):
     @mock.patch('haxor_news.hacker_news.click')
     def test_view_comments(self, mock_click, mock_print_comments):
         items = self.hn.hacker_news_api.items
-        self.hn.item_ids = [int(item.item_id) for item in items]
+        self.hn.config.item_ids = [int(item.item_id) for item in items]
         one_based_index = self.valid_id + 1
         comments_query = 'foo'
         comments = True
@@ -385,7 +385,7 @@ class HackerNewsTest(unittest.TestCase):
     def test_view_no_url(self, mock_click, mock_print_comments):
         self.hn.hacker_news_api.items[0].url = None
         items = self.hn.hacker_news_api.items
-        self.hn.item_ids = [int(item.item_id) for item in items]
+        self.hn.config.item_ids = [int(item.item_id) for item in items]
         one_based_index = self.valid_id + 1
         comments_query = 'foo'
         comments = False
@@ -403,7 +403,7 @@ class HackerNewsTest(unittest.TestCase):
     @mock.patch('haxor_news.hacker_news.click')
     def test_view_browser_url(self, mock_click, mock_webbrowser):
         items = self.hn.hacker_news_api.items
-        self.hn.item_ids = [int(item.item_id) for item in items]
+        self.hn.config.item_ids = [int(item.item_id) for item in items]
         one_based_index = self.valid_id + 1
         comments_query = 'foo'
         comments = False
@@ -418,7 +418,7 @@ class HackerNewsTest(unittest.TestCase):
     @mock.patch('haxor_news.hacker_news.click')
     def test_view_browser_comments(self, mock_click, mock_webbrowser):
         items = self.hn.hacker_news_api.items
-        self.hn.item_ids = [int(item.item_id) for item in items]
+        self.hn.config.item_ids = [int(item.item_id) for item in items]
         one_based_index = self.valid_id + 1
         comments_query = 'foo'
         comments = True

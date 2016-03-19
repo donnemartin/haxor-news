@@ -121,7 +121,7 @@ class HackerNewsCli(object):
             None.
         """
         if id_post == 0:
-            id_post = hacker_news.freelance_id
+            id_post = hacker_news.config.freelance_id
         hacker_news.hiring_and_freelance(regex_query, id_post)
 
     @cli.command()
@@ -157,7 +157,7 @@ class HackerNewsCli(object):
             None.
         """
         if id_post == 0:
-            id_post = hacker_news.hiring_id
+            id_post = hacker_news.config.hiring_id
         hacker_news.hiring_and_freelance(regex_query, id_post)
 
     @cli.command()

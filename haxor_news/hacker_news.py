@@ -16,24 +16,22 @@
 from __future__ import print_function
 from __future__ import division
 
-import os
 import re
 import sys
-import urllib
 import webbrowser
 
 import click
-from .compat import configparser
 from .compat import HTMLParser
 from .compat import urlparse
 import requests
 
+from .config import Config
 from .lib.haxor.haxor import HackerNewsApi, HTTPError, InvalidItemID, \
     InvalidUserID
 from .lib.html2text.html2text import HTML2Text
 from .lib.pretty_date_time import pretty_date_time
-from .settings import freelancer_post_id, who_is_hiring_post_id
 from .onions import onions
+from .settings import freelancer_post_id, who_is_hiring_post_id
 
 
 class HackerNews(object):
@@ -43,20 +41,8 @@ class HackerNews(object):
         * COMMENT_INDENT: A string representing the indent amount for comments.
         * COMMENT_UNSEEN: A string representing the adornment for unseen
             comments.
-        * CONFIG: A string representing the config file name.
-        * CONFIG_SECTION: A string representing the main config file section.
-        * CONFIG_CLR_XXX: A string representing the ansi color to use to
-            highlight the specified item.
-        * CONFIG_IDS: A string representing the last list of seen post ids.
-        * CONFIG_CACHE: A string representing the list of seen comments.
-        * CONFIG_HIRING_ID: A string representing the monthly freelancer
-            post id.
-        * CONFIG_FREELANCE_ID: A string representing the monthly who's hiring
-            post id.
-        * CONFIG_SHOW_TIP: A boolean that determines whether to show the tip.
+        * config: An instance of haxor_news.Config.
         * html: An instance of html or HTMLParser.
-        * MAX_ITEM_CACHE_SIZE: An int representing the maximum number of
-            seen comment ids.
         * MAX_LIST_INDEX: An int representing the maximum 1-based index value
             hn view will use to match item_ids.  Any value larger than
             MAX_LIST_INDEX will result in hn view treating that index as an
@@ -82,15 +68,7 @@ class HackerNews(object):
         * MSG_SUBMISSIONS: A string representing the message displayed for
             repositories when the command hn user is executed.
         * hacker_news_api: An instance of HackerNews.
-        * freelance_id: An int representing the monthly freelancer post id.
         * html_to_text: An instance of HTML2Text.
-        * hiring_id: An int representing the monthly who's hiring post id.
-        * item_cache: A list of seen comment ids.
-            TODO: Look into an OrderedSet for improved lookup performance
-            http://code.activestate.com/recipes/576694/
-        * item_ids: A list containing the last set of ids the user has seen,
-            which allows the user to quickly access an item with the
-            gh view [#] [-u/--url] command.
         * QUERY_RECENT: A string representing the query to show recent comments.
         * QUERY_UNSEEN: A string representing the query to show unseen comments.
         * TIP0, TIP1, TIP2, TIP3: Strings that lets the user know about the
@@ -101,30 +79,7 @@ class HackerNews(object):
 
     COMMENT_INDENT = '  '
     COMMENT_UNSEEN = ' [!]'
-    CONFIG = '.haxornewsconfig'
-    CONFIG_CLR_BOLD = 'clr_bold'
-    CONFIG_CLR_CODE = 'clr_code'
-    CONFIG_CLR_GENERAL = 'clr_general'
-    CONFIG_CLR_HEADER = 'clr_header'
-    CONFIG_CLR_LINK = 'clr_link'
-    CONFIG_CLR_LIST = 'clr_list'
-    CONFIG_CLR_NUM_COMMENTS = 'clr_num_comments'
-    CONFIG_CLR_NUM_POINTS = 'clr_num_points'
-    CONFIG_CLR_TAG = 'clr_tag'
-    CONFIG_CLR_TIME = 'clr_time'
-    CONFIG_CLR_TITLE = 'clr_title'
-    CONFIG_CLR_TOOLTIP = 'clr_tooltip'
-    CONFIG_CLR_USER = 'clr_user'
-    CONFIG_CLR_VIEW_LINK = 'clr_view_link'
-    CONFIG_CLR_VIEW_INDEX = 'clr_view_index'
-    CONFIG_SECTION = 'haxor-news'
-    CONFIG_IDS = 'item_ids'
-    CONFIG_CACHE = 'item_cache'
-    CONFIG_HIRING_ID = 'hiring_id'
-    CONFIG_FREELANCE_ID = 'freelance_id'
-    CONFIG_SHOW_TIP = 'show_tip'
     MAX_LIST_INDEX = 1000
-    MAX_ITEM_CACHE_SIZE = 20000
     MAX_SNIPPET_LENGTH = 60
     MSG_ASK = 'Ask HN'
     MSG_BEST = 'Best'
@@ -157,106 +112,9 @@ class HackerNews(object):
             self.html = HTMLParser.HTMLParser()
         except:
             self.html = HTMLParser
-        self.item_ids = []
-        self.item_cache = self.load_cache(self.CONFIG_CACHE)
-        self.hiring_id, self.freelance_id = \
-            self._load_hiring_and_freelance_ids()
+        self.config = Config()
         self.html_to_text = None
         self._init_html_to_text()
-        self._load_colors()
-        try:
-            self.show_tip = self.load_cache(self.CONFIG_SHOW_TIP)
-            if self.show_tip is None:
-                self.show_tip = True
-        except configparser.NoOptionError:
-            self.show_tip = True
-
-    def _load_color(self, config, default):
-        try:
-            color = self.load_cache(config)[0].lower()
-            if color == 'none':
-                color = None
-            # Check if the user input a valid color.
-            # If invalid, this will throw a TypeError
-            dummy = click.style('', fg=color)
-        except TypeError:
-            return default
-        return color
-
-    def _load_colors(self):
-        self.clr_bold = 'cyan'
-        self.clr_bold = self._load_color(
-            config=self.CONFIG_CLR_BOLD,
-            default=self.clr_bold)
-        self.clr_code = 'cyan'
-        self.clr_code = self._load_color(
-            config=self.CONFIG_CLR_CODE,
-            default=self.clr_code)
-        self.clr_general = None
-        self.clr_general = self._load_color(
-            config=self.CONFIG_CLR_GENERAL,
-            default=self.clr_general)
-        self.clr_header = 'yellow'
-        self.clr_header = self._load_color(
-            config=self.CONFIG_CLR_HEADER,
-            default=self.clr_header)
-        self.clr_link = 'green'
-        self.clr_link = self._load_color(
-            config=self.CONFIG_CLR_LINK,
-            default=self.clr_link)
-        self.clr_list = 'cyan'
-        self.clr_list = self._load_color(
-            config=self.CONFIG_CLR_LIST,
-            default=self.clr_list)
-        self.clr_num_comments = 'green'
-        self.clr_num_comments = self._load_color(
-            config=self.CONFIG_CLR_NUM_COMMENTS,
-            default=self.clr_num_comments)
-        self.clr_num_points = 'green'
-        self.clr_num_points = self._load_color(
-            config=self.CONFIG_CLR_NUM_POINTS,
-            default=self.clr_num_points)
-        self.clr_tag = 'cyan'
-        self.clr_tag = self._load_color(
-            config=self.CONFIG_CLR_TAG,
-            default=self.clr_tag)
-        self.clr_time = 'yellow'
-        self.clr_time = self._load_color(
-            config=self.CONFIG_CLR_TIME,
-            default=self.clr_time)
-        self.clr_title = None
-        self.clr_title = self._load_color(
-            config=self.CONFIG_CLR_TITLE,
-            default=self.clr_title)
-        self.clr_tooltip = None
-        self.clr_tooltip = self._load_color(
-            config=self.CONFIG_CLR_TOOLTIP,
-            default=self.clr_tooltip)
-        self.clr_user = 'cyan'
-        self.clr_user = self._load_color(
-            config=self.CONFIG_CLR_USER,
-            default=self.clr_user)
-        self.clr_view_link = 'magenta'
-        self.clr_view_link = self._load_color(
-            config=self.CONFIG_CLR_VIEW_LINK,
-            default=self.clr_view_link)
-        self.clr_view_index = 'magenta'
-        self.clr_view_index = self._load_color(
-            config=self.CONFIG_CLR_VIEW_INDEX,
-            default=self.clr_view_index)
-
-    def _config(self, config_file_name):
-        """Gets the config file path.
-
-        Args:
-            * config_file_name: A String that represents the config file name.
-
-        Returns:
-            A string that represents the hn config file path.
-        """
-        home = os.path.abspath(os.environ.get('HOME', ''))
-        config_file_path = os.path.join(home, config_file_name)
-        return config_file_path
 
     def _init_html_to_text(self):
         """Initializes HTML2Text.
@@ -275,39 +133,6 @@ class HackerNews(object):
         self.html_to_text.skip_internal_links = False
         self.html_to_text.inline_links = False
         self.html_to_text.links_each_paragraph = False
-
-    def _load_hiring_and_freelance_ids(self):
-        """Loads the latest who's hiring and freelancer post ids.
-
-        The latest ids are updated monthly on the repo and are then cached.
-        If fetching the latest ids from the repo fails, the cache is checked.
-        If fetching the cache fails, the default ids set during installation
-        are used.
-
-        Args:
-            * None.
-
-        Returns:
-            None.
-        """
-        try:
-            url = 'https://raw.githubusercontent.com/donnemartin/donnemartin.github.io/master/tmp/settings.py'  # NOQA
-            file_name = 'downloaded_settings.py'
-            urllib.request.urlretrieve(url, file_name)
-            with open(file_name, 'r') as f:
-                for line in f:
-                    if line.startswith('who_is_hiring_post_id'):
-                        hiring_id = line.split(' = ')[1].strip('\n')
-                    if line.startswith('freelancer_post_id'):
-                        freelance_id = line.split(' = ')[1].strip('\n')
-        except:
-            try:
-                hiring_id = self.load_cache(self.CONFIG_HIRING_ID)
-                freelance_id = self.load_cache(self.CONFIG_FREELANCE_ID)
-            except configparser.NoOptionError:
-                hiring_id = who_is_hiring_post_id
-                freelance_id = freelancer_post_id
-        return hiring_id, freelance_id
 
     def ask(self, limit):
         """Displays Ask HN posts.
@@ -337,19 +162,6 @@ class HackerNews(object):
             message=self.headlines_message(self.MSG_BEST),
             item_ids=self.hacker_news_api.best_stories(limit))
 
-    def clear_item_cache(self):
-        """Clears the item cache.
-
-        Args:
-            * None.
-
-        Returns:
-            None.
-        """
-        self.item_ids = self.load_cache(self.CONFIG_IDS)
-        self.item_cache = []
-        self.save_cache()
-
     def format_markdown(self, text):
         """Adds color to the input markdown using click.style.
 
@@ -365,22 +177,27 @@ class HackerNews(object):
             pattern_url_name,
             pattern_url_link)
         regex_url = re.compile(pattern_url)
-        text = regex_url.sub(click.style(r'\1', fg=self.clr_link), text)
+        text = regex_url.sub(click.style(r'\1', fg=self.config.clr_link), text)
         pattern_url_ref_name = r'[^]]*'
         pattern_url_ref_link = r'[^]]+'
         pattern_url_ref = r'([!]*\[{0}]\[\s*{1}\s*\])'.format(
             pattern_url_ref_name,
             pattern_url_ref_link)
         regex_url_ref = re.compile(pattern_url_ref)
-        text = regex_url_ref.sub(click.style(r'\1', fg=self.clr_link), text)
+        text = regex_url_ref.sub(click.style(r'\1', fg=self.config.clr_link),
+                                 text)
         regex_list = re.compile(r'(  \*.*)')
-        text = regex_list.sub(click.style(r'\1', fg=self.clr_list), text)
+        text = regex_list.sub(click.style(r'\1', fg=self.config.clr_list),
+                              text)
         regex_header = re.compile(r'(#+) (.*)')
-        text = regex_header.sub(click.style(r'\2', fg=self.clr_header), text)
+        text = regex_header.sub(click.style(r'\2', fg=self.config.clr_header),
+                                text)
         regex_bold = re.compile(r'(\*\*|__)(.*?)\1')
-        text = regex_bold.sub(click.style(r'\2', fg=self.clr_bold), text)
+        text = regex_bold.sub(click.style(r'\2', fg=self.config.clr_bold),
+                              text)
         regex_code = re.compile(r'(`)(.*?)\1')
-        text = regex_code.sub(click.style(r'\1\2\1', fg=self.clr_code), text)
+        text = regex_code.sub(click.style(r'\1\2\1', fg=self.config.clr_code),
+                              text)
         text = re.sub(r'(\s*\r?\n\s*){2,}', r'\n\n', text)
         return text
 
@@ -416,7 +233,7 @@ class HackerNews(object):
             self.print_comments(item,
                                 regex_query,
                                 comments_hide_non_matching=True)
-            self.save_cache()
+            self.config.save_cache()
         except InvalidItemID:
             self.print_item_not_found(post_id)
         except BrokenPipeError:
@@ -461,7 +278,7 @@ class HackerNews(object):
             None.
         """
         click.secho('\n' + self.headlines_message(self.MSG_ONION) + '\n',
-                    fg=self.clr_title)
+                    fg=self.config.clr_title)
         index = 1
         for onion in onions[0:limit]:
             formatted_index_title = self.format_index_title(index, onion)
@@ -487,10 +304,10 @@ class HackerNews(object):
             header_color = 'yellow'
             header_color_highlight = 'magenta'
             header_adornment = ''
-            if self.item_cache is not None and \
-                    str(item.item_id) not in self.item_cache:
+            if self.config.item_cache is not None and \
+                    str(item.item_id) not in self.config.item_cache:
                 header_adornment = self.COMMENT_UNSEEN
-                self.item_cache.append(item.item_id)
+                self.config.item_cache.append(item.item_id)
             print_comment = True
             if regex_query is not None:
                 if self.match_comment_unseen(regex_query, header_adornment) or \
@@ -571,10 +388,10 @@ class HackerNews(object):
             '\n\n' + indent), unescaped_text)
         regex_url = re.compile(r'(<a href=(".*") .*</a>)')
         unescaped_text = regex_url.sub(click.style(
-            r'\2', fg=self.clr_link), unescaped_text)
+            r'\2', fg=self.config.clr_link), unescaped_text)
         regex_tag = re.compile(r'(<(.*)>.*?<\/\2>)')
         unescaped_text = regex_tag.sub(click.style(
-            r'\1', fg=self.clr_tag), unescaped_text)
+            r'\1', fg=self.config.clr_tag), unescaped_text)
         formatted_comment = click.wrap_text(
             text=unescaped_text,
             initial_indent=indent,
@@ -593,9 +410,9 @@ class HackerNews(object):
         """
         space = '  ' if index < 10 else ' '
         formatted_index_title = click.style('  ' + str(index) + '.' + space,
-                                            fg=self.clr_view_index)
+                                            fg=self.config.clr_view_index)
         formatted_index_title += click.style(title + ' ',
-                                             fg=self.clr_title)
+                                             fg=self.config.clr_title)
         return formatted_index_title
 
     def format_item(self, item, index):
@@ -614,19 +431,19 @@ class HackerNews(object):
             netloc = urlparse(item.url).netloc
             netloc = re.sub('www.', '', netloc)
             formatted_item += click.style('(' + netloc + ')',
-                                          fg=self.clr_view_link)
+                                          fg=self.config.clr_view_link)
         formatted_item += '\n'
         formatted_item += click.style('        ' + str(item.score) + ' points ',
-                                      fg=self.clr_num_points)
+                                      fg=self.config.clr_num_points)
         formatted_item += click.style('by ' + item.by + ' ',
-                                      fg=self.clr_user)
+                                      fg=self.config.clr_user)
         formatted_item += click.style(
             str(pretty_date_time(item.submission_time)) + ' ',
-            self.clr_time)
+            self.config.clr_time)
         num_comments = str(item.descendants) if item.descendants else '0'
         formatted_item += click.style('| ' + num_comments + ' comments',
-                                      fg=self.clr_num_comments)
-        self.item_ids.append(item.item_id)
+                                      fg=self.config.clr_num_comments)
+        self.config.item_ids.append(item.item_id)
         return formatted_item
 
     def print_item_not_found(self, item_id):
@@ -664,8 +481,8 @@ class HackerNews(object):
                     index += 1
             except InvalidItemID:
                 self.print_item_not_found(item_id)
-        self.save_cache()
-        if self.show_tip:
+        self.config.save_cache()
+        if self.config.show_tip:
             click.secho(self.tip_view(str(index-1)))
 
     def tip_view(self, max_index):
@@ -677,12 +494,12 @@ class HackerNews(object):
         Returns:
             A string representation of the formatted tip.
         """
-        tip = click.style(self.TIP0, fg=self.clr_tooltip)
-        tip += click.style('1 through ', fg=self.clr_view_index)
-        tip += click.style(str(max_index), fg=self.clr_view_index)
-        tip += click.style(self.TIP1, fg=self.clr_tooltip)
-        tip += click.style(self.TIP2, fg=self.clr_view_index)
-        tip += click.style(self.TIP3 + '\n', fg=self.clr_tooltip)
+        tip = click.style(self.TIP0, fg=self.config.clr_tooltip)
+        tip += click.style('1 through ', fg=self.config.clr_view_index)
+        tip += click.style(str(max_index), fg=self.config.clr_view_index)
+        tip += click.style(self.TIP1, fg=self.config.clr_tooltip)
+        tip += click.style(self.TIP2, fg=self.config.clr_view_index)
+        tip += click.style(self.TIP3 + '\n', fg=self.config.clr_tooltip)
         return tip
 
     def url_contents(self, url):
@@ -701,7 +518,7 @@ class HackerNews(object):
         contents = self.html_to_text.handle(raw_response.text)
         contents = self.format_markdown(contents)
         contents = click.style(
-            'Viewing ' + url + '\n\n', fg=self.clr_general) + contents
+            'Viewing ' + url + '\n\n', fg=self.config.clr_general) + contents
         return contents
 
     def match_comment_unseen(self, regex_query, header_adornment):
@@ -740,81 +557,6 @@ class HackerNews(object):
             return False
         else:
             return True
-
-    def save_cache(self):
-        """Saves the current set of item ids and cache to ~/.haxornewsconfig.
-
-        Args:
-            * None
-
-        Returns:
-            None.
-        """
-        if self.item_cache is not None and \
-                len(self.item_cache) > self.MAX_ITEM_CACHE_SIZE:
-            self.item_cache = self.item_cache[-self.MAX_ITEM_CACHE_SIZE//2:]
-        config_file_path = self._config(self.CONFIG)
-        parser = configparser.RawConfigParser()
-        parser.add_section(self.CONFIG_SECTION)
-        parser.set(self.CONFIG_SECTION, self.CONFIG_IDS, self.item_ids)
-        parser.set(self.CONFIG_SECTION, self.CONFIG_CACHE, self.item_cache)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_HIRING_ID,
-                   self.hiring_id)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_FREELANCE_ID,
-                   self.freelance_id)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_SHOW_TIP,
-                   self.show_tip)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_BOLD,
-                   self.clr_bold)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_CODE,
-                   self.clr_code)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_GENERAL,
-                   self.clr_general)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_HEADER,
-                   self.clr_header)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_LINK,
-                   self.clr_link)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_LIST,
-                   self.clr_list)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_NUM_COMMENTS,
-                   self.clr_num_comments)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_NUM_POINTS,
-                   self.clr_num_points)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_TAG,
-                   self.clr_tag)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_TIME,
-                   self.clr_time)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_TITLE,
-                   self.clr_title)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_TOOLTIP,
-                   self.clr_tooltip)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_USER,
-                   self.clr_user)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_VIEW_LINK,
-                   self.clr_view_link)
-        parser.set(self.CONFIG_SECTION,
-                   self.CONFIG_CLR_VIEW_INDEX,
-                   self.clr_view_index)
-        config_file = open(config_file_path, 'w+')
-        parser.write(config_file)
-        config_file.close()
 
     def show(self, limit):
         """Displays Show HN posts.
@@ -858,61 +600,22 @@ class HackerNews(object):
         """
         try:
             user = self.hacker_news_api.get_user(user_id)
-            click.secho('\nUser Id: ', nl=False, fg=self.clr_general)
-            click.secho(user_id, fg=self.clr_user)
-            click.secho('Created: ', nl=False, fg=self.clr_general)
-            click.secho(str(user.created), fg=self.clr_user)
-            click.secho('Karma: ', nl=False, fg=self.clr_general)
-            click.secho(str(user.karma), fg=self.clr_user)
+            click.secho('\nUser Id: ', nl=False, fg=self.config.clr_general)
+            click.secho(user_id, fg=self.config.clr_user)
+            click.secho('Created: ', nl=False, fg=self.config.clr_general)
+            click.secho(str(user.created), fg=self.config.clr_user)
+            click.secho('Karma: ', nl=False, fg=self.config.clr_general)
+            click.secho(str(user.karma), fg=self.config.clr_user)
             self.print_items(self.MSG_SUBMISSIONS,
                              user.submitted[0:submission_limit])
         except InvalidUserID:
             self.print_item_not_found(user_id)
 
-    def load_section(self, parser, section):
-        """Loads the given section from the ~/.haxornewsconfig.
-
-        Args:
-            * parser: An instance of ConfigParser.RawConfigParser.
-            * section: A string representing the section to load
-
-        Returns:
-            A list containing a string of elements.
-
-        Raises:
-            Exception: An error occurred reading from the parser.
-        """
-        items_ids = parser.get(self.CONFIG_SECTION, section)
-        items_ids = items_ids.strip()
-        excludes = ['[', ']', "'"]
-        for exclude in excludes:
-            items_ids = items_ids.replace(exclude, '')
-        return items_ids.split(', ')
-
-    def load_cache(self, section):
-        """Loads the item ids and the item cache from ~/.haxornewsconfig.
-
-        Args:
-            * section: A string representing the section to load.
-
-        Returns:
-            A list of caches.
-        """
-        config_file_path = self._config(self.CONFIG)
-        parser = configparser.RawConfigParser()
-        try:
-            with open(config_file_path) as config_file:
-                parser.readfp(config_file)
-                return self.load_section(parser, section)
-        except IOError:
-            # There might not be a cache yet, just silently return.
-            return None
-
     def view(self, index, comments_query, comments,
              comments_hide_non_matching, browser):
         """Views the given index in a browser.
 
-        Uses ids from ~/.haxornewsconfig stored in self.item_ids.
+        Uses ids from ~/.haxornewsconfig stored in self.config.item_ids.
         If url is True, opens a browser with the url based on the given index.
         Else, displays the post's comments.
 
@@ -929,8 +632,8 @@ class HackerNews(object):
         Returns:
             None.
         """
-        self.item_ids = self.load_cache(self.CONFIG_IDS)
-        if self.item_ids is None:
+        self.config.item_ids = self.config.load_cache(self.config.CONFIG_IDS)
+        if self.config.item_ids is None:
             click.secho('There are no posts indexed, run a command such as '
                         'hn top first',
                         fg='red')
@@ -938,24 +641,24 @@ class HackerNews(object):
         item_id = index
         if index < self.MAX_LIST_INDEX:
             try:
-                item_id = self.item_ids[index-1]
+                item_id = self.config.item_ids[index-1]
             except IndexError:
                 self.print_item_not_found(item_id)
                 return
         try:
             item = self.hacker_news_api.get_item(item_id)
         except InvalidItemID:
-            self.print_item_not_found(self.item_ids[index-1])
+            self.print_item_not_found(self.config.item_ids[index-1])
             return
         if not comments and item.url is None:
             click.secho('\nNo url associated with post.',
                         nl=False,
-                        fg=self.clr_general)
+                        fg=self.config.clr_general)
             comments = True
         if comments:
             comments_url = self.URL_POST + str(item.item_id)
             click.secho('\nFetching Comments from ' + comments_url,
-                        fg=self.clr_general)
+                        fg=self.config.clr_general)
             if browser:
                 webbrowser.open(comments_url)
             else:
@@ -967,9 +670,10 @@ class HackerNews(object):
                     click.echo('')
                 except BrokenPipeError:
                     sys.stderr.close()
-                self.save_cache()
+                self.config.save_cache()
         else:
-            click.secho('\nOpening ' + item.url + '...', fg=self.clr_general)
+            click.secho('\nOpening ' + item.url + '...',
+                        fg=self.config.clr_general)
             if browser:
                 webbrowser.open(item.url)
             else:
@@ -1017,7 +721,7 @@ class HackerNews(object):
             comments_regex_query = self.QUERY_UNSEEN
             comments = True
         if clear_cache:
-            self.clear_item_cache()
+            self.config.clear_item_cache()
         self.view(int(index),
                   comments_regex_query,
                   comments,

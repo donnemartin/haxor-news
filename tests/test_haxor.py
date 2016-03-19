@@ -30,14 +30,14 @@ class HaxorTest(unittest.TestCase):
 
     def test_add_comment_pagination(self):
         text = 'hn view 1'
-        result = self.haxor.add_comment_pagination(text)
+        result = self.haxor._add_comment_pagination(text)
         assert result == text
         text = 'hn view 1 -c'
-        result = self.haxor.add_comment_pagination(text)
+        result = self.haxor._add_comment_pagination(text)
         if platform.system() == 'Windows':
             assert result == text + self.haxor.PAGINATE_CMD_WIN
         else:
             assert result == text + self.haxor.PAGINATE_CMD
         text = 'hn view 1 -c -b'
-        result = self.haxor.add_comment_pagination(text)
+        result = self.haxor._add_comment_pagination(text)
         assert result == text
