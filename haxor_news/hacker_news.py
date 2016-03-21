@@ -235,7 +235,7 @@ class HackerNews(object):
             self.config.save_cache()
         except InvalidItemID:
             self.print_item_not_found(post_id)
-        except BrokenPipeError:
+        except IOError:
             sys.stderr.close()
 
     def jobs(self, limit):
@@ -667,7 +667,7 @@ class HackerNews(object):
                         regex_query=comments_query,
                         comments_hide_non_matching=comments_hide_non_matching)
                     click.echo('')
-                except BrokenPipeError:
+                except IOError:
                     sys.stderr.close()
                 self.config.save_cache()
         else:
