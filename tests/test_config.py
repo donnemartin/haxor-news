@@ -65,6 +65,11 @@ class ConfigTest(unittest.TestCase):
         assert self.hn.config.hiring_id == who_is_hiring_post_id
         assert self.hn.config.freelance_id == freelancer_post_id
 
+    def test_load_hiring_and_freelance_ids_from_cache_or_defaults(self):
+        self.hn.config.load_hiring_and_freelance_ids_from_cache_or_defaults()
+        assert self.hn.config.hiring_id == who_is_hiring_post_id
+        assert self.hn.config.freelance_id == freelancer_post_id
+
     def test_save_and_load_item_ids(self):
         self.hn.config.item_ids = [0, 1, 2]
         self.hn.config.item_cache = [3, 4, 5]
