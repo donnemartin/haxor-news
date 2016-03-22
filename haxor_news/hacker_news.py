@@ -308,16 +308,16 @@ class HackerNews(object):
                     str(item.item_id) not in self.config.item_cache:
                 header_adornment = self.COMMENT_UNSEEN
                 self.config.item_cache.append(item.item_id)
-            print_comment = True
+            show_comment = True
             if regex_query is not None:
                 if self.match_comment_unseen(regex_query, header_adornment) or \
                         self.match_regex(item, regex_query):
                     header_color = header_color_highlight
                 else:
-                    print_comment = False
+                    show_comment = False
             formatted_heading, formatted_comment = self.format_comment(
                 item, depth, header_color, header_adornment)
-            if print_comment:
+            if show_comment:
                 click.echo(formatted_heading, color=True)
                 click.echo(formatted_comment, color=True)
             elif comments_hide_non_matching:
