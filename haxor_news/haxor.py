@@ -43,8 +43,7 @@ class Haxor(object):
     Attributes:
         * BROWSER_FLAGS: A list of browser option flags.
         * cli: An instance of prompt_toolkit's CommandLineInterface.
-        * COMMENT_FLAGS_CMDS: A list of comment option flags and commands that
-            invoke comments.
+        * CMDS_ENABLE_PAGINATE: A list of commands that kick off pagination.
         * completer: An instance of Completer.
         * hacker_news_cli: An instance of HackerNewsCli.
         * key_manager: An instance of prompt_toolkit's KeyManager.
@@ -59,7 +58,7 @@ class Haxor(object):
         '-b',
         '--browser'
     ]
-    COMMENT_FLAGS_CMDS = [
+    CMDS_ENABLE_PAGINATE = [
         '-cq',
         '--comments_regex_query',
         '-c',
@@ -94,6 +93,8 @@ class Haxor(object):
         self.completer = Completer(fuzzy_match=False,
                                    text_utils=self.text_utils)
         self._create_cli()
+        if platform.system() == 'Windows':
+            self.CMDS_ENABLE_PAGINATE.append('view')
 
     def _create_key_manager(self):
         """Creates the :class:`KeyManager`.
@@ -176,7 +177,7 @@ class Haxor(object):
                 pagination enabled.
         """
         if not any(sub in document_text for sub in self.BROWSER_FLAGS):
-            if any(sub in document_text for sub in self.COMMENT_FLAGS_CMDS):
+            if any(sub in document_text for sub in self.CMDS_ENABLE_PAGINATE):
                 if platform.system() == 'Windows':
                     document_text += self.PAGINATE_CMD_WIN
                 else:

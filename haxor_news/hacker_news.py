@@ -16,6 +16,7 @@
 from __future__ import print_function
 from __future__ import division
 
+import platform
 import re
 import sys
 import webbrowser
@@ -677,7 +678,13 @@ class HackerNews(object):
                 webbrowser.open(item.url)
             else:
                 contents = self.url_contents(item.url)
-                click.echo_via_pager(contents)
+                if platform.system() == 'Windows':
+                    try:
+                        click.echo(contents)
+                    except IOError:
+                        sys.stderr.close()
+                else:
+                    click.echo_via_pager(contents)
             click.echo('')
 
     def view_setup(self, index, comments_regex_query, comments,
