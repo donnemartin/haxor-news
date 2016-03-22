@@ -46,11 +46,6 @@ class HackerNewsTest(unittest.TestCase):
             message=self.headlines_message(self.MSG_TOP),
             item_ids=self.hn.hacker_news_api.top_stories(limit))
 
-    def test_config(self):
-        expected = os.path.join(os.path.abspath(os.environ.get('HOME', '')),
-                                self.hn.config.CONFIG)
-        assert self.hn.config.get_config_path(self.hn.config.CONFIG) == expected
-
     @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_ask(self, mock_print_items):
         self.hn.ask(self.limit)
@@ -64,14 +59,6 @@ class HackerNewsTest(unittest.TestCase):
         mock_print_items.assert_called_with(
             message=self.hn.headlines_message(self.hn.MSG_BEST),
             item_ids=self.hn.hacker_news_api.best_stories(self.limit))
-
-    @mock.patch('haxor_news.config.Config.save_cache')
-    def test_clear_item_cache(self, mock_save_cache):
-        item_ids = self.hn.config.item_ids
-        self.hn.config.clear_item_cache()
-        assert self.hn.config.item_ids == item_ids
-        assert self.hn.config.item_cache == []
-        mock_save_cache.assert_called_with()
 
     def test_format_markdown(self):
         result = self.hn.format_markdown(raw_markdown)
@@ -114,15 +101,6 @@ class HackerNewsTest(unittest.TestCase):
         self.hn.onion(self.limit)
         assert len(mock_format_index_title.mock_calls) == self.limit
         assert mock_click.mock_calls
-
-    def test_save_and_load_item_ids(self):
-        self.hn.config.item_ids = [0, 1, 2]
-        self.hn.config.item_cache = [3, 4, 5]
-        self.hn.config.save_cache()
-        item_ids = self.hn.config.item_ids
-        assert item_ids == [0, 1, 2]
-        item_cache = self.hn.config.item_cache
-        assert item_cache == [3, 4, 5]
 
     @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_show(self, mock_print_items):
@@ -184,26 +162,6 @@ class HackerNewsTest(unittest.TestCase):
             comments_unseen, comments_hide_non_matching,
             comments_clear_cache, browser)
         comments_expected = True
-        mock_view.assert_called_with(
-            index, self.hn.QUERY_UNSEEN, comments_expected,
-            comments_hide_non_matching, browser)
-
-    @mock.patch('haxor_news.hacker_news.HackerNews.view')
-    @mock.patch('haxor_news.config.Config.clear_item_cache')
-    def test_view_comment_clear_cache(self, mock_clear_item_cache, mock_view):
-        index = 0
-        comments = False
-        comments_recent = False
-        comments_unseen = True
-        comments_hide_non_matching = False
-        comments_clear_cache = True
-        browser = False
-        self.hn.view_setup(
-            index, self.query, comments, comments_recent,
-            comments_unseen, comments_hide_non_matching,
-            comments_clear_cache, browser)
-        comments_expected = True
-        mock_clear_item_cache.assert_called_with()
         mock_view.assert_called_with(
             index, self.hn.QUERY_UNSEEN, comments_expected,
             comments_hide_non_matching, browser)
