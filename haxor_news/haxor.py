@@ -74,8 +74,8 @@ class Haxor(object):
         'hiring',
         'freelance',
     ]
-    PAGINATE_CMD = '| less -r'
-    PAGINATE_CMD_WIN = '| more'
+    PAGINATE_CMD = ' | less -r'
+    PAGINATE_CMD_WIN = ' | more'
 
     def __init__(self):
         """Inits Saws.
