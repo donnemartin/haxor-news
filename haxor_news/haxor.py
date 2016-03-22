@@ -41,9 +41,9 @@ class Haxor(object):
     """Encapsulates the Hacker News CLI.
 
     Attributes:
-        * BROWSER_FLAGS: A list of browser option flags.
         * cli: An instance of prompt_toolkit's CommandLineInterface.
         * CMDS_ENABLE_PAGINATE: A list of commands that kick off pagination.
+        * CMDS_NO_PAGINATE: A list of commands that disable pagination.
         * completer: An instance of Completer.
         * hacker_news_cli: An instance of HackerNewsCli.
         * key_manager: An instance of prompt_toolkit's KeyManager.
@@ -54,9 +54,11 @@ class Haxor(object):
         * theme: A string representing the lexer theme.
     """
 
-    BROWSER_FLAGS = [
+    CMDS_NO_PAGINATE = [
         '-b',
-        '--browser'
+        '--browser',
+        '>',
+        '<',
     ]
     CMDS_ENABLE_PAGINATE = [
         '-cq',
@@ -176,7 +178,7 @@ class Haxor(object):
             document_text: A string representing the input command with
                 pagination enabled.
         """
-        if not any(sub in document_text for sub in self.BROWSER_FLAGS):
+        if not any(sub in document_text for sub in self.CMDS_NO_PAGINATE):
             if any(sub in document_text for sub in self.CMDS_ENABLE_PAGINATE):
                 if platform.system() == 'Windows':
                     document_text += self.PAGINATE_CMD_WIN
