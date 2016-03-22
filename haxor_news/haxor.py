@@ -184,6 +184,22 @@ class Haxor(object):
                     document_text += self.PAGINATE_CMD
         return document_text
 
+    def run_command(self, document):
+        """Runs the given command.
+
+        Args:
+            * document: An instance of prompt_toolkit.document.Document.
+
+        Returns:
+            None.
+        """
+        try:
+            if self.paginate_comments:
+                document.text = self._add_comment_pagination(document.text)
+            subprocess.call(document.text, shell=True)
+        except Exception as e:
+            click.secho(e, fg='red')
+
     def run_cli(self):
         """Runs the main loop.
 
@@ -197,9 +213,4 @@ class Haxor(object):
         click.echo('Syntax: hn <command> [params] [options]')
         while True:
             document = self.cli.run()
-            try:
-                if self.paginate_comments:
-                    document.text = self._add_comment_pagination(document.text)
-                subprocess.call(document.text, shell=True)
-            except Exception as e:
-                click.secho(e, fg='red')
+            self.run_command(document)
