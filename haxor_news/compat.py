@@ -19,10 +19,14 @@ try:
     # Python 3
     import configparser
     from urllib.parse import urlparse
+    from urllib.request import urlretrieve
+    from urllib.error import URLError
 except ImportError:
     # Python 2
     import ConfigParser as configparser
     from urlparse import urlparse
+    from urllib import urlretrieve
+    from urllib2 import URLError
 if sys.version_info < (3, 3):
     import HTMLParser
 else:

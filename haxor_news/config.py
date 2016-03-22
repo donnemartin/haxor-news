@@ -17,10 +17,11 @@ from __future__ import print_function
 from __future__ import division
 
 import os
-import urllib
 
 import click
 from .compat import configparser
+from .compat import URLError
+from .compat import urlretrieve
 from .settings import freelancer_post_id, who_is_hiring_post_id
 
 
@@ -319,14 +320,14 @@ class Config(object):
         try:
             url = 'https://raw.githubusercontent.com/donnemartin/donnemartin.github.io/master/tmp/settings.py'  # NOQA
             file_name = 'downloaded_settings.py'
-            urllib.request.urlretrieve(url, file_name)
+            urlretrieve(url, file_name)
             with open(file_name, 'r') as f:
                 for line in f:
                     if line.startswith('who_is_hiring_post_id'):
                         self.hiring_id = line.split(' = ')[1].strip('\n')
                     if line.startswith('freelancer_post_id'):
                         self.freelance_id = line.split(' = ')[1].strip('\n')
-        except urllib.error.URLError:
+        except (URLError, IOError):
             self.load_config([self.load_config_hiring_and_freelance_ids])
             if self.hiring_id == 0 or self.freelance_id == 0:
                 self.hiring_id = who_is_hiring_post_id
