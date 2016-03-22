@@ -188,7 +188,8 @@ class HackerNewsTest(unittest.TestCase):
     @mock.patch('haxor_news.hacker_news.click.echo')
     def test_print_comments_unseen(self, mock_click_echo):
         items = self.hn.hacker_news_api.items
-        self.hn.print_comments(items[0])
+        self.hn.print_comments(items[0],
+                               regex_query=self.hn.QUERY_UNSEEN)
         mock_click_echo.assert_any_call(
             '\x1b[35m\nfoo - just now [!]\x1b[0m', color=True)
         mock_click_echo.assert_any_call(
@@ -201,6 +202,20 @@ class HackerNewsTest(unittest.TestCase):
             '\x1b[35m\n    baz - just now [!]\x1b[0m', color=True)
         mock_click_echo.assert_any_call(
             '    text baz', color=True)
+
+    @mock.patch('haxor_news.hacker_news.click.echo')
+    @mock.patch('haxor_news.hacker_news.click.secho')
+    def test_print_comments_unseen_hide_non_matching(self,
+                                                     mock_click_secho,
+                                                     mock_click_echo):
+        items = self.hn.hacker_news_api.items
+        self.hn.config.item_cache.extend(['0', '1', '2'])
+        self.hn.print_comments(items[0],
+                               regex_query=self.hn.QUERY_UNSEEN,
+                               comments_hide_non_matching=True)
+        mock_click_secho.assert_any_call('.', nl=False)
+        assert mock_click_secho.mock_calls
+        assert not mock_click_echo.mock_calls
 
     @mock.patch('haxor_news.hacker_news.click.echo')
     def test_print_comments_regex(self, mock_click_echo):
