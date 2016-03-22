@@ -16,6 +16,8 @@
 from __future__ import print_function
 from __future__ import division
 
+import mock
+import subprocess
 import platform
 
 from tests.compat import unittest
@@ -41,3 +43,15 @@ class HaxorTest(unittest.TestCase):
         text = 'hn view 1 -c -b'
         result = self.haxor._add_comment_pagination(text)
         assert result == text
+
+    @mock.patch('haxor_news.haxor.subprocess.call')
+    def test_run_command(self, mock_subprocess_call):
+        document = mock.Mock()
+        document.text = 'hn view 1 -c'
+        self.haxor.run_command(document)
+        mock_subprocess_call.assert_called_with('hn view 1 -c | less -r',
+                                                shell=True)
+        document.text = 'hn view 1'
+        self.haxor.run_command(document)
+        mock_subprocess_call.assert_called_with('hn view 1',
+                                                shell=True)
