@@ -327,11 +327,27 @@ class Config(object):
                         self.hiring_id = line.split(' = ')[1].strip('\n')
                     if line.startswith('freelancer_post_id'):
                         self.freelance_id = line.split(' = ')[1].strip('\n')
-        except (URLError, IOError):
-            self.load_config([self.load_config_hiring_and_freelance_ids])
             if self.hiring_id == 0 or self.freelance_id == 0:
-                self.hiring_id = who_is_hiring_post_id
-                self.freelance_id = freelancer_post_id
+                self.load_hiring_and_freelance_ids_from_cache_or_defaults()
+        except (URLError, IOError):
+            self.load_hiring_and_freelance_ids_from_cache_or_defaults()
+
+    def load_hiring_and_freelance_ids_from_cache_or_defaults(self):
+        """Loads the hiring and freelancer post ids from cache or defaults.
+
+        If fetching the cache fails, the default ids set during installation
+        are used.
+
+        Args:
+            * None.
+
+        Returns:
+            None.
+        """
+        self.load_config([self.load_config_hiring_and_freelance_ids])
+        if self.hiring_id == 0 or self.freelance_id == 0:
+            self.hiring_id = who_is_hiring_post_id
+            self.freelance_id = freelancer_post_id
 
     def load_section_list(self, parser, section):
         """Loads the given section containing a list from ~/.haxornewsconfig.
