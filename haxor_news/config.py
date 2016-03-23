@@ -303,7 +303,7 @@ class Config(object):
             config=self.CONFIG_CLR_VIEW_INDEX,
             default='magenta')
 
-    def load_hiring_and_freelance_ids(self):
+    def load_hiring_and_freelance_ids(self, url=None):
         """Loads the latest who's hiring and freelancer post ids.
 
         The latest ids are updated monthly on the repo and are then cached.
@@ -312,13 +312,14 @@ class Config(object):
         are used.
 
         Args:
-            * None.
+            * url: A string representing the url to load the latest post ids.
 
         Returns:
             None.
         """
         try:
-            url = 'https://raw.githubusercontent.com/donnemartin/donnemartin.github.io/master/tmp/settings.py'  # NOQA
+            if url is None:
+                url = 'https://raw.githubusercontent.com/donnemartin/donnemartin.github.io/master/tmp/settings.py'  # NOQA
             file_name = 'downloaded_settings.py'
             urlretrieve(url, file_name)
             with open(file_name, 'r') as f:
