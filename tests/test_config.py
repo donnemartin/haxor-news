@@ -22,13 +22,6 @@ from tests.compat import unittest
 
 from haxor_news.hacker_news import HackerNews
 from haxor_news.settings import freelancer_post_id, who_is_hiring_post_id
-from tests.data.comment import formatted_comment, formatted_heading, raw_comment
-from tests.data.item import formatted_items
-from tests.data.markdown import formatted_markdown, raw_markdown
-from tests.data.regex import raw_text_for_regex
-from tests.data.tip import formatted_tip
-from tests.data.title import formatted_title, raw_title
-from tests.data.url import formatted_url
 from tests.mock_hacker_news_api import MockHackerNewsApi
 
 

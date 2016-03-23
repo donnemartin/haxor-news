@@ -236,7 +236,7 @@ class Config(object):
                 color = None
             # Check if the user input a valid color.
             # If invalid, this will throw a TypeError
-            dummy = click.style('', fg=color)
+            click.style('', fg=color)
         except TypeError:
             return default
         return color

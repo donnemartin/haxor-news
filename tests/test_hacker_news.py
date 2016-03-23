@@ -17,7 +17,6 @@ from __future__ import print_function
 from __future__ import division
 
 import mock
-import os
 from tests.compat import unittest
 
 from haxor_news.hacker_news import HackerNews

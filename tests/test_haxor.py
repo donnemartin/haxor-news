@@ -17,7 +17,6 @@ from __future__ import print_function
 from __future__ import division
 
 import mock
-import subprocess
 import platform
 
 from tests.compat import unittest
