@@ -56,7 +56,7 @@ class HackerNewsCli(object):
 
         Args:
             * hacker_news: An instance of Hacker News.
-            * limit: A string that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 10.
 
         Example(s):
@@ -76,7 +76,7 @@ class HackerNewsCli(object):
 
         Args:
             * hacker_news: An instance of Hacker News.
-            * limit: A string that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 10.
 
         Example(s):
@@ -170,7 +170,7 @@ class HackerNewsCli(object):
 
         Args:
             * hacker_news: An instance of Hacker News.
-            * limit: A string that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 10.
 
         Example(s):
@@ -190,7 +190,7 @@ class HackerNewsCli(object):
 
         Args:
             * hacker_news: An instance of Hacker News.
-            * limit: A string that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 10.
 
         Example(s):
@@ -210,7 +210,7 @@ class HackerNewsCli(object):
 
         Args:
             * hacker_news: An instance of Hacker News.
-            * limit: A string that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 50.
 
         Example(s):
@@ -230,7 +230,7 @@ class HackerNewsCli(object):
 
         Args:
             * hacker_news: An instance of Hacker News.
-            * limit: A string that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 10.
 
         Example(s):
@@ -250,7 +250,7 @@ class HackerNewsCli(object):
 
         Args:
             * hacker_news: An instance of Hacker News.
-            * limit: A string that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 10.
 
         Example(s):
@@ -272,7 +272,7 @@ class HackerNewsCli(object):
         Args:
             * hacker_news: An instance of Hacker News.
             * user_id: A string representing the user id.
-            * limit: A string that specifies the number of posts to show.
+            * limit: An int that specifies the number of posts to show.
                 Optional, defaults to 10.
 
         Example(s):
