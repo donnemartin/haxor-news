@@ -14,7 +14,7 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-import unittest
+from tests.compat import unittest
 
 from test_completer import CompleterTest  # NOQA
 from test_hacker_news import HackerNewsTest  # NOQA
