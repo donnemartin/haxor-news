@@ -4,8 +4,9 @@ try:
 except ImportError:
     from distutils.core import setup
 
+
 setup(
-    description='A Hacker News command line interface (CLI).',
+    description='View and filter Hacker News content without leaving the terminal.',
     author='Donne Martin',
     url='https://github.com/donnemartin/haxor-news',
     download_url='https://pypi.python.org/pypi/haxor-news',
