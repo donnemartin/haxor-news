@@ -22,11 +22,8 @@ from tests.compat import unittest
 
 from prompt_toolkit.document import Document
 
-from haxor_news.completions import ARG_POST_LIMIT, ARG_HIRING_REGEX_QUERY, \
-    ARG_VIEW_POST_INDEX, ARG_USER_ID, COMMAND, SUBCOMMAND_VIEW, \
-    OPTIONS_HIRING, OPTIONS_USER, OPTIONS_VIEW, OPTION_BROWSER, \
-    OPTIONS_FREELANCE
 from haxor_news.completer import Completer
+from haxor_news.settings import freelancer_post_id, who_is_hiring_post_id
 from haxor_news.utils import TextUtils
 
 
@@ -78,7 +75,7 @@ class CompleterTest(unittest.TestCase):
 
     def test_command(self):
         text = ['h']
-        expected = [COMMAND]
+        expected = ['hn']
         self.verify_completions(text, expected)
 
     def test_subcommand(self):
@@ -88,61 +85,100 @@ class CompleterTest(unittest.TestCase):
 
     def test_arg_freelance(self):
         text = ['hn freelance ']
-        expected = [ARG_HIRING_REGEX_QUERY]
+        expected = ['"(?i)(Python|Django)"']
         self.verify_completions(text, expected)
 
     def test_arg_hiring(self):
         text = ['hn hiring ']
-        expected = [ARG_HIRING_REGEX_QUERY]
+        expected = ['"(?i)(Python|Django)"']
         self.verify_completions(text, expected)
 
     def test_arg_limit(self):
         text = ['hn top ']
-        expected = [ARG_POST_LIMIT]
+        expected = ['10']
         self.verify_completions(text, expected)
 
     def test_arg_user(self):
         text = ['hn user ']
-        expected = [ARG_USER_ID]
+        expected = ['"user"']
         self.verify_completions(text, expected)
 
     def test_arg_view(self):
         text = ['hn view ']
-        expected = [ARG_VIEW_POST_INDEX]
+        expected = ['1']
         self.verify_completions(text, expected)
 
     def test_option_freelance(self):
         text = ['hn freelance "" ']
-        expected = OPTIONS_FREELANCE
+        expected = [
+            '--id_post ' + str(freelancer_post_id),
+            '-i ' + str(freelancer_post_id),
+        ]
         self.verify_completions(text, expected)
 
     def test_option_hiring(self):
         text = ['hn hiring "" ']
-        expected = OPTIONS_HIRING
+        expected = [
+            '--id_post ' + str(who_is_hiring_post_id),
+            '-i ' + str(who_is_hiring_post_id),
+        ]
         self.verify_completions(text, expected)
 
     def test_option_user(self):
         text = ['hn user "" ']
-        expected = OPTIONS_USER
+        expected = [
+            '--limit 10',
+            '-l 10',
+        ]
         self.verify_completions(text, expected)
 
     def test_option_view(self):
         text = ['hn view 0 ']
-        expected = OPTIONS_VIEW
+        expected = [
+            '--comments_regex_query ""',
+            '-cq ""',
+            '--comments',
+            '-c',
+            '--comments_recent',
+            '-cr',
+            '--comments_unseen',
+            '-cu',
+            '--comments_hide_non_matching',
+            '-ch',
+            '--clear_cache',
+            '-cc',
+            '--browser',
+            '-b',
+        ]
         self.verify_completions(text, expected)
 
     def test_completing_option(self):
         text = ['hn view 0 -']
-        expected = OPTIONS_VIEW
+        expected = [
+            '--comments_regex_query ""',
+            '-cq ""',
+            '--comments',
+            '-c',
+            '--comments_recent',
+            '-cr',
+            '--comments_unseen',
+            '-cu',
+            '--comments_hide_non_matching',
+            '-ch',
+            '--clear_cache',
+            '-cc',
+            '--browser',
+            '-b',
+        ]
         self.verify_completions(text, expected)
 
     def test_multiple_options(self):
         text = ['hn view 0 -c --brow']
-        expected = [OPTION_BROWSER]
+        expected = ['--browser']
         self.verify_completions(text, expected)
 
     def test_fuzzy(self):
         text = ['hn vw']
-        expected = [SUBCOMMAND_VIEW]
+        expected = ['view']
         self.completer.fuzzy_match = True
         self.verify_completions(text, expected)

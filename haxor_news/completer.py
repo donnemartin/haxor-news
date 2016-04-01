@@ -18,10 +18,7 @@ from __future__ import print_function
 
 from prompt_toolkit.completion import Completer
 
-from .completions import ARG_POST_LIMIT, ARG_HIRING_REGEX_QUERY, \
-    ARG_VIEW_POST_INDEX, ARG_USER_ID, COMMAND, SUBCOMMAND_HIRING, \
-    SUBCOMMAND_USER, SUBCOMMAND_VIEW, OPTIONS_HIRING, OPTIONS_USER, \
-    OPTIONS_VIEW, SUBCOMMANDS, SUBCOMMAND_FREELANCE, OPTIONS_FREELANCE
+from .completions import SUBCOMMANDS, ARGS_OPTS_LOOKUP
 
 
 class Completer(Completer):
@@ -98,7 +95,7 @@ class Completer(Completer):
         else:
             return False
 
-    def completing_subcommand_option(self, option, words, word_before_cursor):
+    def completing_subcommand_option(self, words, word_before_cursor):
         """Determines if we are currently completing an option.
 
         Args:
@@ -107,15 +104,15 @@ class Completer(Completer):
                  before the cursor, which might be one or more blank spaces.
 
         Returns:
-            A boolean that specifies whether we are currently completing an
-                option.
+            A boolean representing the options.
         """
-        if option in words and \
-            (words[-2] == option or
-                self.completing_subcommand_option_util(option, words)):
-            return True
-        else:
-            return False
+        options = []
+        for subcommand, args_opts in ARGS_OPTS_LOOKUP.items():
+            if subcommand in words and \
+                (words[-2] == subcommand or
+                    self.completing_subcommand_option_util(subcommand, words)):
+                options.extend(ARGS_OPTS_LOOKUP[subcommand]['opts'])
+        return options
 
     def completing_subcommand_option_util(self, option, words):
         """Determines if we are currently completing an option.
@@ -149,19 +146,12 @@ class Completer(Completer):
         Returns:
             A list of completions.
         """
-        if COMMAND not in words:
+        if 'hn' not in words:
             return []
-        elif SUBCOMMAND_FREELANCE in words:
-            return [ARG_HIRING_REGEX_QUERY]
-        elif SUBCOMMAND_HIRING in words:
-            return [ARG_HIRING_REGEX_QUERY]
-        elif SUBCOMMAND_USER in words:
-            return [ARG_USER_ID]
-        elif SUBCOMMAND_VIEW in words:
-            return [ARG_VIEW_POST_INDEX]
-        else:
-            return [ARG_POST_LIMIT]
-        return []
+        for subcommand, args_opts in ARGS_OPTS_LOOKUP.items():
+            if subcommand in words:
+                return [ARGS_OPTS_LOOKUP[subcommand]['args']]
+        return ['10']
 
     def get_completions(self, document, _):
         """Get completions for the current scope.
@@ -180,27 +170,19 @@ class Completer(Completer):
         if len(words) == 0:
             return commands
         if self.completing_command(words, word_before_cursor):
-            commands = [COMMAND]
+            commands = ['hn']
         else:
+            if 'hn' not in words:
+                return commands
             if self.completing_subcommand(words, word_before_cursor):
-                commands = SUBCOMMANDS
+                commands = list(SUBCOMMANDS.keys())
             else:
                 if self.completing_arg(words, word_before_cursor):
                     commands = self.arg_completions(words, word_before_cursor)
-                elif self.completing_subcommand_option(
-                        SUBCOMMAND_FREELANCE, words, word_before_cursor):
-                    commands = OPTIONS_FREELANCE
-                elif self.completing_subcommand_option(
-                        SUBCOMMAND_HIRING, words, word_before_cursor):
-                    commands = OPTIONS_HIRING
-                elif self.completing_subcommand_option(
-                        SUBCOMMAND_USER, words, word_before_cursor):
-                    commands = OPTIONS_USER
-                elif self.completing_subcommand_option(
-                        SUBCOMMAND_VIEW, words, word_before_cursor):
-                    commands = OPTIONS_VIEW
                 else:
-                    commands = []
+                    commands = self.completing_subcommand_option(
+                        words,
+                        word_before_cursor)
         completions = self.text_utils.find_matches(
             word_before_cursor, commands, fuzzy=self.fuzzy_match)
         return completions

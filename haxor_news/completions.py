@@ -16,164 +16,103 @@
 from .settings import freelancer_post_id, who_is_hiring_post_id
 
 
-COMMAND = 'hn'
-SUBCOMMAND_ASK = 'ask'
-SUBCOMMAND_BEST = 'best'
-SUBCOMMAND_FREELANCE = 'freelance'
-SUBCOMMAND_HIRING = 'hiring'
-SUBCOMMAND_JOBS = 'jobs'
-SUBCOMMAND_NEW = 'new'
-SUBCOMMAND_ONION = 'onion'
-SUBCOMMAND_SHOW = 'show'
-SUBCOMMAND_TOP = 'top'
-SUBCOMMAND_USER = 'user'
-SUBCOMMAND_VIEW = 'view'
-SUBCOMMANDS = [
-    SUBCOMMAND_ASK,
-    SUBCOMMAND_BEST,
-    SUBCOMMAND_FREELANCE,
-    SUBCOMMAND_HIRING,
-    SUBCOMMAND_JOBS,
-    SUBCOMMAND_NEW,
-    SUBCOMMAND_ONION,
-    SUBCOMMAND_SHOW,
-    SUBCOMMAND_TOP,
-    SUBCOMMAND_USER,
-    SUBCOMMAND_VIEW,
-]
-ARG_POST_LIMIT = '10'
-ARG_HIRING_REGEX_QUERY = '"(?i)(Python|Django)"'
-ARG_VIEW_POST_INDEX = '1'
-ARG_USER_ID = '"user"'
-OPTION_COMMENTS_REGEX_QUERY = '--comments_regex_query ""'
-OPTION_COMMENTS_REGEX_QUERY_SHORT = '-cq ""'
-OPTION_COMMENTS = '--comments'
-OPTION_COMMENTS_SHORT = '-c'
-OPTION_COMMENTS_RECENT = '--comments_recent'
-OPTION_COMMENTS_RECENT_SHORT = '-cr'
-OPTION_COMMENTS_UNSEEN = '--comments_unseen'
-OPTION_COMMENTS_UNSEEN_SHORT = '-cu'
-OPTION_COMMENTS_HIDE_NON_MATCHING = '--comments_hide_non_matching'
-OPTION_COMMENTS_HIDE_NON_MATCHING_SHORT = '-ch'
-OPTION_COMMENTS_CLEAR_CACHE = '--clear_cache'
-OPTION_COMMENTS_CLEAR_CACHE_SHORT = '-cc'
-OPTION_BROWSER = '--browser'
-OPTION_BROWSER_SHORT = '-b'
-OPTIONS_VIEW = [
-    OPTION_COMMENTS_REGEX_QUERY,
-    OPTION_COMMENTS_REGEX_QUERY_SHORT,
-    OPTION_COMMENTS,
-    OPTION_COMMENTS_SHORT,
-    OPTION_COMMENTS_RECENT,
-    OPTION_COMMENTS_RECENT_SHORT,
-    OPTION_COMMENTS_UNSEEN,
-    OPTION_COMMENTS_UNSEEN_SHORT,
-    OPTION_COMMENTS_HIDE_NON_MATCHING,
-    OPTION_COMMENTS_HIDE_NON_MATCHING_SHORT,
-    OPTION_COMMENTS_CLEAR_CACHE,
-    OPTION_COMMENTS_CLEAR_CACHE_SHORT,
-    OPTION_BROWSER,
-    OPTION_BROWSER_SHORT,
-]
-OPTION_ID_POST_HIRING = '--id_post ' + str(who_is_hiring_post_id)
-OPTION_ID_POST_HIRING_SHORT = '-i ' + str(who_is_hiring_post_id)
-OPTIONS_HIRING = [
-    OPTION_ID_POST_HIRING,
-    OPTION_ID_POST_HIRING_SHORT,
-]
-OPTION_ID_POST_FREELANCE = '--id_post ' + str(freelancer_post_id)
-OPTION_ID_POST_FREELANCE_SHORT = '-i ' + str(freelancer_post_id)
-OPTIONS_FREELANCE = [
-    OPTION_ID_POST_FREELANCE,
-    OPTION_ID_POST_FREELANCE_SHORT,
-]
-OPTION_POST_LIMIT = '--limit 10'
-OPTION_POST_LIMIT_SHORT = '-l 10'
-OPTIONS_USER = [
-    OPTION_POST_LIMIT,
-    OPTION_POST_LIMIT_SHORT,
-]
-OPTION_HELP = '--help'
-META_PARAM_LIMIT = 'limit:int (opt)'
-META_PARAM_HIRING_REGEX = 'regex_query:str (opt) [options]'
-META_PARAM_USER = 'user_id:str (req) [options]'
-META_PARAM_VIEW = 'index:int (req) [options]'
-META_OPTION_COMMENTS_REGEX_QUERY = 'Filter comments with a regular expression' \
-    ' query (string)'
-META_OPTION_COMMENTS = 'View comments instead of the url contents (flag)'
-META_OPTION_COMMENTS_RECENT = 'View only comments in the past hour (flag)'
-META_OPTION_COMMENTS_UNSEEN = 'View only previously unseen comments (flag)'
-META_OPTION_COMMENTS_HIDE_NON_MATCHING = ('Hide instead of collapse '
-                                          'non-matching comments (flag)')
-META_OPTION_COMMENTS_CLEAR_CACHE = 'Clear the comment cache before executing.'
-META_OPTION_BROWSER = 'View in a browser instead of the terminal (flag)'
-META_OPTION_ID_POST = ('View matching comments from the (optional) post '
-                       'id instead of the latest post (int)')
-META_OPTION_POST_LIMIT = 'Limits the number of user submissions displayed (int)'
-DISPLAY_LOOKUP = {
-    SUBCOMMAND_ASK: META_PARAM_LIMIT,
-    SUBCOMMAND_BEST: META_PARAM_LIMIT,
-    SUBCOMMAND_FREELANCE: META_PARAM_HIRING_REGEX,
-    SUBCOMMAND_HIRING: META_PARAM_HIRING_REGEX,
-    SUBCOMMAND_JOBS: META_PARAM_LIMIT,
-    SUBCOMMAND_NEW: META_PARAM_LIMIT,
-    SUBCOMMAND_ONION: META_PARAM_LIMIT,
-    SUBCOMMAND_SHOW: META_PARAM_LIMIT,
-    SUBCOMMAND_TOP: META_PARAM_LIMIT,
-    SUBCOMMAND_USER: META_PARAM_USER,
-    SUBCOMMAND_VIEW: META_PARAM_VIEW,
-    OPTION_COMMENTS: META_OPTION_COMMENTS,
-    OPTION_COMMENTS_SHORT: META_OPTION_COMMENTS,
-    OPTION_COMMENTS_RECENT: META_OPTION_COMMENTS_RECENT,
-    OPTION_COMMENTS_RECENT_SHORT: META_OPTION_COMMENTS_RECENT,
-    OPTION_COMMENTS_UNSEEN: META_OPTION_COMMENTS_UNSEEN,
-    OPTION_COMMENTS_UNSEEN_SHORT: META_OPTION_COMMENTS_UNSEEN,
-    OPTION_COMMENTS_HIDE_NON_MATCHING: META_OPTION_COMMENTS_HIDE_NON_MATCHING,
-    OPTION_COMMENTS_HIDE_NON_MATCHING_SHORT:
-        META_OPTION_COMMENTS_HIDE_NON_MATCHING,
-    OPTION_COMMENTS_CLEAR_CACHE: META_OPTION_COMMENTS_CLEAR_CACHE,
-    OPTION_COMMENTS_CLEAR_CACHE_SHORT: META_OPTION_COMMENTS_CLEAR_CACHE,
-    OPTION_BROWSER: META_OPTION_BROWSER,
-    OPTION_BROWSER_SHORT: META_OPTION_BROWSER,
-    OPTION_ID_POST_HIRING: META_OPTION_ID_POST,
-    OPTION_ID_POST_HIRING_SHORT: META_OPTION_ID_POST,
-    OPTION_POST_LIMIT: META_OPTION_POST_LIMIT,
-    OPTION_POST_LIMIT_SHORT: META_OPTION_POST_LIMIT,
+FREELANCER_POST_ID = str(freelancer_post_id)
+WHO_IS_HIRING_POST_ID = str(who_is_hiring_post_id)
+SUBCOMMANDS = {
+    'ask': 'Ask HN posts',
+    'best': 'Best of HN weekly posts',
+    'freelance': "Monthly freelancers post",
+    'hiring': "Monthly hiring post",
+    'jobs': 'Jobs posts',
+    'new': 'Newest posts',
+    'onion': 'Onion posts',
+    'show': 'Show HN posts',
+    'top': 'Top posts',
+    'user': 'User info',
+    'view': 'View specified post',
+}
+ARGS_OPTS_LOOKUP = {
+    'freelance': {
+        'args': '"(?i)(Python|Django)"',
+        'opts': [
+            '--id_post ' + FREELANCER_POST_ID,
+            '-i ' + FREELANCER_POST_ID,
+        ],
+    },
+    'hiring': {
+        'args': '"(?i)(Python|Django)"',
+        'opts': [
+            '--id_post ' + WHO_IS_HIRING_POST_ID,
+            '-i ' + WHO_IS_HIRING_POST_ID,
+        ],
+    },
+    'user': {
+        'args': '"user"',
+        'opts': [
+            '--limit 10',
+            '-l 10',
+        ],
+    },
+    'view': {
+        'args': '1',
+        'opts': [
+            '--comments_regex_query ""',
+            '-cq ""',
+            '--comments',
+            '-c',
+            '--comments_recent',
+            '-cr',
+            '--comments_unseen',
+            '-cu',
+            '--comments_hide_non_matching',
+            '-ch',
+            '--clear_cache',
+            '-cc',
+            '--browser',
+            '-b',
+        ],
+    },
 }
 META_LOOKUP = {
-    ARG_POST_LIMIT: 'limit: int (opt) limits the posts displayed',
-    ARG_HIRING_REGEX_QUERY: ('regex_query: string (opt) applies a regular '
-                             'expression comment filter'),
-    ARG_VIEW_POST_INDEX: 'index: int (req) views the post index',
-    ARG_USER_ID: 'user:string (req) shows info on the specified user',
-    SUBCOMMAND_ASK: 'Ask HN posts',
-    SUBCOMMAND_BEST: 'Best of HN weekly posts',
-    SUBCOMMAND_FREELANCE: "Monthly freelancers post",
-    SUBCOMMAND_HIRING: "Monthly hiring post",
-    SUBCOMMAND_JOBS: 'Jobs posts',
-    SUBCOMMAND_NEW: 'Newest posts',
-    SUBCOMMAND_ONION: 'Onion posts',
-    SUBCOMMAND_SHOW: 'Show HN posts',
-    SUBCOMMAND_TOP: 'Top posts',
-    SUBCOMMAND_USER: 'User info',
-    SUBCOMMAND_VIEW: 'View specified post',
-    OPTION_COMMENTS_REGEX_QUERY: META_OPTION_COMMENTS_REGEX_QUERY,
-    OPTION_COMMENTS_REGEX_QUERY_SHORT: META_OPTION_COMMENTS_REGEX_QUERY,
-    OPTION_COMMENTS: META_OPTION_COMMENTS,
-    OPTION_COMMENTS_SHORT: META_OPTION_COMMENTS,
-    OPTION_COMMENTS_RECENT: META_OPTION_COMMENTS_RECENT,
-    OPTION_COMMENTS_RECENT_SHORT: META_OPTION_COMMENTS_RECENT,
-    OPTION_COMMENTS_UNSEEN: META_OPTION_COMMENTS_UNSEEN,
-    OPTION_COMMENTS_UNSEEN_SHORT: META_OPTION_COMMENTS_UNSEEN,
-    OPTION_COMMENTS_HIDE_NON_MATCHING: META_OPTION_COMMENTS_HIDE_NON_MATCHING,
-    OPTION_COMMENTS_HIDE_NON_MATCHING_SHORT:
-        META_OPTION_COMMENTS_HIDE_NON_MATCHING,
-    OPTION_COMMENTS_CLEAR_CACHE: META_OPTION_COMMENTS_CLEAR_CACHE,
-    OPTION_COMMENTS_CLEAR_CACHE_SHORT: META_OPTION_COMMENTS_CLEAR_CACHE,
-    OPTION_BROWSER: META_OPTION_BROWSER,
-    OPTION_BROWSER_SHORT: META_OPTION_BROWSER,
-    OPTION_ID_POST_HIRING: META_OPTION_ID_POST,
-    OPTION_ID_POST_HIRING_SHORT: META_OPTION_ID_POST,
-    OPTION_POST_LIMIT: META_OPTION_POST_LIMIT,
-    OPTION_POST_LIMIT_SHORT: META_OPTION_POST_LIMIT,
+    '10': 'limit: int (opt) limits the posts displayed',
+    '"(?i)(Python|Django)"': ('regex_query: string (opt) applies a regular '
+                              'expression comment filter'),
+    '1': 'index: int (req) views the post index',
+    '"user"': 'user:string (req) shows info on the specified user',
+    'ask': 'Ask HN posts',
+    'best': 'Best of HN weekly posts',
+    'freelance': "Monthly freelancers post",
+    'hiring': "Monthly hiring post",
+    'jobs': 'Jobs posts',
+    'new': 'Newest posts',
+    'onion': 'Onion posts',
+    'show': 'Show HN posts',
+    'top': 'Top posts',
+    'user': 'User info',
+    'view': 'View specified post',
+    '--comments_regex_query ""': ('Filter comments with a regular expression'
+                                  ' query (string)'),
+    '-cq ""': ('Filter comments with a regular expression'
+               ' query (string)'),
+    '--comments': 'View comments instead of the url contents (flag)',
+    '-c': 'View comments instead of the url contents (flag)',
+    '--comments_recent': 'View only comments in the past hour (flag)',
+    '-cr': 'View only comments in the past hour (flag)',
+    '--comments_unseen': 'View only previously unseen comments (flag)',
+    '-cu': 'View only previously unseen comments (flag)',
+    '--comments_hide_non_matching': ('Hide instead of collapse '
+                                     'non-matching comments (flag)'),
+    '-ch': 'Hide instead of collapse non-matching comments (flag)',
+    '--clear_cache': 'Clear the comment cache before executing.',
+    '-cc': 'Clear the comment cache before executing.',
+    '--browser': 'View in a browser instead of the terminal (flag)',
+    '-b': 'View in a browser instead of the terminal (flag)',
+    '--id_post ' + WHO_IS_HIRING_POST_ID: ('View matching comments from '
+                                                'the (optional) post id instead'
+                                                ' of the latest post (int)'),
+    '-i ' + WHO_IS_HIRING_POST_ID: ('View matching comments from '
+                                         'the (optional) post id instead'
+                                         ' of the latest post (int)'),
+    '--limit 10': 'Limits the number of user submissions displayed (int)',
+    '-l 10': 'Limits the number of user submissions displayed (int)',
 }
