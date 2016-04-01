@@ -54,9 +54,11 @@ class ConfigTest(unittest.TestCase):
         assert self.hn.config.freelance_id != freelancer_post_id
 
     def test_load_hiring_and_freelance_ids_invalid_url(self):
-        self.hn.config.load_hiring_and_freelance_ids(url='example.com')
+        self.hn.config.load_hiring_and_freelance_ids(url='https://example.com')
         assert self.hn.config.hiring_id == who_is_hiring_post_id
         assert self.hn.config.freelance_id == freelancer_post_id
+        os.remove('./downloaded_settings.py')
+
 
     def test_load_hiring_and_freelance_ids_from_cache_or_defaults(self):
         self.hn.config.load_hiring_and_freelance_ids_from_cache_or_defaults()
