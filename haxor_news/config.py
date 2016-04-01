@@ -161,7 +161,7 @@ class Config(object):
         parser = configparser.RawConfigParser()
         try:
             with open(config_file_path) as config_file:
-                parser.readfp(config_file)
+                parser.read_file(config_file)
                 for config_func in config_funcs:
                     config_func(parser)
         except IOError:
