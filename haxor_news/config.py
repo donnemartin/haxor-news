@@ -322,7 +322,7 @@ class Config(object):
         """
         try:
             if url is None:
-                url = 'https://raw.githubusercontent.com/donnemartin/donnemartin.github.io/master/tmp/settings.py'  # NOQA
+                url = 'https://raw.githubusercontent.com/donnemartin/haxor-news/master/haxor_news/settings.py'  # NOQA
             file_name = 'downloaded_settings.py'
             urlretrieve(url, file_name)
             with open(file_name, 'r') as f:
