@@ -20,7 +20,7 @@ Spend a lot of time on the terminal?  Spend a lot of time on Hacker News?
 * User Info
 * Onions
 
-![Imgur](http://i.imgur.com/PjY3ClS.png)
+![Imgur](http://i.imgur.com/4psj3nE.png)
 
 * Want to expand only previously **unseen comments**?
     * `-cu/--comments_unseen`
