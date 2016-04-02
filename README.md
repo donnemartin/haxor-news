@@ -69,7 +69,7 @@ Combine `haxor-news` with pipes, redirects, and other command line utilities.  O
 * [Combine With Pipes and Redirects](#combine-with-pipes-and-redirects)
 * [View User Info](#view-user-info)
 * [View Onions](#view-onions)
-* [View in a Browser](#viewing-results-in-a-browser)
+* [View Results in a Browser](#view-in-a-browser)
 * [Windows Support](#windows-support)
 
 ### Installation and Tests
@@ -153,7 +153,7 @@ After viewing a list of posts, you can view a post's linked web content by refer
 
 The HTML contents of the post's link are **formatted for easy-viewing within your terminal**.  If available, the formatted output is sent to a pager.
 
-See the [View in a Browser](#viewing-results-in-a-browser) section to view the contents in a browser instead.
+See the [View in a Browser](#view-in-a-browser) section to view the contents in a browser instead.
 
 Usage:
 
