@@ -24,14 +24,13 @@ import webbrowser
 import click
 from .compat import HTMLParser
 from .compat import urlparse
-import requests
 
 from .config import Config
 from .lib.haxor.haxor import HackerNewsApi, HTTPError, InvalidItemID, \
     InvalidUserID
-from .lib.html2text.html2text import HTML2Text
 from .lib.pretty_date_time import pretty_date_time
 from .onions import onions
+from .web_viewer import WebViewer
 
 
 class HackerNews(object):
@@ -52,6 +51,7 @@ class HackerNews(object):
         * hacker_news_api: An instance of HackerNews.
         * html_to_text: An instance of HTML2Text.
         * QUERY_UNSEEN: A string representing the query to show unseen comments.
+        * web_viewer: An instance of WebViewer.
     """
 
     COMMENT_INDENT = '  '
@@ -76,25 +76,7 @@ class HackerNews(object):
             self.html = HTMLParser
         self.config = Config()
         self.html_to_text = None
-        self._init_html_to_text()
-
-    def _init_html_to_text(self):
-        """Initializes HTML2Text.
-
-        Args:
-            * None.
-
-        Returns:
-            None.
-        """
-        self.html_to_text = HTML2Text()
-        self.html_to_text.body_width = 0
-        self.html_to_text.ignore_images = False
-        self.html_to_text.ignore_emphasis = False
-        self.html_to_text.ignore_links = False
-        self.html_to_text.skip_internal_links = False
-        self.html_to_text.inline_links = False
-        self.html_to_text.links_each_paragraph = False
+        self.web_viewer = WebViewer()
 
     def ask(self, limit):
         """Displays Ask HN posts.
@@ -123,62 +105,6 @@ class HackerNews(object):
         self.print_items(
             message=self.headlines_message('Best'),
             item_ids=self.hacker_news_api.best_stories(limit))
-
-    def format_markdown(self, text):
-        """Adds color to the input markdown using click.style.
-
-        Args:
-            * text: A string that represents the markdown text.
-
-        Returns:
-            A string that has been colorized.
-        """
-        pattern_url_name = r'[^]]*'
-        pattern_url_link = r'[^)]+'
-        pattern_url = r'([!]*\[{0}]\(\s*{1}\s*\))'.format(
-            pattern_url_name,
-            pattern_url_link)
-        regex_url = re.compile(pattern_url)
-        text = regex_url.sub(click.style(r'\1', fg=self.config.clr_link), text)
-        pattern_url_ref_name = r'[^]]*'
-        pattern_url_ref_link = r'[^]]+'
-        pattern_url_ref = r'([!]*\[{0}]\[\s*{1}\s*\])'.format(
-            pattern_url_ref_name,
-            pattern_url_ref_link)
-        regex_url_ref = re.compile(pattern_url_ref)
-        text = regex_url_ref.sub(click.style(r'\1', fg=self.config.clr_link),
-                                 text)
-        regex_list = re.compile(r'(  \*.*)')
-        text = regex_list.sub(click.style(r'\1', fg=self.config.clr_list),
-                              text)
-        regex_header = re.compile(r'(#+) (.*)')
-        text = regex_header.sub(click.style(r'\2', fg=self.config.clr_header),
-                                text)
-        regex_bold = re.compile(r'(\*\*|__)(.*?)\1')
-        text = regex_bold.sub(click.style(r'\2', fg=self.config.clr_bold),
-                              text)
-        regex_code = re.compile(r'(`)(.*?)\1')
-        text = regex_code.sub(click.style(r'\1\2\1', fg=self.config.clr_code),
-                              text)
-        text = re.sub(r'(\s*\r?\n\s*){2,}', r'\n\n', text)
-        return text
-
-    def generate_url_contents(self, url):
-        """Gets the formatted contents of the given item's url.
-
-        Converts the HTML to text using HTML2Text, colors it, then displays
-            the output in a pager.
-
-        Args:
-            * url: A string representing the url.
-
-        Returns:
-            A string representation of the formatted url contents.
-        """
-        raw_response = requests.get(url)
-        contents = self.html_to_text.handle(raw_response.text)
-        contents = self.format_markdown(contents)
-        return contents
 
     def headlines_message(self, message):
         """Creates the "Fetching [message] Headlines..." string.
@@ -641,7 +567,7 @@ class HackerNews(object):
             if browser:
                 webbrowser.open(item.url)
             else:
-                contents = self.generate_url_contents(item.url)
+                contents = self.web_viewer.generate_url_contents(item.url)
                 contents = click.style('Viewing ' + item.url + '\n\n',
                                        fg=self.config.clr_general) + \
                            contents + \
