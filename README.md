@@ -41,8 +41,8 @@ Combine `haxor-news` with pipes, redirects, and other command line utilities.  O
 
 ## TODO
 
-* Submit posts and comments
-* Search posts and comments
+* [Submit posts and comments](https://github.com/donnemartin/haxor-news/issues/19)
+* [Search posts and comments](https://github.com/donnemartin/haxor-news/issues/20)
 
 ## Index
 
@@ -52,7 +52,6 @@ Combine `haxor-news` with pipes, redirects, and other command line utilities.  O
 * [Auto-Completer and Interactive Help](#auto-completer-and-interactive-help)
 * [Customizable Highlighting](#customizable-highlighting)
 * [Commands](#commands)
-
 
 ### Features
 
