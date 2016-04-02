@@ -26,7 +26,6 @@ from tests.data.markdown import formatted_markdown, raw_markdown
 from tests.data.regex import raw_text_for_regex
 from tests.data.tip import formatted_tip
 from tests.data.title import formatted_title, raw_title
-from tests.data.url import formatted_url
 from tests.mock_hacker_news_api import MockHackerNewsApi
 
 
@@ -42,21 +41,21 @@ class HackerNewsTest(unittest.TestCase):
 
     def top(self, limit=2):
         self.hn.print_items(
-            message=self.headlines_message(self.MSG_TOP),
+            message=self.headlines_message('Top'),
             item_ids=self.hn.hacker_news_api.top_stories(limit))
 
     @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_ask(self, mock_print_items):
         self.hn.ask(self.limit)
         mock_print_items.assert_called_with(
-            message=self.hn.headlines_message(self.hn.MSG_ASK),
+            message=self.hn.headlines_message('Ask HN'),
             item_ids=self.hn.hacker_news_api.ask_stories(self.limit))
 
     @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_best(self, mock_print_items):
         self.hn.best(self.limit)
         mock_print_items.assert_called_with(
-            message=self.hn.headlines_message(self.hn.MSG_BEST),
+            message=self.hn.headlines_message('Best'),
             item_ids=self.hn.hacker_news_api.best_stories(self.limit))
 
     def test_format_markdown(self):
@@ -84,14 +83,14 @@ class HackerNewsTest(unittest.TestCase):
     def test_jobs(self, mock_print_items):
         self.hn.jobs(self.limit)
         mock_print_items.assert_called_with(
-            message=self.hn.headlines_message(self.hn.MSG_JOBS),
+            message=self.hn.headlines_message('Jobs'),
             item_ids=self.hn.hacker_news_api.ask_stories(self.limit))
 
     @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_new(self, mock_print_items):
         self.hn.new(self.limit)
         mock_print_items.assert_called_with(
-            message=self.hn.headlines_message(self.hn.MSG_NEW),
+            message=self.hn.headlines_message('Latest'),
             item_ids=self.hn.hacker_news_api.new_stories(self.limit))
 
     @mock.patch('haxor_news.hacker_news.HackerNews.format_index_title')
@@ -105,14 +104,14 @@ class HackerNewsTest(unittest.TestCase):
     def test_show(self, mock_print_items):
         self.hn.show(self.limit)
         mock_print_items.assert_called_with(
-            message=self.hn.headlines_message(self.hn.MSG_SHOW),
+            message=self.hn.headlines_message('Show HN'),
             item_ids=self.hn.hacker_news_api.show_stories(self.limit))
 
     @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
     def test_top(self, mock_print_items):
         self.hn.top(self.limit)
         mock_print_items.assert_called_with(
-            message=self.hn.headlines_message(self.hn.MSG_TOP),
+            message=self.hn.headlines_message('Top'),
             item_ids=self.hn.hacker_news_api.top_stories(self.limit))
 
     @mock.patch('haxor_news.hacker_news.HackerNews.print_items')
@@ -124,7 +123,7 @@ class HackerNewsTest(unittest.TestCase):
         self.hn.user(user_id, self.limit)
         user = self.hn.hacker_news_api.get_user(user_id)
         mock_print_items.assert_called_with(
-            self.hn.MSG_SUBMISSIONS, user.submitted[0:self.limit])
+            'User submissions:', user.submitted[0:self.limit])
         assert mock_click.mock_calls
         self.hn.user(self.invalid_id, self.limit)
         mock_print_item_not_found.assert_called_with(self.invalid_id)
@@ -144,7 +143,7 @@ class HackerNewsTest(unittest.TestCase):
             comments_clear_cache, browser)
         comments_expected = True
         mock_view.assert_called_with(
-            index, self.hn.QUERY_RECENT, comments_expected,
+            index, 'seconds ago|minutes ago', comments_expected,
             comments_hide_non_matching, browser)
 
     @mock.patch('haxor_news.hacker_news.HackerNews.view')
@@ -262,7 +261,7 @@ class HackerNewsTest(unittest.TestCase):
     def test_print_item_not_found(self, mock_click):
         self.hn.print_item_not_found(self.invalid_id)
         mock_click.secho.assert_called_with(
-            self.hn.MSG_ITEM_NOT_FOUND.format(self.invalid_id), fg='red')
+            'Item with id {0} not found.'.format(self.invalid_id), fg='red')
 
     @mock.patch('haxor_news.hacker_news.click')
     @mock.patch('haxor_news.hacker_news.HackerNews.format_item')
@@ -270,7 +269,7 @@ class HackerNewsTest(unittest.TestCase):
         items = self.hn.hacker_news_api.items
         item_ids = [item.item_id for item in items]
         self.hn.print_items(self.hn.headlines_message(
-            self.hn.MSG_TOP), item_ids)
+            'Top'), item_ids)
         for index, item in enumerate(items):
             assert mock.call(item, index+1) in mock_format_item.mock_calls
         assert mock_click.secho.mock_calls
@@ -278,13 +277,6 @@ class HackerNewsTest(unittest.TestCase):
     def test_print_tip_view(self):
         result = self.hn.tip_view(max_index=10)
         assert result == formatted_tip
-
-    @mock.patch('haxor_news.hacker_news.requests')
-    def test_url_contents(self, mock_requests):
-        self.hn.html_to_text = mock.Mock(handle=lambda _: 'bar')
-        result = self.hn.url_contents('foo')
-        mock_requests.get.assert_called_with('foo')
-        assert result == formatted_url
 
     def test_match_comment_unseen(self):
         regex_query = ''
@@ -317,9 +309,9 @@ class HackerNewsTest(unittest.TestCase):
         regex_query = 'minutes ago'
         assert not self.hn.match_regex(item, regex_query)
 
-    @mock.patch('haxor_news.hacker_news.HackerNews.url_contents')
+    @mock.patch('haxor_news.hacker_news.HackerNews.generate_url_contents')
     @mock.patch('haxor_news.hacker_news.click')
-    def test_view(self, mock_click, mock_url_contents):
+    def test_view(self, mock_click, mock_generate_url_contents):
         items = self.hn.hacker_news_api.items
         self.hn.config.item_ids = [int(item.item_id) for item in items]
         one_based_index = self.valid_id + 1
@@ -329,7 +321,7 @@ class HackerNewsTest(unittest.TestCase):
         browser = False
         self.hn.view(one_based_index, comments_query, comments,
                      comments_hide_non_matching, browser)
-        mock_url_contents.assert_called_with(
+        mock_generate_url_contents.assert_called_with(
             items[self.valid_id].url)
         assert mock_click.secho.mock_calls
         assert mock_click.echo_via_pager.mock_calls
@@ -399,6 +391,7 @@ class HackerNewsTest(unittest.TestCase):
         self.hn.view(one_based_index, comments_query, comments,
                      comments_hide_non_matching, browser)
         item = items[self.valid_id]
-        comments_url = self.hn.URL_POST + str(item.item_id)
+        comments_url = ('https://news.ycombinator.com/item?id=' +
+                        str(item.item_id))
         mock_webbrowser.open.assert_called_with(comments_url)
         assert mock_click.mock_calls

@@ -49,54 +49,16 @@ class HackerNews(object):
             actual post id.
         * MAX_SNIPPET_LENGTH: An int representing the max length of a comment
             snippet shown when filtering comments.
-        * MSG_ASK: A string representing the message displayed when the
-            command hn ask is executed.
-        * MSG_BEST: A string representing the message displayed when the
-            command hn best is executed.
-        * MSG_ITEM_NOT_FOUND: A string representing the message displayed when
-            the given item is not found.
-        * MSG_JOBS: A string representing the message displayed when the
-            command hn jobs is executed.
-        * MSG_NEW: A string representing the message displayed when the
-            command hn new is executed.
-        * MSG_ONION: A string representing the message displayed when the
-            command hn onion is executed.
-        * MSG_SHOW: A string representing the message displayed when the
-            command hn show is executed.
-        * MSG_TOP: A string representing the message displayed when the
-            command hn top is executed.
-        * MSG_SUBMISSIONS: A string representing the message displayed for
-            repositories when the command hn user is executed.
         * hacker_news_api: An instance of HackerNews.
         * html_to_text: An instance of HTML2Text.
-        * QUERY_RECENT: A string representing the query to show recent comments.
         * QUERY_UNSEEN: A string representing the query to show unseen comments.
-        * TIP0, TIP1, TIP2, TIP3: Strings that lets the user know about the
-            hn view command.
-        * URL_POST: A string that represents a Hacker News post minus the
-            post id.
     """
 
     COMMENT_INDENT = '  '
     COMMENT_UNSEEN = ' [!]'
     MAX_LIST_INDEX = 1000
     MAX_SNIPPET_LENGTH = 60
-    MSG_ASK = 'Ask HN'
-    MSG_BEST = 'Best'
-    MSG_ITEM_NOT_FOUND = 'Item with id {0} not found.'
-    MSG_JOBS = 'Jobs'
-    MSG_NEW = 'Latest'
-    MSG_ONION = 'Top Onion'
-    MSG_SHOW = 'Show HN'
-    MSG_TOP = 'Top'
-    MSG_SUBMISSIONS = 'User submissions:'
-    QUERY_RECENT = 'seconds ago|minutes ago'
     QUERY_UNSEEN = '\[!\]'
-    TIP0 = '  Tip: View the page or comments for '
-    TIP1 = ' with the following command:\n'
-    TIP2 = '    hn view [#] '
-    TIP3 = 'optional: [-c] [-cr] [-cu] [-cq "regex"] [-ch] [-b] [--help]'
-    URL_POST = 'https://news.ycombinator.com/item?id='
 
     def __init__(self):
         """Initializes HackerNews.
@@ -138,28 +100,28 @@ class HackerNews(object):
         """Displays Ask HN posts.
 
         Args:
-            * limit: A int that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 10.
 
         Returns:
             None.
         """
         self.print_items(
-            message=self.headlines_message(self.MSG_ASK),
+            message=self.headlines_message('Ask HN'),
             item_ids=self.hacker_news_api.ask_stories(limit))
 
     def best(self, limit):
         """Displays best posts.
 
         Args:
-            * limit: A int that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 10.
 
         Returns:
             None.
         """
         self.print_items(
-            message=self.headlines_message(self.MSG_BEST),
+            message=self.headlines_message('Best'),
             item_ids=self.hacker_news_api.best_stories(limit))
 
     def format_markdown(self, text):
@@ -200,6 +162,23 @@ class HackerNews(object):
                               text)
         text = re.sub(r'(\s*\r?\n\s*){2,}', r'\n\n', text)
         return text
+
+    def generate_url_contents(self, url):
+        """Gets the formatted contents of the given item's url.
+
+        Converts the HTML to text using HTML2Text, colors it, then displays
+            the output in a pager.
+
+        Args:
+            * url: A string representing the url.
+
+        Returns:
+            A string representation of the formatted url contents.
+        """
+        raw_response = requests.get(url)
+        contents = self.html_to_text.handle(raw_response.text)
+        contents = self.format_markdown(contents)
+        return contents
 
     def headlines_message(self, message):
         """Creates the "Fetching [message] Headlines..." string.
@@ -243,41 +222,41 @@ class HackerNews(object):
         """Displays job posts.
 
         Args:
-            * limit: A int that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 10.
 
         Returns:
             None.
         """
         self.print_items(
-            message=self.headlines_message(self.MSG_JOBS),
+            message=self.headlines_message('Jobs'),
             item_ids=self.hacker_news_api.job_stories(limit))
 
     def new(self, limit):
         """Displays the latest posts.
 
         Args:
-            * limit: A int that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 10.
 
         Returns:
             None.
         """
         self.print_items(
-            message=self.headlines_message(self.MSG_NEW),
+            message=self.headlines_message('Latest'),
             item_ids=self.hacker_news_api.new_stories(limit))
 
     def onion(self, limit):
         """Displays onions.
 
         Args:
-            * limit: A int that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 50.
 
         Returns:
             None.
         """
-        click.secho('\n' + self.headlines_message(self.MSG_ONION) + '\n',
+        click.secho('\n' + self.headlines_message('Top Onion') + '\n',
                     fg=self.config.clr_title)
         index = 1
         for onion in onions[0:limit]:
@@ -408,8 +387,7 @@ class HackerNews(object):
         Returns:
             A string representation of the formatted index and title.
         """
-        space = '  ' if index < 10 else ' '
-        formatted_index_title = click.style('  ' + str(index) + '.' + space,
+        formatted_index_title = click.style('  ' + (str(index) + '.').ljust(5),
                                             fg=self.config.clr_view_index)
         formatted_index_title += click.style(title + ' ',
                                              fg=self.config.clr_title)
@@ -439,7 +417,7 @@ class HackerNews(object):
                                       fg=self.config.clr_user)
         formatted_item += click.style(
             str(pretty_date_time(item.submission_time)) + ' ',
-            self.config.clr_time)
+            fg=self.config.clr_time)
         num_comments = str(item.descendants) if item.descendants else '0'
         formatted_item += click.style('| ' + num_comments + ' comments',
                                       fg=self.config.clr_num_comments)
@@ -457,7 +435,7 @@ class HackerNews(object):
         Returns:
             None.
         """
-        click.secho(self.MSG_ITEM_NOT_FOUND.format(item_id), fg='red')
+        click.secho('Item with id {0} not found.'.format(item_id), fg='red')
 
     def print_items(self, message, item_ids):
         """Prints the items.
@@ -495,32 +473,17 @@ class HackerNews(object):
         Returns:
             A string representation of the formatted tip.
         """
-        tip = click.style(self.TIP0, fg=self.config.clr_tooltip)
+        tip = click.style('  Tip: View the page or comments for ',
+                          fg=self.config.clr_tooltip)
         tip += click.style('1 through ', fg=self.config.clr_view_index)
         tip += click.style(str(max_index), fg=self.config.clr_view_index)
-        tip += click.style(self.TIP1, fg=self.config.clr_tooltip)
-        tip += click.style(self.TIP2, fg=self.config.clr_view_index)
-        tip += click.style(self.TIP3 + '\n', fg=self.config.clr_tooltip)
+        tip += click.style(' with the following command:\n',
+                           fg=self.config.clr_tooltip)
+        tip += click.style('    hn view [#] ', fg=self.config.clr_view_index)
+        tip += click.style(('optional: [-c] [-cr] [-cu] [-cq "regex"] [-ch]'
+                            ' [-b] [--help]' + '\n'),
+                           fg=self.config.clr_tooltip)
         return tip
-
-    def url_contents(self, url):
-        """Gets the formatted contents of the given item's url.
-
-        Converts the HTML to text using HTML2Text, colors it, then displays
-            the output in a pager.
-
-        Args:
-            * url: A string representing the url.
-
-        Returns:
-            A string representation of the formatted url contents.
-        """
-        raw_response = requests.get(url)
-        contents = self.html_to_text.handle(raw_response.text)
-        contents = self.format_markdown(contents)
-        contents = click.style(
-            'Viewing ' + url + '\n\n', fg=self.config.clr_general) + contents
-        return contents
 
     def match_comment_unseen(self, regex_query, header_adornment):
         """Determines if a comment is unseen based on the query and header.
@@ -563,28 +526,28 @@ class HackerNews(object):
         """Displays Show HN posts.
 
         Args:
-            * limit: A int that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 10.
 
         Returns:
             None.
         """
         self.print_items(
-            message=self.headlines_message(self.MSG_SHOW),
+            message=self.headlines_message('Show HN'),
             item_ids=self.hacker_news_api.show_stories(limit))
 
     def top(self, limit):
         """Displays the top posts.
 
         Args:
-            * limit: A int that specifies the number of items to show.
+            * limit: An int that specifies the number of items to show.
                 Optional, defaults to 10.
 
         Returns:
             None.
         """
         self.print_items(
-            message=self.headlines_message(self.MSG_TOP),
+            message=self.headlines_message('Top'),
             item_ids=self.hacker_news_api.top_stories(limit))
 
     def user(self, user_id, submission_limit):
@@ -592,7 +555,7 @@ class HackerNews(object):
 
         Args:
             * user_id: A string representing the user id.
-            * submission_limit: A int that specifies the number of
+            * submission_limit: An int that specifies the number of
                 submissions to show.
                 Optional, defaults to 10.
 
@@ -607,7 +570,7 @@ class HackerNews(object):
             click.secho(str(user.created), fg=self.config.clr_user)
             click.secho('Karma: ', nl=False, fg=self.config.clr_general)
             click.secho(str(user.karma), fg=self.config.clr_user)
-            self.print_items(self.MSG_SUBMISSIONS,
+            self.print_items('User submissions:',
                              user.submitted[0:submission_limit])
         except InvalidUserID:
             self.print_item_not_found(user_id)
@@ -656,7 +619,8 @@ class HackerNews(object):
                         fg=self.config.clr_general)
             comments = True
         if comments:
-            comments_url = self.URL_POST + str(item.item_id)
+            comments_url = ('https://news.ycombinator.com/item?id=' +
+                            str(item.item_id))
             click.secho('\nFetching Comments from ' + comments_url,
                         fg=self.config.clr_general)
             if browser:
@@ -677,7 +641,13 @@ class HackerNews(object):
             if browser:
                 webbrowser.open(item.url)
             else:
-                contents = self.url_contents(item.url)
+                contents = self.generate_url_contents(item.url)
+                contents = click.style('Viewing ' + item.url + '\n\n',
+                                       fg=self.config.clr_general) + \
+                           contents + \
+                           click.style(('View this article in a browser with '
+                                        'the -b/--browser flag\n'),
+                                        fg=self.config.clr_general)
                 if platform.system() == 'Windows':
                     try:
                         click.echo(contents)
@@ -690,7 +660,7 @@ class HackerNews(object):
     def view_setup(self, index, comments_regex_query, comments,
                    comments_recent, comments_unseen,
                    comments_hide_non_matching, clear_cache, browser):
-        """Sets up the call to views the given index comments or url.
+        """Sets up the call to view the given index comments or url.
 
         This method is meant to be called after a command that outputs a
         table of posts.
@@ -721,7 +691,7 @@ class HackerNews(object):
         if comments_regex_query is not None:
             comments = True
         if comments_recent:
-            comments_regex_query = self.QUERY_RECENT
+            comments_regex_query = 'seconds ago|minutes ago'
             comments = True
         if comments_unseen:
             comments_regex_query = self.QUERY_UNSEEN
