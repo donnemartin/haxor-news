@@ -3,15 +3,6 @@
 haxor-news
 =================
 
-**View** and **filter** Hacker News content without leaving the terminal:
-
-* Posts
-* Post Comments
-* Post Linked Web Content
-* Monthly Hiring and Freelancers Posts
-* User Info
-* Onions
-
 > *Coworker who sees me looking at something in a browser: "Glad you're not busy; I need you to do this, this, this..."*
 >
 > *Coworker who sees me staring intently at a command prompt: Backs away, slowly...*
@@ -20,7 +11,14 @@ haxor-news
 
 Spend a lot of time on the terminal?  Spend a lot of time on Hacker News?
 
-`haxor-news` brings Hacker News to the terminal, allowing you to view and filter linked web pages and comments without leaving your command line.
+`haxor-news` brings Hacker News to the terminal, allowing you to **view** and **filter** linked web pages and comments without leaving your command line.
+
+* Posts
+* Post Comments
+* Post Linked Web Content
+* Monthly Hiring and Freelancers Posts
+* User Info
+* Onions
 
 ![Imgur](http://i.imgur.com/PjY3ClS.png)
 
