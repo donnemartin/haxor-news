@@ -145,7 +145,7 @@ Examples:
     $ hn top
     $ hn show 20
 
-![Imgur](http://i.imgur.com/bMiQRjx.png)
+![Imgur](http://i.imgur.com/tjGPszv.png)
 
 ## View a Post's Linked Web Content
 
