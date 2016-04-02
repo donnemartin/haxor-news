@@ -97,11 +97,11 @@ META_LOOKUP = {
     '--browser': 'View in a browser instead of the terminal (flag)',
     '-b': 'View in a browser instead of the terminal (flag)',
     '--id_post ' + WHO_IS_HIRING_POST_ID: ('View matching comments from '
-                                                'the (optional) post id instead'
-                                                ' of the latest post (int)'),
+                                           'the (optional) post id instead'
+                                           ' of the latest post (int)'),
     '-i ' + WHO_IS_HIRING_POST_ID: ('View matching comments from '
-                                         'the (optional) post id instead'
-                                         ' of the latest post (int)'),
+                                    'the (optional) post id instead'
+                                    ' of the latest post (int)'),
     '--limit 10': 'Limits the number of user submissions displayed (int)',
     '-l 10': 'Limits the number of user submissions displayed (int)',
 }
