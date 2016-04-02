@@ -43,7 +43,6 @@ Combine `haxor-news` with pipes, redirects, and other command line utilities.  O
 
 * Submit posts and comments
 * Search posts and comments
-* Customize color scheme
 
 ## Index
 
@@ -51,6 +50,7 @@ Combine `haxor-news` with pipes, redirects, and other command line utilities.  O
 
 * [Syntax](#syntax)
 * [Auto-Completer and Interactive Help](#auto-completer-and-interactive-help)
+* [Customizable Highlighting](#customizable-highlighting)
 * [Commands](#commands)
 
 
@@ -110,7 +110,23 @@ Within the auto-completer, the same syntax applies:
     haxor> hn <command> [params] [options]
 
 ![Imgur](http://i.imgur.com/L2rzgb3.png)
+
 ![Imgur](http://i.imgur.com/FL2pyC0.png)
+
+## Customizable Highlighting
+
+You can control the ansi colors used for highlighting by updating your `~/.haxornewsconfig` file.
+
+Color options include:
+
+```
+'black', 'red', 'green', 'yellow',
+'blue', 'magenta', 'cyan', 'white'
+```
+
+For no color, set the value(s) to `None`.
+
+![Imgur](http://i.imgur.com/lzoRxfW.png)
 
 ## Commands
 
