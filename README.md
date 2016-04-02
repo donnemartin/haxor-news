@@ -320,7 +320,15 @@ Usage:
 
 ## Windows Support
 
-`haxor-news` has been tested on Windows 7 and Windows 10.
+`haxor-news` has been tested on Windows 10.
+
+Pager support on Windows is more limited as discussed in the following [ticket](https://github.com/donnemartin/haxor-news/issues/16).  Users can direct output to a pager with the `| more` command:
+
+    $ hn view 1 -c | more
+
+On Windows, the `.haxornewsconfig` file can be found in `%userprofile%`.  For example:
+
+    C:\Users\dmartin\.sawsrc
 
 Although you can use the standard Windows command prompt, you'll probably have a better experience with either [cmder](https://github.com/cmderdev/cmder) or [conemu](https://github.com/Maximus5/ConEmu).
 
