@@ -307,7 +307,7 @@ Usage:
 
     $ hn onion [limit]  # post limit default: all
 
-![Imgur](http://i.imgur.com/ZdXQXWY.png)
+![Imgur](http://i.imgur.com/MubWRNG.png)
 
 ## View in a Browser
 
