@@ -59,7 +59,7 @@ class HackerNewsTest(unittest.TestCase):
             item_ids=self.hn.hacker_news_api.best_stories(self.limit))
 
     def test_format_markdown(self):
-        result = self.hn.format_markdown(raw_markdown)
+        result = self.hn.web_viewer.format_markdown(raw_markdown)
         assert result == formatted_markdown
 
     def test_headlines_message(self):
@@ -309,7 +309,7 @@ class HackerNewsTest(unittest.TestCase):
         regex_query = 'minutes ago'
         assert not self.hn.match_regex(item, regex_query)
 
-    @mock.patch('haxor_news.hacker_news.HackerNews.generate_url_contents')
+    @mock.patch('haxor_news.hacker_news.WebViewer.generate_url_contents')
     @mock.patch('haxor_news.hacker_news.click')
     def test_view(self, mock_click, mock_generate_url_contents):
         items = self.hn.hacker_news_api.items
