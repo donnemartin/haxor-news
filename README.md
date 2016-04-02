@@ -299,7 +299,7 @@ Usage:
 
     $ hn user [user id]
 
-![Imgur](http://i.imgur.com/d8VpmmQ.png)
+![Imgur](http://i.imgur.com/oTALQQI.png)
 
 ## View Onions
 
