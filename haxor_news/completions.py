@@ -79,17 +79,6 @@ META_LOOKUP = {
                               'expression comment filter'),
     '1': 'index: int (req) views the post index',
     '"user"': 'user:string (req) shows info on the specified user',
-    'ask': 'Ask HN posts',
-    'best': 'Best of HN weekly posts',
-    'freelance': "Monthly freelancers post",
-    'hiring': "Monthly hiring post",
-    'jobs': 'Jobs posts',
-    'new': 'Newest posts',
-    'onion': 'Onion posts',
-    'show': 'Show HN posts',
-    'top': 'Top posts',
-    'user': 'User info',
-    'view': 'View specified post',
     '--comments_regex_query ""': ('Filter comments with a regular expression'
                                   ' query (string)'),
     '-cq ""': ('Filter comments with a regular expression'
@@ -116,3 +105,4 @@ META_LOOKUP = {
     '--limit 10': 'Limits the number of user submissions displayed (int)',
     '-l 10': 'Limits the number of user submissions displayed (int)',
 }
+META_LOOKUP.update(SUBCOMMANDS)
