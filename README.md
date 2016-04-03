@@ -1,4 +1,4 @@
-![Imgur](http://i.imgur.com/fX6GZFh.gif)
+![Imgur](http://i.imgur.com/C4mkc3L.gif)
 
 haxor-news
 =================
