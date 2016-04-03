@@ -376,7 +376,7 @@ To view `haxor-news` `virtualenv` installation instructions, click [here](https:
 * Linux, Unix
     * Tested on Ubuntu 14.04 LTS
 * Windows
-    * Tested on Windows 7 and 10
+    * Tested on Windows 10
 
 ## Developer Installation
 
