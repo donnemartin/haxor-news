@@ -103,7 +103,13 @@ class WebViewer(object):
         :rtype: str
         :return: The string representation of the formatted url contents.
         """
-        raw_response = requests.get(url)
+        try:
+            raw_response = requests.get(url)
+        except (requests.exceptions.SSLError,
+                requests.exceptions.ConnectionError) as e:
+            contents = 'Error: ' + str(e) + '\n'
+            contents += 'Try running hn view # with the --browser/-b flag\n'
+            return contents
         contents = self.html_to_text.handle(raw_response.text)
         contents = self.format_markdown(contents)
         return contents
