@@ -38,20 +38,40 @@ from .utils import TextUtils
 
 
 class Haxor(object):
-    """Encapsulates the Hacker News CLI.
+    """Encapsulate the Hacker News CLI.
 
-    Attributes:
-        * cli: An instance of prompt_toolkit's CommandLineInterface.
-        * CMDS_ENABLE_PAGINATE: A list of commands that kick off pagination.
-        * CMDS_NO_PAGINATE: A list of commands that disable pagination.
-        * completer: An instance of Completer.
-        * hacker_news_cli: An instance of HackerNewsCli.
-        * key_manager: An instance of prompt_toolkit's KeyManager.
-        * PAGINATE_CMD: A string representing the command to enable pagination.
-        * paginate_comments: A bool that determines whether to paginate
+    :type cli: :class:`prompt_toolkit.CommandLineInterface`
+    :param cli: An instance of `prompt_toolkit.CommandLineInterface`.
+
+    :type CMDS_ENABLE_PAGINATE: list (const)
+    :param CMDS_ENABLE_PAGINATE: A list of commands that kick off pagination.
+
+    :type CMDS_NO_PAGINATE: list (const)
+    :param CMDS_NO_PAGINATE: A list of commands that disable pagination.
+
+    :type completer: :class:`prompt_toolkit.completer`
+    :param completer: An instance of `prompt_toolkit.completer`.
+
+    :type hacker_news_cli: :class:`hacker_news_cli.HackerNewsCli`
+    :param hacker_news_cli: An instance of `hacker_news_cli.HackerNewsCli`.
+
+    :type key_manager: :class:`prompt_toolkit.key_binding.manager.
+        KeyBindingManager`
+    :param key_manager: An instance of `prompt_toolkit.key_binding.manager.
+        KeyBindingManager`.
+
+    :type PAGINATE_CMD: str (const)
+    :param PAGINATE_CMD: The command to enable pagination.
+
+    :type paginate_comments: bool
+    :param paginate_comments: Determines whether to paginate
             comments.
-        * text_utils: An instance of TextUtils.
-        * theme: A string representing the lexer theme.
+
+    :type text_utils: :class:`util.TextUtils`
+    :param text_utils: An instance of `util.TextUtils`.
+
+    :type theme: str
+    :param theme: The prompt_toolkit lexer theme.
     """
 
     CMDS_NO_PAGINATE = [
@@ -78,14 +98,6 @@ class Haxor(object):
     PAGINATE_CMD_WIN = ' | more'
 
     def __init__(self):
-        """Inits Saws.
-
-        Args:
-            * None.
-
-        Returns:
-            None.
-        """
         self.cli = None
         self.key_manager = None
         self.theme = 'vim'
@@ -99,27 +111,21 @@ class Haxor(object):
             self.CMDS_ENABLE_PAGINATE.append('view')
 
     def _create_key_manager(self):
-        """Creates the :class:`KeyManager`.
+        """Create the :class:`KeyManager`.
 
         The inputs to KeyManager are expected to be callable, so we can't
         use the standard @property and @attrib.setter for these attributes.
         Lambdas cannot contain assignments so we're forced to define setters.
 
-        Args:
-            * None.
-
-        Returns:
-            A KeyManager with callables to set the toolbar options.
+        :rtype: :class:`prompt_toolkit.key_binding.manager
+        :return: KeyBindingManager with callables to set the toolbar options.
         """
 
         def set_paginate_comments(paginate_comments):
             """Setter for paginating comments mode.
 
-            Args:
-                * paginate: A bool that represents the paginate comments mode.
-
-            Returns:
-                None.
+            :type paginate: bool
+            :param paginate: The paginate comments mode.
             """
             self.paginate_comments = paginate_comments
 
@@ -127,14 +133,7 @@ class Haxor(object):
             set_paginate_comments, lambda: self.paginate_comments)
 
     def _create_cli(self):
-        """Creates the prompt_toolkit's CommandLineInterface.
-
-        Args:
-            * None.
-
-        Returns:
-            None.
-        """
+        """Create the prompt_toolkit's CommandLineInterface."""
         history = FileHistory(os.path.expanduser('~/.haxornewshistory'))
         toolbar = Toolbar(lambda: self.paginate_comments)
         layout = create_default_layout(
@@ -166,17 +165,16 @@ class Haxor(object):
             eventloop=eventloop)
 
     def _add_comment_pagination(self, document_text):
-        """Adds the command to enable comment pagination where applicable.
+        """Add the command to enable comment pagination where applicable.
 
         Pagination is enabled if the command views comments and the
         browser flag is not enabled.
 
-        Args:
-            * document_text: A string representing the input command.
+        :type document_text: str
+        :param document_text: The input command.
 
-        Returns:
-            document_text: A string representing the input command with
-                pagination enabled.
+        :rtype: str
+        :return: the input command with pagination enabled.
         """
         if not any(sub in document_text for sub in self.CMDS_NO_PAGINATE):
             if any(sub in document_text for sub in self.CMDS_ENABLE_PAGINATE):
@@ -187,13 +185,10 @@ class Haxor(object):
         return document_text
 
     def run_command(self, document):
-        """Runs the given command.
+        """Run the given command.
 
-        Args:
-            * document: An instance of prompt_toolkit.document.Document.
-
-        Returns:
-            None.
+        :type document: :class:`prompt_toolkit.document.Document`
+        :param document: An instance of `prompt_toolkit.document.Document`.
         """
         try:
             if self.paginate_comments:
@@ -203,14 +198,7 @@ class Haxor(object):
             click.secho(e, fg='red')
 
     def run_cli(self):
-        """Runs the main loop.
-
-        Args:
-            * None.
-
-        Returns:
-            None.
-        """
+        """Run the main loop."""
         click.echo('Version: ' + __version__)
         click.echo('Syntax: hn <command> [params] [options]')
         while True:

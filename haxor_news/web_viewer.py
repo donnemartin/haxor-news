@@ -24,11 +24,13 @@ import requests
 
 
 class WebViewer(object):
-    """Handles viewing of web content within the terminal.
+    """Handle viewing of web content within the terminal.
 
-    Attributes:
-        * html: .
-        * html_to_text: .
+    :type html: :class:`HTMLParser.HTMLParser`
+    :param html: An instance of `HTMLParser.HTMLParser`.
+
+    :type html_to_text: :class:`html2text.html2text.HTML2Text`
+    :param html_to_text: An instance of `html2text.html2text.HTML2Text`.
     """
 
     def __init__(self):
@@ -40,14 +42,7 @@ class WebViewer(object):
         self._init_html_to_text()
 
     def _init_html_to_text(self):
-        """Initializes HTML2Text.
-
-        Args:
-            * None.
-
-        Returns:
-            None.
-        """
+        """Initialize HTML2Text."""
         self.html_to_text = HTML2Text()
         self.html_to_text.body_width = 0
         self.html_to_text.ignore_images = False
@@ -58,13 +53,13 @@ class WebViewer(object):
         self.html_to_text.links_each_paragraph = False
 
     def format_markdown(self, text):
-        """Adds color to the input markdown using click.style.
+        """Add color to the input markdown using click.style.
 
-        Args:
-            * text: A string that represents the markdown text.
+        :type text: str
+        :param text: The markdown text.
 
-        Returns:
-            A string that has been colorized.
+        :rtype: str
+        :return: The input `text`, formatted.
         """
         pattern_url_name = r'[^]]*'
         pattern_url_link = r'[^)]+'
@@ -97,16 +92,16 @@ class WebViewer(object):
         return text
 
     def generate_url_contents(self, url):
-        """Generates the formatted contents of the given item's url.
+        """Generate the formatted contents of the given item's url.
 
         Converts the HTML to text using HTML2Text, colors it, then displays
             the output in a pager.
 
-        Args:
-            * url: A string representing the url.
+        :type url: str
+        :param url: The url whose contents to fetch.
 
-        Returns:
-            A string representation of the formatted url contents.
+        :rtype: str
+        :return: The string representation of the formatted url contents.
         """
         raw_response = requests.get(url)
         contents = self.html_to_text.handle(raw_response.text)

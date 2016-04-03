@@ -20,14 +20,7 @@ from .hacker_news_cli import HackerNewsCli
 
 
 def cli():
-    """Creates and calls Haxor.
-
-    Args:
-        * None.
-
-    Returns:
-        None.
-    """
+    """Creates and calls Haxor."""
     haxor_news = HackerNewsCli()
     haxor_news.cli()
 

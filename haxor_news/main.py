@@ -20,14 +20,7 @@ from .haxor import Haxor
 
 
 def cli():
-    """Creates and calls Haxor.
-
-    Args:
-        * None.
-
-    Returns:
-        None.
-    """
+    """Creates and calls Haxor."""
     try:
         haxor = Haxor()
         haxor.run_cli()

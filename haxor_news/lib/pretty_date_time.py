@@ -20,7 +20,7 @@ from datetime import datetime
 
 
 def pretty_date_time(date_time):
-    """Prints a pretty datetime similar to what's seen on Hacker News.
+    """Print a pretty datetime similar to what's seen on Hacker News.
 
     Gets a datetime object or a int() Epoch timestamp and return a
     pretty string like 'an hour ago', 'Yesterday', '3 months ago',
@@ -28,11 +28,11 @@ def pretty_date_time(date_time):
 
     Adapted from: http://stackoverflow.com/questions/1551382/user-friendly-time-format-in-python  # NOQA
 
-    Args:
-        * date_time: An instance of datetime.
+    :type foo: :class:`datetime.datetime`
+    :param foo: An instance of `datetime.datetime`.
 
-    Returns:
-        A string that represents the pretty datetime.
+    :rtype: str
+    :return: the pretty datetime.
     """
     now = datetime.now()
     if type(date_time) is int:
