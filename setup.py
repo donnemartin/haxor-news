@@ -6,7 +6,8 @@ except ImportError:
 
 
 setup(
-    description='View and filter Hacker News content without leaving the terminal.',
+    description=('View and filter Hacker News from the command line: '
+                 'Posts, comments, and linked web content.'),
     author='Donne Martin',
     url='https://github.com/donnemartin/haxor-news',
     download_url='https://pypi.python.org/pypi/haxor-news',
