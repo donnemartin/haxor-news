@@ -341,7 +341,7 @@ Although you can use the standard Windows command prompt, you'll probably have a
 
 You can also install the latest `haxor-news` from GitHub source which can contain changes not yet pushed to PyPI:
 
-    $ pip install git+https://github.com/donnemartin/hacker-news.git
+    $ pip install git+https://github.com/donnemartin/haxor-news.git
 
 If you are not installing in a virtualenv, run with `sudo`:
 
