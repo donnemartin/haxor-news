@@ -18,44 +18,34 @@ from pygments.token import Token
 
 
 class Toolbar(object):
-    """Encapsulates the bottom toolbar.
+    """Show information about the aws-shell in a tool bar.
 
-    Attributes:
-        * handler: A callable get_toolbar_items.
+    :type handler: callable
+    :param handler: Wraps the callable `get_toolbar_items`.
     """
 
     def __init__(self, paginate_comments_cfg):
-        """Initializes ToolBar.
-
-        Args:
-            * paginate_comments_cfg: A boolean that spedifies whether to
-                paginate comments.
-
-        Returns:
-            None
-        """
         self.handler = self._create_toolbar_handler(paginate_comments_cfg)
 
     def _create_toolbar_handler(self, paginate_comments_cfg):
-        """Creates the toolbar handler.
+        """Create the toolbar handler.
 
-        Args:
-            * paginate_comments_cfg: A boolean that spedifies whether to
-                paginate comments.
+        :type paginate_comments_cfg: callable
+        :param paginate_comments_cfg: Specifies whether to paginate comments.
 
-        Returns:
-            A callable get_toolbar_items.
+        :rtype: callable
+        :returns: get_toolbar_items.
         """
         assert callable(paginate_comments_cfg)
 
         def get_toolbar_items(_):
-            """Returns bottom menu items.
+            """Return the toolbar items.
 
-            Args:
-                * _: An instance of prompt_toolkit's Cli (not used).
+            :type _: :class:`prompt_toolkit.Cli`
+            :param _: (Unused)
 
-            Returns:
-                A list of Token.Toolbar.
+            :rtype: list
+            :return: A list of (pygments.Token.Toolbar, str).
             """
             # if paginate_comments_cfg():
             #     paginate_comments_token = Token.Toolbar.On

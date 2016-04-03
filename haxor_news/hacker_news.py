@@ -34,24 +34,39 @@ from .web_viewer import WebViewer
 
 
 class HackerNews(object):
-    """Encapsulates Hacker News.
+    """Encapsulate Hacker News.
 
-    Attributes:
-        * COMMENT_INDENT: A string representing the indent amount for comments.
-        * COMMENT_UNSEEN: A string representing the adornment for unseen
-            comments.
-        * config: An instance of haxor_news.Config.
-        * html: An instance of html or HTMLParser.
-        * MAX_LIST_INDEX: An int representing the maximum 1-based index value
+        :type COMMENT_INDENT: str (const)
+        :param COMMENT_INDENT: The comment indent.
+
+        :type COMMENT_UNSEEN: str (const)
+        :param COMMENT_UNSEEN: The adornment for unseen
+            comments..
+
+        :type config: :class:`config.Config`
+        :param config: An instance of `config.Config`.
+
+        :type html: :class:`HTMLParser`
+        :param html: An instance of `HTMLParser`.
+
+        :type MAX_LIST_INDEX: int (const)
+        :param MAX_LIST_INDEX: The maximum 1-based index value
             hn view will use to match item_ids.  Any value larger than
             MAX_LIST_INDEX will result in hn view treating that index as an
-            actual post id.
-        * MAX_SNIPPET_LENGTH: An int representing the max length of a comment
-            snippet shown when filtering comments.
-        * hacker_news_api: An instance of HackerNews.
-        * html_to_text: An instance of HTML2Text.
-        * QUERY_UNSEEN: A string representing the query to show unseen comments.
-        * web_viewer: An instance of WebViewer.
+            actual post id..
+
+        :type MAX_SNIPPET_LENGTH: int (const)
+        :param MAX_SNIPPET_LENGTH: The max length of a comment snippet shown
+            when filtering comments.
+
+        :type hacker_news_api: :class:`haxor.HackerNewsApi`
+        :param hacker_news_api: An instance of `haxor.HackerNewsApi`.
+
+        :type QUERY_UNSEEN: str (const)
+        :param foo: the query to show unseen comments.
+
+        :type web_viewer: :class:`web_viewer.WebViewer`
+        :param web_viewer: An instance of `web_viewer.WebViewer`.
     """
 
     COMMENT_INDENT = '  '
@@ -61,77 +76,59 @@ class HackerNews(object):
     QUERY_UNSEEN = '\[!\]'
 
     def __init__(self):
-        """Initializes HackerNews.
-
-        Args:
-            * None.
-
-        Returns:
-            None.
-        """
         self.hacker_news_api = HackerNewsApi()
         try:
             self.html = HTMLParser.HTMLParser()
         except:
             self.html = HTMLParser
         self.config = Config()
-        self.html_to_text = None
         self.web_viewer = WebViewer()
 
     def ask(self, limit):
-        """Displays Ask HN posts.
+        """Display Ask HN posts.
 
-        Args:
-            * limit: An int that specifies the number of items to show.
-                Optional, defaults to 10.
-
-        Returns:
-            None.
+        :type limit: int
+        :param limit: the number of items to show, optional, defaults to 10.
         """
         self.print_items(
             message=self.headlines_message('Ask HN'),
             item_ids=self.hacker_news_api.ask_stories(limit))
 
     def best(self, limit):
-        """Displays best posts.
+        """Display best posts.
 
-        Args:
-            * limit: An int that specifies the number of items to show.
-                Optional, defaults to 10.
-
-        Returns:
-            None.
+        :type limit: int
+        :param limit: the number of items to show, optional, defaults to 10.
         """
         self.print_items(
             message=self.headlines_message('Best'),
             item_ids=self.hacker_news_api.best_stories(limit))
 
     def headlines_message(self, message):
-        """Creates the "Fetching [message] Headlines..." string.
+        """Create the "Fetching [message] Headlines..." string.
 
-        Args:
-            * message: A string that represents the message.
+        :type message: str
+        :param message: The headline message.
 
-        Returns:
-            A string: "Fetching [message] Headlines..."
+        :rtype: str
+        :return: "Fetching [message] Headlines...".
         """
         return 'Fetching {0} Headlines...'.format(message)
 
     def hiring_and_freelance(self, regex_query, post_id):
-        """Displays comments matching the monthly who is hiring post.
+        """Display comments matching the monthly who is hiring post.
 
         Searches the monthly Hacker News who is hiring post for comments
         matching the given regex_query.  Defaults to searching the latest
         post based on your installed version of haxor-news.
 
-        Args:
-            * regex_query: A string that specifies the regex query to match.
-            * post_id: An int that specifies the who is hiring post id.
+        :type regex_query: str
+        :param regex_query: The regex query to match.
+
+        :type post_id: int
+        :param post_id: the who is hiring post id.
                 Optional, defaults to the latest post based on your installed
                 version of haxor-news.
-
-        Returns:
-            None.
         """
         try:
             item = self.hacker_news_api.get_item(post_id)
@@ -145,42 +142,30 @@ class HackerNews(object):
             sys.stderr.close()
 
     def jobs(self, limit):
-        """Displays job posts.
+        """Display job posts.
 
-        Args:
-            * limit: An int that specifies the number of items to show.
-                Optional, defaults to 10.
-
-        Returns:
-            None.
+        :type limit: int
+        :param limit: the number of items to show, optional, defaults to 10.
         """
         self.print_items(
             message=self.headlines_message('Jobs'),
             item_ids=self.hacker_news_api.job_stories(limit))
 
     def new(self, limit):
-        """Displays the latest posts.
+        """Display the latest posts.
 
-        Args:
-            * limit: An int that specifies the number of items to show.
-                Optional, defaults to 10.
-
-        Returns:
-            None.
+        :type limit: int
+        :param limit: the number of items to show, optional, defaults to 10.
         """
         self.print_items(
             message=self.headlines_message('Latest'),
             item_ids=self.hacker_news_api.new_stories(limit))
 
     def onion(self, limit):
-        """Displays onions.
+        """Display onions.
 
-        Args:
-            * limit: An int that specifies the number of items to show.
-                Optional, defaults to 50.
-
-        Returns:
-            None.
+        :type limit: int
+        :param limit: the number of items to show, optional, defaults to 10.
         """
         click.secho('\n' + self.headlines_message('Top Onion') + '\n',
                     fg=self.config.clr_title)
@@ -193,17 +178,20 @@ class HackerNews(object):
 
     def print_comment(self, item, regex_query='',
                       comments_hide_non_matching=False, depth=0):
-        """Prints the comments for the given item.
+        """Print the comments for the given item.
 
-        Args:
-            * item: An instance of haxor.Item.
-            * regex_query: A string that specifies the regex query to match.
-            * comments_hide_non_matching: A bool that determines whether to
+        :type item: :class:`haxor.Item`
+        :param item: An instance of `haxor.Item`.
+
+        :type regex_query: str
+        :param regex_query: the regex query to match.
+
+        :type comments_hide_non_matching: bool
+        :param comments_hide_non_matching: determines whether to
                 hide comments that don't match (False) or truncate them (True).
-            * depth: The current recursion depth, used to indent the comment.
 
-        Returns:
-            None.
+        :type depth: int
+        :param depth: The current recursion depth, used to indent the comment.
         """
         if item.text is not None:
             header_color = 'yellow'
@@ -239,15 +227,18 @@ class HackerNews(object):
                        comments_hide_non_matching=False, depth=0):
         """Recursively print comments and subcomments for the given item.
 
-        Args:
-            * item: An instance of haxor.Item.
-            * regex_query: A string that specifies the regex query to match.
-            * comments_hide_non_matching: A bool that determines whether to
-                hide comments that don't match (False) or truncate them (True).
-            * depth: The current recursion depth, used to indent the comment.
+        :type item: :class:`haxor.Item`
+        :param item: An instance of `haxor.Item`.
 
-        Returns:
-            None.
+        :type regex_query: str
+        :param regex_query: the regex query to match.
+
+        :type comments_hide_non_matching: bool
+        :param comments_hide_non_matching: determines whether to
+                hide comments that don't match (False) or truncate them (True).
+
+        :type depth: int
+        :param depth: The current recursion depth, used to indent the comment.
         """
         self.print_comment(item, regex_query, comments_hide_non_matching, depth)
         comment_ids = item.kids
@@ -268,19 +259,23 @@ class HackerNews(object):
                 self.print_item_not_found(comment_id)
 
     def format_comment(self, item, depth, header_color, header_adornment):
-        """Formats a given item's comment.
+        """Format a given item's comment.
 
-        Args:
-            * item: An instance of haxor.Item.
-            * depth: An int that represents the current recursion depth,
-                used to indent the comment.
-            * header_color: A string that represents the header color.
-            * header_adornment: A string that the header adornment, if present.
+        :type item: :class:`haxor.Item`
+        :param item: An instance of `haxor.Item`.
 
-        Returns:
-            A tuple of the following:
-                * A string representing the formatted comment header.
-                * A string representing the formatted comment.
+        :type depth: int
+        :param depth: The current recursion depth, used to indent the comment.
+
+        :type header_color: str
+        :param header_color: The header color.
+
+        :type header_adornment: str
+        :param header_adornment: The header adornment.
+
+        :rtype: tuple
+        :return: * A string representing the formatted comment header.
+                 * A string representing the formatted comment.
         """
         indent = self.COMMENT_INDENT * depth
         formatted_heading = click.style(
@@ -304,14 +299,17 @@ class HackerNews(object):
         return formatted_heading, formatted_comment
 
     def format_index_title(self, index, title):
-        """Formats and item's index and title.
+        """Format and item's index and title.
 
-        Args:
-            * index: An int that specifies the index for the given item.
-            * title: A string that represents the item's title.
+        :type index: int
+        :param index: The index for the given item, used with the
+            hn view [index] commend.
 
-        Returns:
-            A string representation of the formatted index and title.
+        :type title: str
+        :param title: The item's title.
+
+        :rtype: str
+        :return: The formatted index and title.
         """
         formatted_index_title = click.style('  ' + (str(index) + '.').ljust(5),
                                             fg=self.config.clr_view_index)
@@ -320,15 +318,17 @@ class HackerNews(object):
         return formatted_index_title
 
     def format_item(self, item, index):
-        """Formats an item.
+        """Format an item.
 
-        Args:
-            * item: An instance of haxor.Item.
-            * index: An int that specifies the index for the given item,
-                used with the hn view [index] commend.
+        :type item: :class:`haxor.Item`
+        :param item: An instance of `haxor.Item`.
 
-        Returns:
-            A string representing the formatted item.
+        :type index: int
+        :param index: The index for the given item, used with the
+            hn view [index] commend.
+
+        :rtype: str
+        :return: The formatted item.
         """
         formatted_item = self.format_index_title(index, item.title)
         if item.url is not None:
@@ -351,29 +351,23 @@ class HackerNews(object):
         return formatted_item
 
     def print_item_not_found(self, item_id):
-        """Prints a message the given item id was not found.
+        """Print a message the given item id was not found.
 
-        Long description.
-
-        Args:
-            * item_id: An int representing the item id.
-
-        Returns:
-            None.
+        :type item_id: int
+        :param item_id: The item's id.
         """
         click.secho('Item with id {0} not found.'.format(item_id), fg='red')
 
     def print_items(self, message, item_ids):
-        """Prints the items.
+        """Print the items.
 
-        Args:
-            * message: A string to print out to the user before outputting
+        :type message: str
+        :param message: A message to print out to the user before outputting
                 the results.
-            * item_ids: A collection of items to print.
-                Can be a list or dictionary.
 
-        Returns:
-            None.
+        :type item_ids: iterable
+        :param item_ids: A collection of items to print.
+                Can be a list or dictionary.
         """
         self.config.item_ids = []
         index = 1
@@ -391,13 +385,14 @@ class HackerNews(object):
             click.secho(self.tip_view(str(index-1)))
 
     def tip_view(self, max_index):
-        """Creates the tip about the view command.
+        """Create the tip about the view command.
 
-        Args:
-            * max_index: A string that represents the index upper bound.
+        :type max_index: string
+        :param max_index: The index uppor bound, used with the
+            hn view [index] commend.
 
-        Returns:
-            A string representation of the formatted tip.
+        :rtype: str
+        :return: The formatted tip.
         """
         tip = click.style('  Tip: View the page or comments for ',
                           fg=self.config.clr_tooltip)
@@ -412,15 +407,16 @@ class HackerNews(object):
         return tip
 
     def match_comment_unseen(self, regex_query, header_adornment):
-        """Determines if a comment is unseen based on the query and header.
+        """Determine if a comment is unseen based on the query and header.
 
-        Args:
-            * regex_query: A string that specifies the regex query to match.
-            * header_adornment: A string that represents the header adornment,
-                if present.
+        :type regex_query: str
+        :param regex_query: The regex query to match.
 
-        Returns:
-            A boolean that specifies if there is a match found.
+        :type header_adornment: str
+        :param header_adornment: The header adornment.
+
+        :rtype: bool
+        :return: Specifies if there is a match found.
         """
         if regex_query == self.QUERY_UNSEEN and \
                 header_adornment == self.COMMENT_UNSEEN:
@@ -429,14 +425,16 @@ class HackerNews(object):
             return False
 
     def match_regex(self, item, regex_query):
-        """Determines if there is a match with the given regex_query.
+        """Determine if there is a match with the given regex_query.
 
-        Args:
-            * item: An instance of haxor.Item.
-            * regex_query: A string that specifies the regex query to match.
+        :type item: :class:`haxor.Item`
+        :param item: An instance of `haxor.Item`.
 
-        Returns:
-            A boolean that specifies whether there is a match.
+        :type regex_query: str
+        :param regex_query: The regex query to match.
+
+        :rtype: bool
+        :return: Specifies if there is a match found.
         """
         match_time = re.search(
             regex_query,
@@ -449,44 +447,34 @@ class HackerNews(object):
             return True
 
     def show(self, limit):
-        """Displays Show HN posts.
+        """Display Show HN posts.
 
-        Args:
-            * limit: An int that specifies the number of items to show.
-                Optional, defaults to 10.
-
-        Returns:
-            None.
+        :type limit: int
+        :param limit: the number of items to show, optional, defaults to 10.
         """
         self.print_items(
             message=self.headlines_message('Show HN'),
             item_ids=self.hacker_news_api.show_stories(limit))
 
     def top(self, limit):
-        """Displays the top posts.
+        """Display the top posts.
 
-        Args:
-            * limit: An int that specifies the number of items to show.
-                Optional, defaults to 10.
-
-        Returns:
-            None.
+        :type limit: int
+        :param limit: the number of items to show, optional, defaults to 10.
         """
         self.print_items(
             message=self.headlines_message('Top'),
             item_ids=self.hacker_news_api.top_stories(limit))
 
     def user(self, user_id, submission_limit):
-        """Displays basic user info and submitted posts.
+        """Display basic user info and submitted posts.
 
-        Args:
-            * user_id: A string representing the user id.
-            * submission_limit: An int that specifies the number of
-                submissions to show.
+        :type user_id: str.
+        :param user_id: The user'd login name.
+
+        :type submission_limit: int
+        :param submission_limit: the number of submissions to show.
                 Optional, defaults to 10.
-
-        Returns:
-            None.
         """
         try:
             user = self.hacker_news_api.get_user(user_id)
@@ -503,24 +491,25 @@ class HackerNews(object):
 
     def view(self, index, comments_query, comments,
              comments_hide_non_matching, browser):
-        """Views the given index in a browser.
+        """View the given index in a browser.
 
         Uses ids from ~/.haxornewsconfig stored in self.config.item_ids.
         If url is True, opens a browser with the url based on the given index.
         Else, displays the post's comments.
 
-        Args:
-            * index: An int that specifies the index to open in a browser.
-            * comments_query: A string that specifies the regex query to match.
-            * comments: A boolean that determines whether to view the comments
-                or a simplified version of the post url.
-            * comments_hide_non_matching: A bool that determines whether to
-                hide comments that don't match (False) or truncate them (True).
-            * browser: A boolean that determines whether to view the url
-                 in a browser.
+        :param index: The index for the given item, used with the
+            hn view [index] commend.
 
-        Returns:
-            None.
+        :type comments: bool
+        :param comments: Determines whether to view the comments
+                or a simplified version of the post url.
+
+        :type comments_hide_non_matching: bool
+        :param comments_hide_non_matching: determines whether to
+                hide comments that don't match (False) or truncate them (True).
+
+        :type browser: bool
+        :param browser: determines whether to view the url in a browser.
         """
         if self.config.item_ids is None:
             click.secho('There are no posts indexed, run a command such as '
@@ -571,7 +560,7 @@ class HackerNews(object):
                 contents = click.style('Viewing ' + item.url + '\n\n',
                                        fg=self.config.clr_general) + \
                            contents + \
-                           click.style(('View this article in a browser with '
+                           click.style(('\nView this article in a browser with '
                                         'the -b/--browser flag\n'),
                                         fg=self.config.clr_general)
                 if platform.system() == 'Windows':
@@ -586,33 +575,40 @@ class HackerNews(object):
     def view_setup(self, index, comments_regex_query, comments,
                    comments_recent, comments_unseen,
                    comments_hide_non_matching, clear_cache, browser):
-        """Sets up the call to view the given index comments or url.
+        """Set up the call to view the given index comments or url.
 
         This method is meant to be called after a command that outputs a
         table of posts.
 
-        Args:
-            * index: A int that specifies the index of a post just shown within
-                a table.  For example, calling hn top will list the latest posts
-                with indices for each row.  Calling hn view [index] will view
-                the comments of the given post.
-            * comments_regex_query: A string that specifies the regex query
-                to match.  This automatically sets comments to True.
-            * comments: A boolean that determines whether to view the comments
-                or a simplified version of the post url.
-            * comments_recent: A boolean that determines whether to view only
-                recently comments (posted within the past 59 minutes or less)
-            * comments_unseen: A boolean that determines whether to view only
-                comments that you have not yet seen.
-            * comments_hide_non_matching: A bool that determines whether to
-                hide comments that don't match (False) or truncate them (True).
-            * clear_cache: A boolean that clears the comment cache before
-                running the view command.
-            * browser: A boolean that determines whether to view the url
-                in a browser.
+        :type index: int
+        :param index: The index for the given item, used with the
+            hn view [index] commend.
 
-        Returns:
-            None.
+        :type regex_query: str
+        :param regex_query: The regex query to match.
+
+        :type comments: bool
+        :param comments: Determines whether to view the comments
+                or a simplified version of the post url.
+
+        :type comments_recent: bool
+        :param comments_recent: Determines whether to view only
+                recently comments (posted within the past 59 minutes or less).
+
+        :type comments_unseen: bool
+        :param comments_unseen: Determines whether to view only
+                comments that you have not yet seen.
+
+        :type comments_hide_non_matching: bool
+        :param comments_hide_non_matching: determines whether to
+                hide comments that don't match (False) or truncate them (True).
+
+        :type clear_cache: bool
+        :param clear_cache: foos.
+
+        :type browser: bool
+        :param browser: Determines whether to clear the comment cache before
+            running the view command.
         """
         if comments_regex_query is not None:
             comments = True

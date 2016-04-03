@@ -28,28 +28,48 @@ from .settings import freelancer_post_id, who_is_hiring_post_id
 class Config(object):
     """Hacker News config.
 
-    Attributes:
-        * CONFIG: A string representing the config file name.
-        * CONFIG_SECTION: A string representing the main config file section.
-        * CONFIG_CLR_X: A string representing the ansi color to use to
-            highlight the specified item.
-        * CONFIG_IDS: A string representing the last list of seen post ids.
-        * CONFIG_CACHE: A string representing the list of seen comments.
-        * CONFIG_HIRING_ID: A string representing the monthly freelancer
-            post id.
-        * CONFIG_FREELANCE_ID: A string representing the monthly who's hiring
-            post id.
-        * CONFIG_SHOW_TIP: A boolean that determines whether to show the tip.
-        * freelance_id: An int representing the monthly freelancer post id.
-        * hiring_id: An int representing the monthly who's hiring post id.
-        * item_cache: A list of seen comment ids.
+    :type CONFIG: str
+    :param CONFIG: The config file name.
+
+    :type CONFIG_SECTION: str
+    :param CONFIG_SECTION: The main config file section label.
+
+    :type CONFIG_CLR_X: str
+    :param CONFIG_CLR_X: Various ansi color config labels to use for highlights.
+
+    :type CONFIG_IDS: str
+    :param CONFIG_IDS: The last list of seen post ids config label.
+
+    :type CONFIG_CACHE: str
+    :param CONFIG_CACHE: The list of seen comments config label.
+
+    :type CONFIG_HIRING_ID: str
+    :param CONFIG_HIRING_ID: The monthly freelancer post id config label.
+
+    :type CONFIG_FREELANCE_ID: str
+    :param CONFIG_FREELANCE_ID: The monthly who's hiring post id config label.
+
+    :type CONFIG_SHOW_TIP: bool
+    :param CONFIG_SHOW_TIP: determines whether to show the tip.
+
+    :type freelance_id: int
+    :param freelance_id: The monthly freelancer hiring post id.
+
+    :type hiring_id: int
+    :param hiring_id: The monthly who's hiring post id.
+
+    :type item_cache: list
+    :param item_cache: A list of seen comment ids.
             TODO: Look into an OrderedSet for improved lookup performance
             http://code.activestate.com/recipes/576694/
-        * item_ids: A list containing the last set of ids the user has seen,
+
+    :type item_ids: list
+    :param item_ids: The last set of ids the user has seen,
             which allows the user to quickly access an item with the
             gh view [#] [-u/--url] command.
-        * MAX_ITEM_CACHE_SIZE: An int representing the maximum number of
-            seen comment ids.
+
+    :type MAX_ITEM_CACHE_SIZE: int
+    :param MAX_ITEM_CACHE_SIZE: The maximum size of seen comment ids cache.
     """
 
     CONFIG = '.haxornewsconfig'
@@ -77,14 +97,6 @@ class Config(object):
     MAX_ITEM_CACHE_SIZE = 20000
 
     def __init__(self):
-        """Initializes Config.
-
-        Args:
-            * None.
-
-        Returns:
-            None.
-        """
         self.item_ids = []
         self.item_cache = []
         self.hiring_id = 0
@@ -99,14 +111,7 @@ class Config(object):
         ])
 
     def init_colors(self):
-        """Initializes colors to their defaults.
-
-        Args:
-            * None.
-
-        Returns:
-            None.
-        """
+        """Initialize colors to their defaults."""
         self.clr_bold = 'cyan'
         self.clr_code = 'cyan'
         self.clr_general = None
@@ -124,38 +129,28 @@ class Config(object):
         self.clr_view_index = 'magenta'
 
     def clear_item_cache(self):
-        """Clears the item cache.
-
-        Args:
-            * None.
-
-        Returns:
-            None.
-        """
+        """Clear the item cache."""
         self.item_cache = []
         self.save_cache()
 
     def get_config_path(self, config_file_name):
-        """Gets the config file path.
+        """Get the config file path.
 
-        Args:
-            * config_file_name: A String that represents the config file name.
+        :type config_file_name: str
+        :param config_file_name: The config file name.
 
-        Returns:
-            A string that represents the hn config file path.
+        :rtype: str
+        :return: The config file path.
         """
         home = os.path.abspath(os.environ.get('HOME', ''))
         config_file_path = os.path.join(home, config_file_name)
         return config_file_path
 
     def load_config(self, config_funcs):
-        """Loads the specified config from ~/.haxornewsconfig.
+        """Load the specified config from ~/.haxornewsconfig.
 
-        Args:
-            * config_funcs: A list of config functions to run
-
-        Returns:
-            A list of caches.
+        :type config_funcs: list
+        :param config_funcs: The config functions to run.
         """
         config_file_path = self.get_config_path(self.CONFIG)
         parser = configparser.RawConfigParser()
@@ -172,24 +167,18 @@ class Config(object):
             return None
 
     def load_config_colors(self, parser):
-        """Loads the color config from ~/.haxornewsconfig.
+        """Load the color config from ~/.haxornewsconfig.
 
-        Args:
-            * parser: An instance of ConfigParser.RawConfigParser.
-
-        Returns:
-            None.
+        :type parser: :class:`ConfigParser.RawConfigParser`
+        :param parser: An instance of `ConfigParser.RawConfigParser`.
         """
         self.load_colors(parser)
 
     def load_config_hiring_and_freelance_ids(self, parser):
-        """Loads the hiring and freelance ids from ~/.haxornewsconfig.
+        """Load the hiring and freelance ids from ~/.haxornewsconfig.
 
-        Args:
-            * parser: An instance of ConfigParser.RawConfigParser.
-
-        Returns:
-            None.
+        :type parser: :class:`ConfigParser.RawConfigParser`
+        :param parser: An instance of `ConfigParser.RawConfigParser`.
         """
         self.hiring_id = parser.getint(self.CONFIG_SECTION,
                                        self.CONFIG_HIRING_ID)
@@ -197,44 +186,46 @@ class Config(object):
                                           self.CONFIG_FREELANCE_ID)
 
     def load_config_item_cache(self, parser):
-        """Loads the item cache from ~/.haxornewsconfig.
+        """Load the item cache from ~/.haxornewsconfig.
 
-        Args:
-            * parser: An instance of ConfigParser.RawConfigParser.
-
-        Returns:
-            None.
+        :type parser: :class:`ConfigParser.RawConfigParser`
+        :param parser: An instance of `ConfigParser.RawConfigParser`.
         """
         self.item_cache = self.load_section_list(parser,
                                                  self.CONFIG_CACHE)
 
     def load_config_item_ids(self, parser):
-        """Loads the item ids from ~/.haxornewsconfig.
+        """Load the item ids from ~/.haxornewsconfig.
 
-        Args:
-            * parser: An instance of ConfigParser.RawConfigParser.
-
-        Returns:
-            None.
+        :type parser: :class:`ConfigParser.RawConfigParser`
+        :param parser: An instance of `ConfigParser.RawConfigParser`.
         """
         self.item_ids = self.load_section_list(parser,
                                                self.CONFIG_IDS)
 
     def load_config_show_tip(self, parser):
-        """Loads the show tip config from ~/.haxornewsconfig.
+        """Load the show tip config from ~/.haxornewsconfig.
 
-        Args:
-            * parser: An instance of ConfigParser.RawConfigParser.
-
-        Returns:
-            None.
+        :type parser: :class:`ConfigParser.RawConfigParser`
+        :param parser: An instance of `ConfigParser.RawConfigParser`.
         """
         self.show_tip = parser.getboolean(self.CONFIG_SECTION,
                                           self.CONFIG_SHOW_TIP)
 
-    def load_color(self, parser, config, default):
+    def load_color(self, parser, color_config, default):
+        """Load the specified color from ~/.haxornewsconfig.
+
+        :type parser: :class:`ConfigParser.RawConfigParser`
+        :param parser: An instance of `ConfigParser.RawConfigParser`.
+
+        :type color_config: str
+        :param color_config: The color config label to load.
+
+        :type default: str
+        :param default: The default color if no color config exists.
+        """
         try:
-            color = parser.get(self.CONFIG_SECTION, config)
+            color = parser.get(self.CONFIG_SECTION, color_config)
             if color == 'none':
                 color = None
             # Check if the user input a valid color.
@@ -245,6 +236,11 @@ class Config(object):
         return color
 
     def load_colors(self, parser):
+        """Load all colors from ~/.haxornewsconfig.
+
+        :type parser: :class:`ConfigParser.RawConfigParser`
+        :param parser: An instance of `ConfigParser.RawConfigParser`.
+        """
         self.clr_bold = self.load_color(
             parser=parser,
             config=self.CONFIG_CLR_BOLD,
@@ -307,18 +303,15 @@ class Config(object):
             default='magenta')
 
     def load_hiring_and_freelance_ids(self, url=None):
-        """Loads the latest who's hiring and freelancer post ids.
+        """Load the latest who's hiring and freelancer post ids.
 
         The latest ids are updated monthly on the repo and are then cached.
         If fetching the latest ids from the repo fails, the cache is checked.
         If fetching the cache fails, the default ids set during installation
         are used.
 
-        Args:
-            * url: A string representing the url to load the latest post ids.
-
-        Returns:
-            None.
+        :type url: str
+        :param url: The url to load the latest post ids.
         """
         try:
             if url is None:
@@ -337,16 +330,10 @@ class Config(object):
             self.load_hiring_and_freelance_ids_from_cache_or_defaults()
 
     def load_hiring_and_freelance_ids_from_cache_or_defaults(self):
-        """Loads the hiring and freelancer post ids from cache or defaults.
+        """Load the hiring and freelancer post ids from cache or defaults.
 
         If fetching the cache fails, the default ids set during installation
         are used.
-
-        Args:
-            * None.
-
-        Returns:
-            None.
         """
         self.load_config([self.load_config_hiring_and_freelance_ids])
         if self.hiring_id == 0 or self.freelance_id == 0:
@@ -354,17 +341,18 @@ class Config(object):
             self.freelance_id = freelancer_post_id
 
     def load_section_list(self, parser, section):
-        """Loads the given section containing a list from ~/.haxornewsconfig.
+        """Load the given section containing a list from ~/.haxornewsconfig.
 
-        Args:
-            * parser: An instance of ConfigParser.RawConfigParser.
-            * section: A string representing the section to load
+        :type parser: :class:`ConfigParser.RawConfigParser`
+        :param parser: An instance of `ConfigParser.RawConfigParser`.
 
-        Returns:
-            A list containing a string of elements.
+        :type section: str
+        :param section: The section to load.
 
-        Raises:
-            Exception: An error occurred reading from the parser.
+        :rtype: list
+        :return: Collection of items stored in config.
+
+        :raises: `Exception` if an error occurred reading from the parser.
         """
         items_ids = parser.get(self.CONFIG_SECTION, section)
         items_ids = items_ids.strip()
@@ -374,14 +362,7 @@ class Config(object):
         return items_ids.split(', ')
 
     def save_cache(self):
-        """Saves the current set of item ids and cache to ~/.haxornewsconfig.
-
-        Args:
-            * None
-
-        Returns:
-            None.
-        """
+        """Save the current set of item ids and cache to ~/.haxornewsconfig."""
         if self.item_cache is not None and \
                 len(self.item_cache) > self.MAX_ITEM_CACHE_SIZE:
             self.item_cache = self.item_cache[-self.MAX_ITEM_CACHE_SIZE//2:]

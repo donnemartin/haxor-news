@@ -21,35 +21,25 @@ import pygments.styles
 
 
 class StyleFactory(object):
-    """Creates a custom saws style.
+    """Provide styles for the autocomplete menu and the toolbar.
 
-    Provides styles for the completions menu and toolbar.
-
-    Attributes:
-        * style: An instance of a Pygments Style.
+    :type style: :class:`pygments.style.StyleMeta`
+    :param style: An instance of `pygments.style.StyleMeta`.
     """
 
     def __init__(self, name):
-        """Initializes StyleFactory.
-
-        Args:
-            * name: A string representing the pygments style.
-
-        Returns:
-            An instance of CliStyle.
-        """
         self.style = self.style_factory(name)
 
     def style_factory(self, name):
-        """Retrieves the specified pygments style.
+        """Retrieve the specified pygments style.
 
-        If the specified style is not found, the native style is returned.
+        If the specified style is not found, the vim style is returned.
 
-        Args:
-            * name: A string representing the pygments style.
+        :type style_name: str
+        :param style_name: The pygments style name.
 
-        Returns:
-            An instance of CliStyle.
+        :rtype: :class:`pygments.style.StyleMeta`
+        :return: An instance of `pygments.style.StyleMeta`.
         """
         try:
             style = pygments.styles.get_style_by_name(name)
@@ -57,12 +47,10 @@ class StyleFactory(object):
             style = pygments.styles.get_style_by_name('native')
 
         class CliStyle(Style):
-            """Custom saws style.
+            """Provides styles for the autocomplete menu and the toolbar.
 
-            Provides styles for the completions menu and toolbar.
-
-            Attributes:
-                * styles: A dictionary that contains pygments style information.
+            :type styles: dict
+            :param styles: Contains pygments style info.
             """
 
             styles = {}
