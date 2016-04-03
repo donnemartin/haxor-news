@@ -355,6 +355,12 @@ Run commands:
 
     $ hn <command> [params] [options]
 
+### Virtual Environment Installation
+
+It is recommended that you install Python packages in a [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/) to avoid potential issues with dependencies or permissions.
+
+To view `haxor-news` `virtualenv` installation instructions, click [here](https://github.com/donnemartin/haxor-news/blob/master/INSTALLATION.md).
+
 ### Supported Python Versions
 
 * Python 2.6
