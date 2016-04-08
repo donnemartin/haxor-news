@@ -167,7 +167,7 @@ class HackerNews(object):
         :type limit: int
         :param limit: the number of items to show, optional, defaults to 10.
         """
-        click.secho('\n' + self.headlines_message('Top Onion') + '\n',
+        click.secho('\n{h}\n'.format(h=self.headlines_message('Top Onion')),
                     fg=self.config.clr_title)
         index = 1
         for onion in onions[0:limit]:
@@ -193,35 +193,35 @@ class HackerNews(object):
         :type depth: int
         :param depth: The current recursion depth, used to indent the comment.
         """
-        if item.text is not None:
-            header_color = 'yellow'
-            header_color_highlight = 'magenta'
-            header_adornment = ''
-            if self.config.item_cache is not None and \
-                    str(item.item_id) not in self.config.item_cache:
-                header_adornment = self.COMMENT_UNSEEN
-                self.config.item_cache.append(item.item_id)
-            show_comment = True
-            if regex_query is not None:
-                if self.match_comment_unseen(regex_query, header_adornment) or \
-                        self.match_regex(item, regex_query):
-                    header_color = header_color_highlight
-                else:
-                    show_comment = False
-            formatted_heading, formatted_comment = self.format_comment(
-                item, depth, header_color, header_adornment)
-            if show_comment:
-                click.echo(formatted_heading, color=True)
-                click.echo(formatted_comment, color=True)
-            elif comments_hide_non_matching:
-                click.secho('.', nl=False)
+        if item.text is None:
+            return
+        header_color = 'yellow'
+        header_color_highlight = 'magenta'
+        header_adornment = ''
+        if self.config.item_cache is not None and \
+                str(item.item_id) not in self.config.item_cache:
+            header_adornment = self.COMMENT_UNSEEN
+            self.config.item_cache.append(item.item_id)
+        show_comment = True
+        if regex_query is not None:
+            if self.match_comment_unseen(regex_query, header_adornment) or \
+                    self.match_regex(item, regex_query):
+                header_color = header_color_highlight
             else:
-                click.echo(formatted_heading, color=True)
-                num_chars = len(formatted_comment)
-                if num_chars > self.MAX_SNIPPET_LENGTH:
-                    num_chars = self.MAX_SNIPPET_LENGTH
-                click.echo(formatted_comment[0:num_chars] + ' [...]',
-                           color=True)
+                show_comment = False
+        formatted_heading, formatted_comment = self.format_comment(
+            item, depth, header_color, header_adornment)
+        if show_comment:
+            click.echo(formatted_heading, color=True)
+            click.echo(formatted_comment, color=True)
+        elif comments_hide_non_matching:
+            click.secho('.', nl=False)
+        else:
+            click.echo(formatted_heading, color=True)
+            num_chars = len(formatted_comment)
+            if num_chars > self.MAX_SNIPPET_LENGTH:
+                num_chars = self.MAX_SNIPPET_LENGTH
+            click.echo(formatted_comment[0:num_chars] + ' [...]', color=True)
 
     def print_comments(self, item, regex_query='',
                        comments_hide_non_matching=False, depth=0):
@@ -279,8 +279,11 @@ class HackerNews(object):
         """
         indent = self.COMMENT_INDENT * depth
         formatted_heading = click.style(
-            '\n' + indent + item.by + ' - ' +
-            str(pretty_date_time(item.submission_time)) + header_adornment,
+            '\n{i}{b} - {d}{h}'.format(
+                i=indent,
+                b=item.by,
+                d=str(pretty_date_time(item.submission_time)),
+                h=header_adornment),
             fg=header_color)
         unescaped_text = self.html.unescape(item.text)
         regex_paragraph = re.compile(r'<p>')
@@ -292,10 +295,9 @@ class HackerNews(object):
         regex_tag = re.compile(r'(<(.*)>.*?<\/\2>)')
         unescaped_text = regex_tag.sub(click.style(
             r'\1', fg=self.config.clr_tag), unescaped_text)
-        formatted_comment = click.wrap_text(
-            text=unescaped_text,
-            initial_indent=indent,
-            subsequent_indent=indent)
+        formatted_comment = click.wrap_text(text=unescaped_text,
+                                            initial_indent=indent,
+                                            subsequent_indent=indent)
         return formatted_heading, formatted_comment
 
     def format_index_title(self, index, title):
@@ -311,7 +313,9 @@ class HackerNews(object):
         :rtype: str
         :return: The formatted index and title.
         """
-        formatted_index_title = click.style('  ' + (str(index) + '.').ljust(5),
+        INDEX_PAD = 5
+        formatted_index = '  ' + (str(index) + '.').ljust(INDEX_PAD)
+        formatted_index_title = click.style(formatted_index,
                                             fg=self.config.clr_view_index)
         formatted_index_title += click.style(title + ' ',
                                              fg=self.config.clr_title)
@@ -336,14 +340,14 @@ class HackerNews(object):
             netloc = re.sub('www.', '', netloc)
             formatted_item += click.style('(' + netloc + ')',
                                           fg=self.config.clr_view_link)
-        formatted_item += '\n'
-        formatted_item += click.style('        ' + str(item.score) + ' points ',
+        formatted_item += '\n         '
+        formatted_item += click.style(str(item.score) + ' points ',
                                       fg=self.config.clr_num_points)
         formatted_item += click.style('by ' + item.by + ' ',
                                       fg=self.config.clr_user)
-        formatted_item += click.style(
-            str(pretty_date_time(item.submission_time)) + ' ',
-            fg=self.config.clr_time)
+        submission_time = str(pretty_date_time(item.submission_time))
+        formatted_item += click.style(submission_time + ' ',
+                                      fg=self.config.clr_time)
         num_comments = str(item.descendants) if item.descendants else '0'
         formatted_item += click.style('| ' + num_comments + ' comments',
                                       fg=self.config.clr_num_comments)
