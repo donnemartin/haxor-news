@@ -432,6 +432,5 @@ class Config(object):
         parser.set(self.CONFIG_SECTION,
                    self.CONFIG_CACHE,
                    self.item_cache)
-        config_file = open(config_file_path, 'w+')
-        parser.write(config_file)
-        config_file.close()
+        with open(config_file_path, 'w+') as config_file:
+            parser.write(config_file)
