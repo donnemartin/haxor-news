@@ -561,11 +561,14 @@ class HackerNews(object):
                 webbrowser.open(item.url)
             else:
                 contents = self.web_viewer.generate_url_contents(item.url)
-                contents = click.style('Viewing ' + item.url + '\n\n',
-                                       fg=self.config.clr_general) + \
-                           contents + \
-                           click.style(('\nView this article in a browser with '
-                                        'the -b/--browser flag\n'),
+                header = click.style('Viewing ' + item.url + '\n\n',
+                                     fg=self.config.clr_general)
+                contents = header + contents
+                contents += click.style(('\nView this article in a browser with'
+                                         ' the -b/--browser flag.\n'),
+                                        fg=self.config.clr_general)
+                contents += click.style(('\nPress q to quit viewing this '
+                                         'article.\n'),
                                         fg=self.config.clr_general)
                 if platform.system() == 'Windows':
                     try:
