@@ -234,7 +234,7 @@ class Config(object):
             # Check if the user input a valid color.
             # If invalid, this will throw a TypeError
             click.style('', fg=color)
-        except TypeError:
+        except (TypeError, configparser.NoOptionError):
             return default
         return color
 
