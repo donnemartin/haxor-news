@@ -28,6 +28,9 @@ from .settings import freelancer_post_id, who_is_hiring_post_id
 class Config(object):
     """Hacker News config.
 
+    :type clr_x: str
+    :param clr_x: Various ansi color config colors to use for highlights.
+
     :type CONFIG: str
     :param CONFIG: The config file name.
 
