@@ -351,7 +351,6 @@ class HackerNews(object):
         num_comments = str(item.descendants) if item.descendants else '0'
         formatted_item += click.style('| ' + num_comments + ' comments',
                                       fg=self.config.clr_num_comments)
-        self.config.item_ids.append(item.item_id)
         return formatted_item
 
     def print_item_not_found(self, item_id):
@@ -380,6 +379,7 @@ class HackerNews(object):
                 item = self.hacker_news_api.get_item(item_id)
                 if item.title:
                     formatted_item = self.format_item(item, index)
+                    self.config.item_ids.append(item.item_id)
                     click.echo(formatted_item)
                     index += 1
             except InvalidItemID:
