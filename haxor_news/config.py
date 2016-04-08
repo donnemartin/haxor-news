@@ -102,7 +102,7 @@ class Config(object):
         self.hiring_id = 0
         self.freelance_id = 0
         self.show_tip = True
-        self.init_colors()
+        self._init_colors()
         self.load_config([
             self.load_config_item_ids,
             self.load_config_item_cache,
@@ -110,7 +110,7 @@ class Config(object):
             self.load_config_show_tip,
         ])
 
-    def init_colors(self):
+    def _init_colors(self):
         """Initialize colors to their defaults."""
         self.clr_bold = 'cyan'
         self.clr_code = 'cyan'
