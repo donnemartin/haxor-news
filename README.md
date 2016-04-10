@@ -9,6 +9,10 @@ haxor-news
 >
 > *-[Source](https://www.reddit.com/user/foxingworth)*
 
+[![Build Status](https://travis-ci.org/donnemartin/haxor-news.svg?branch=master)](https://travis-ci.org/donnemartin/haxor-news) [![Codecov](https://img.shields.io/codecov/c/github/donnemartin/haxor-news.svg)](https://codecov.io/github/donnemartin/haxor-news/haxor-news)
+
+[![PyPI version](https://badge.fury.io/py/haxor-news.svg)](http://badge.fury.io/py/haxor-news) [![PyPI](https://img.shields.io/pypi/pyversions/haxor-news.svg)](https://pypi.python.org/pypi/haxor-news/) [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+
 `haxor-news` brings Hacker News to the terminal, allowing you to **view** and **filter** linked web pages and comments without leaving your command line.
 
 * Posts
