@@ -325,7 +325,7 @@ Pager support on Windows is more limited as discussed in the following [ticket](
 
 On Windows, the `.haxornewsconfig` file can be found in `%userprofile%`.  For example:
 
-    C:\Users\dmartin\.sawsrc
+    C:\Users\dmartin\.haxornewsconfig
 
 Although you can use the standard Windows command prompt, you'll probably have a better experience with either [cmder](https://github.com/cmderdev/cmder) or [conemu](https://github.com/Maximus5/ConEmu).
 
