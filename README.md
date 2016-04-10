@@ -412,9 +412,7 @@ Run unit tests with [tox](https://pypi.python.org/pypi/tox) on multiple Python e
 
 ### Documentation
 
-[![Documentation Status](https://readthedocs.org/projects/haxor-news/badge/?version=latest)](http://haxor-news.readthedocs.org/en/latest/?badge=latest)
-
-Source code documentation is available on [Readthedocs.org](http://haxor-news.readthedocs.org/en/latest/?badge=latest).
+Source code documentation will soon be available on [Readthedocs.org](https://readthedocs.org/).
 
 Run the following to build the docs:
 
