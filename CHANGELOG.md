@@ -18,7 +18,7 @@ https://github.com/donnemartin/haxor-news/issues
 Changelog
 =========
 
-0.3.0 (2016-04-10)
+0.3.1 (2016-04-10)
 ------------------
 
 - Initial release.
