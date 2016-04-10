@@ -333,7 +333,7 @@ Although you can use the standard Windows command prompt, you'll probably have a
 
 ### Pip Installation
 
-[![PyPI version](https://badge.fury.io/py/saws.svg)](http://badge.fury.io/py/saws) [![PyPI](https://img.shields.io/pypi/pyversions/saws.svg)](https://pypi.python.org/pypi/saws/)
+[![PyPI version](https://badge.fury.io/py/haxor-news.svg)](http://badge.fury.io/py/haxor-news) [![PyPI](https://img.shields.io/pypi/pyversions/haxor-news.svg)](https://pypi.python.org/pypi/haxor-news/)
 
 `haxor-news` is hosted on [PyPI](https://pypi.python.org/pypi/haxor-news).  The following command will install `haxor-news`:
 
@@ -390,17 +390,17 @@ If you're interested in contributing to `haxor-news`, run the following commands
 
 ### Continuous Integration
 
-[![Build Status](https://travis-ci.org/donnemartin/saws.svg?branch=master)](https://travis-ci.org/donnemartin/saws)
+[![Build Status](https://travis-ci.org/donnemartin/haxor-news.svg?branch=master)](https://travis-ci.org/donnemartin/haxor-news)
 
-Continuous integration details are available on [Travis CI](https://travis-ci.org/donnemartin/saws).
+Continuous integration details are available on [Travis CI](https://travis-ci.org/donnemartin/haxor-news).
 
 ### Unit Tests and Code Coverage
 
-[![Codecov](https://img.shields.io/codecov/c/github/donnemartin/saws.svg)](https://codecov.io/github/donnemartin/saws/saws)
+[![Codecov](https://img.shields.io/codecov/c/github/donnemartin/haxor-news.svg)](https://codecov.io/github/donnemartin/haxor-news/haxor-news)
 
-![](http://codecov.io/github/donnemartin/saws/branch.svg?branch=master)
+![](http://codecov.io/github/donnemartin/haxor-news/branch.svg?branch=master)
 
-Code coverage details are available on [Codecov](https://codecov.io/github/donnemartin/saws/saws).
+Code coverage details are available on [Codecov](https://codecov.io/github/donnemartin/haxor-news/haxor-news).
 
 Run unit tests in your active Python environment:
 
@@ -412,9 +412,9 @@ Run unit tests with [tox](https://pypi.python.org/pypi/tox) on multiple Python e
 
 ### Documentation
 
-[![Documentation Status](https://readthedocs.org/projects/saws/badge/?version=latest)](http://saws.readthedocs.org/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/haxor-news/badge/?version=latest)](http://haxor-news.readthedocs.org/en/latest/?badge=latest)
 
-Source code documentation is available on [Readthedocs.org](http://saws.readthedocs.org/en/latest/?badge=latest).
+Source code documentation is available on [Readthedocs.org](http://haxor-news.readthedocs.org/en/latest/?badge=latest).
 
 Run the following to build the docs:
 
