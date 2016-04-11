@@ -22,7 +22,7 @@ haxor-news
 * User Info
 * Onions
 
-`haxor-news` helps you **filter the large number of comments popular posts generate**.
+`haxor-news` helps you **filter the large number of comments that popular posts generate**.
 
 * Want to expand only previously **unseen comments**?
     * `-cu/--comments_unseen`
