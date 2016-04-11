@@ -85,6 +85,7 @@ Combine `haxor-news` with pipes, redirects, and other command line utilities.  O
     * [Supported Platforms](#supported-platforms)
 * [Developer Installation](#developer-installation)
     * [Continuous Integration](#continuous-integration)
+    * [Dependencies Management](#dependencies-management)
     * [Unit Tests and Code Coverage](#unit-tests-and-code-coverage)
     * [Documentation](#documentation)
 
@@ -400,6 +401,12 @@ If you're interested in contributing to `haxor-news`, run the following commands
 [![Build Status](https://travis-ci.org/donnemartin/haxor-news.svg?branch=master)](https://travis-ci.org/donnemartin/haxor-news)
 
 Continuous integration details are available on [Travis CI](https://travis-ci.org/donnemartin/haxor-news).
+
+### Dependencies Management
+
+[![Dependency Status](https://gemnasium.com/donnemartin/haxor-news.svg)](https://gemnasium.com/donnemartin/haxor-news)
+
+Dependencies management details are available on [Gemnasium](https://gemnasium.com/donnemartin/haxor-news).
 
 ### Unit Tests and Code Coverage
 
