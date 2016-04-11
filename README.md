@@ -45,6 +45,7 @@ Combine `haxor-news` with pipes, redirects, and other command line utilities.  O
 
 ## TODO
 
+* [Vote on posts and comments](https://github.com/donnemartin/haxor-news/issues/)
 * [Submit posts and comments](https://github.com/donnemartin/haxor-news/issues/19)
 * [Search posts and comments](https://github.com/donnemartin/haxor-news/issues/20)
 
