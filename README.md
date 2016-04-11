@@ -22,7 +22,7 @@ haxor-news
 * User Info
 * Onions
 
-![Imgur](http://i.imgur.com/4psj3nE.png)
+`haxor-news` helps you **filter the large number of comments popular posts generate**.
 
 * Want to expand only previously **unseen comments**?
     * `-cu/--comments_unseen`
@@ -30,6 +30,8 @@ haxor-news
     * `-cr/--comments_recent`
 * Filter comments matching a **regex query**?
     * `-cq/--comments_query [query]`
+
+![Imgur](http://i.imgur.com/4psj3nE.png)
 
 Job hunting or just curious what's out there?  **Filter the monthly who's hiring and freelancers post**:
 
