@@ -21,6 +21,11 @@ from .compat import HTMLParser
 from .lib.html2text.html2text import HTML2Text
 import click
 import requests
+try:
+    import requests.packages.urllib3
+    requests.packages.urllib3.disable_warnings()
+except:
+    pass
 
 
 class WebViewer(object):
