@@ -235,7 +235,7 @@ When filtering comments for unseen, recent, or with regex, non-matching comments
 
 Example:
 
-    $ hn view 8 -cu | -ch | less -r
+    $ hn view 8 -cu -ch | less -r
 
 ![Imgur](http://i.imgur.com/qPopK7X.png)
 
