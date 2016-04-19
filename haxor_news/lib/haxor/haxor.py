@@ -32,7 +32,6 @@ from __future__ import unicode_literals
 import datetime
 import json
 import sys
-
 import requests
 
 from .settings import supported_api_versions
