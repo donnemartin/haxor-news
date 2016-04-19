@@ -412,7 +412,7 @@ Dependencies management details are available on [Gemnasium](https://gemnasium.c
 
 [![Codecov](https://img.shields.io/codecov/c/github/donnemartin/haxor-news.svg)](https://codecov.io/github/donnemartin/haxor-news/haxor-news)
 
-![](http://codecov.io/github/donnemartin/haxor-news/branch.svg?branch=master)
+![](https://codecov.io/github/donnemartin/haxor-news/branch.svg?branch=master)
 
 Code coverage details are available on [Codecov](https://codecov.io/github/donnemartin/haxor-news/haxor-news).
 
@@ -443,7 +443,7 @@ Review the [Contributing Guidelines](https://github.com/donnemartin/haxor-news/b
 
 ## Credits
 
-* [click](https://github.com/mitsuhiko/click) by [mitsuhiko](https://github.com/mitsuhiko)
+* [click](https://github.com/pallets/click) by [mitsuhiko](https://github.com/mitsuhiko)
 * [haxor](https://github.com/avinassh/haxor) by [avinassh](https://github.com/avinassh)
 * [html2text](https://github.com/aaronsw/html2text) by [aaronsw](https://github.com/aaronsw)
 * [python-prompt-toolkit](https://github.com/jonathanslenders/python-prompt-toolkit) by [jonathanslenders](https://github.com/jonathanslenders)
