@@ -32,13 +32,7 @@ from __future__ import unicode_literals
 import datetime
 import json
 import sys
-
 import requests
-try:
-    import requests.packages.urllib3
-    requests.packages.urllib3.disable_warnings()
-except:
-    pass
 
 from .settings import supported_api_versions
 
