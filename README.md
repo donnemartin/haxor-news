@@ -426,7 +426,7 @@ Run unit tests with [tox](https://pypi.python.org/pypi/tox) on multiple Python e
 
 ### Documentation
 
-Source code documentation will soon be available on [Readthedocs.org](https://readthedocs.org/).
+Source code documentation will soon be available on [Readthedocs.org](https://readthedocs.org/).  Check out the [source docstrings](https://github.com/donnemartin/haxor-news/blob/master/haxor_news/hacker_news_cli.py).
 
 Run the following to build the docs:
 
