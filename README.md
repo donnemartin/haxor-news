@@ -412,8 +412,6 @@ Dependencies management details are available on [Gemnasium](https://gemnasium.c
 
 [![Codecov](https://img.shields.io/codecov/c/github/donnemartin/haxor-news.svg)](https://codecov.io/github/donnemartin/haxor-news/haxor-news)
 
-![](https://codecov.io/github/donnemartin/haxor-news/branch.svg?branch=master)
-
 Code coverage details are available on [Codecov](https://codecov.io/github/donnemartin/haxor-news/haxor-news).
 
 Run unit tests in your active Python environment:
