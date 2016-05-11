@@ -129,7 +129,6 @@ class Completer(Completer):
         """
         # Example: Return True for: hn view 0 --comm
         if len(words) > 3:
-            # if words[-3] == option:
             if option in words:
                 return True
         return False
