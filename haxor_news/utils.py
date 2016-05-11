@@ -97,9 +97,6 @@ class TextUtils(object):
             sensitive.
 
         :rtype: generator
-        :return: foos.
-
-        :rtype: generator
         :return: Yields a list of suggestions narrowed down from `collections`
             using the `text` input.
         """
