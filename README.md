@@ -13,6 +13,8 @@ haxor-news
 
 [![PyPI version](https://badge.fury.io/py/haxor-news.svg)](http://badge.fury.io/py/haxor-news) [![PyPI](https://img.shields.io/pypi/pyversions/haxor-news.svg)](https://pypi.python.org/pypi/haxor-news/) [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
+>[Check out the `haxor-news` discussion on Hacker News](https://news.ycombinator.com/item?id=11518596)
+
 `haxor-news` brings Hacker News to the terminal, allowing you to **view** and **filter** linked web pages and comments without leaving your command line.
 
 * Posts
