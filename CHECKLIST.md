@@ -86,11 +86,4 @@ Run the following on Python 2.7 and Python 3.4:
 * Craete a new `virtualenv`
 * Pip install `haxor-news` into new `virtualenv`
 * Run `haxor-news`
-* Check initial resource load
-* Check resource load from cache
-* Force refresh of resources
-* Toggle toolbar options
-* Verify toolbar options are saved across sessions
-* Test the following commands
-    * TODO: Add manual tests
 * Run targeted tests based on recent code changes
