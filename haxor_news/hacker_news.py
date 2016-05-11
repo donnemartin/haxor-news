@@ -41,7 +41,7 @@ class HackerNews(object):
 
         :type COMMENT_UNSEEN: str (const)
         :param COMMENT_UNSEEN: The adornment for unseen
-            comments..
+            comments.
 
         :type config: :class:`config.Config`
         :param config: An instance of `config.Config`.
@@ -53,7 +53,7 @@ class HackerNews(object):
         :param MAX_LIST_INDEX: The maximum 1-based index value
             hn view will use to match item_ids.  Any value larger than
             MAX_LIST_INDEX will result in hn view treating that index as an
-            actual post id..
+            actual post id.
 
         :type MAX_SNIPPET_LENGTH: int (const)
         :param MAX_SNIPPET_LENGTH: The max length of a comment snippet shown
