@@ -495,12 +495,13 @@ class HackerNews(object):
 
     def view(self, index, comments_query, comments,
              comments_hide_non_matching, browser):
-        """View the given index in a browser.
+        """View the given index contents.
 
         Uses ids from ~/.haxornewsconfig stored in self.config.item_ids.
         If url is True, opens a browser with the url based on the given index.
         Else, displays the post's comments.
 
+        :type index: int
         :param index: The index for the given item, used with the
             hn view [index] commend.
 
