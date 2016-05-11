@@ -573,6 +573,9 @@ class HackerNews(object):
                                         fg=self.config.clr_general)
                 if platform.system() == 'Windows':
                     try:
+                        # Strip out Unicode, which seems to have issues on
+                        # Windows
+                        contents = re.sub(r'[^\x00-\x7F]+', '', contents)
                         click.echo(contents)
                     except IOError:
                         sys.stderr.close()
