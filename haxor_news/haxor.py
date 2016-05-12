@@ -18,6 +18,7 @@ from __future__ import print_function
 import os
 import platform
 import subprocess
+import sys
 
 import click
 from prompt_toolkit import AbortAction, Application, CommandLineInterface
@@ -203,4 +204,5 @@ class Haxor(object):
         click.echo('Syntax: hn <command> [params] [options]')
         while True:
             document = self.cli.run()
+            if (document.text == 'exit'): sys.exit()
             self.run_command(document)
