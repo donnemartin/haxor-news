@@ -556,7 +556,7 @@ class HackerNews(object):
                     sys.stderr.close()
                 self.config.save_cache()
         else:
-            click.secho('\nOpening ' + item.url + '...',
+            click.secho('\nOpening ' + item.url + ' ...',
                         fg=self.config.clr_general)
             if browser:
                 webbrowser.open(item.url)
