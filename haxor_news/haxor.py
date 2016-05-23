@@ -185,6 +185,15 @@ class Haxor(object):
                     document_text += self.PAGINATE_CMD
         return document_text
 
+    def handle_exit(self, document):
+        """Exits if the user typed exit or quit
+
+        :type document: :class:`prompt_toolkit.document.Document`
+        :param document: An instance of `prompt_toolkit.document.Document`.
+        """
+        if document.text in ('exit', 'quit'):
+            sys.exit()
+
     def run_command(self, document):
         """Run the given command.
 
@@ -204,5 +213,5 @@ class Haxor(object):
         click.echo('Syntax: hn <command> [params] [options]')
         while True:
             document = self.cli.run()
-            if (document.text == 'exit'): sys.exit()
+            self.handle_exit(document)
             self.run_command(document)

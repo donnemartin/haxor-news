@@ -54,3 +54,10 @@ class HaxorTest(unittest.TestCase):
         self.haxor.run_command(document)
         mock_subprocess_call.assert_called_with('hn view 1',
                                                 shell=True)
+
+    @mock.patch('haxor_news.haxor.sys.exit')
+    def test_exit_command(self, mock_sys_exit):
+        document = mock.Mock()
+        document.text = 'exit'
+        self.haxor.handle_exit(document)
+        mock_sys_exit.assert_called_with()
