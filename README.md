@@ -13,9 +13,9 @@ haxor-news
 >
 > *-[Source](https://www.reddit.com/user/foxingworth)*
 
-Check out the `haxor-news` discussion in this [Hacker News post](https://news.ycombinator.com/item?id=11518596)
+Check out the `haxor-news` discussion in this [Hacker News post](https://news.ycombinator.com/item?id=11518596).
 
-`haxor-news` brings Hacker News to the terminal, allowing you to **view** and **filter** linked web pages and comments without leaving your command line.
+`haxor-news` brings Hacker News to the terminal, allowing you to **view**/**filter** the following without leaving your command line:
 
 * Posts
 * Post Comments
