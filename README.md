@@ -377,6 +377,12 @@ It is recommended that you install Python packages in a [virtualenv](http://docs
 
 To view `haxor-news` `virtualenv` installation instructions, click [here](https://github.com/donnemartin/haxor-news/blob/master/INSTALLATION.md).
 
+### Mac OS X 10.11 El Capitan Users
+
+There is a known issue with Apple and its included python package dependencies (more info at https://github.com/pypa/pip/issues/3165). We are investigating ways to fix this issue but in the meantime, to install haxor-news, you can run:
+
+    $ sudo pip install haxor-news --upgrade --ignore-installed six
+
 ### Supported Python Versions
 
 * Python 2.6

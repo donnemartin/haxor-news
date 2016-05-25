@@ -46,3 +46,9 @@ Create a `haxor-news` `virtualenv` and install `haxor-news`:
 If you want to activate the `haxor-news` `virtualenv` again later, run:
 
     workon haxor-news
+
+## Mac OS X 10.11 El Capitan Users
+
+There is a known issue with Apple and its included python package dependencies (more info at https://github.com/pypa/pip/issues/3165). We are investigating ways to fix this issue but in the meantime, to install haxor-news, you can run:
+
+    $ sudo pip install haxor-news --upgrade --ignore-installed six
