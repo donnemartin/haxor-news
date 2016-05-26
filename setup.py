@@ -15,17 +15,17 @@ setup(
     version=__version__,
     license='Apache License 2.0',
     install_requires=[
-        'click>=5.1',
-        'colorama>=0.3.3',
-        'requests>=2.4.3',
-        'pygments>=2.0.2',
+        'click>=5.1,<6.0',
+        'colorama>=0.3.3,<1.0.0',
+        'requests>=2.4.3,<3.0.0',
+        'pygments>=2.0.2,<3.0.0',
         'prompt-toolkit==0.52',
-        'six>=1.9.0',
+        'six>=1.9.0,<2.0.0',
     ],
     extras_require={
         'testing': [
-            'mock>=1.0.1',
-            'tox>=1.9.2'
+            'mock>=1.0.1,<2.0.0',
+            'tox>=1.9.2,<2.0.0'
         ],
     },
     entry_points={
