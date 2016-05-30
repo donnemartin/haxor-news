@@ -20,7 +20,16 @@ https://github.com/donnemartin/haxor-news/issues
 Changelog
 =========
 
-0.4.0 (2016-05-27)
+0.4.1 (2016-05-30)
+
+Bug Fixes
+---------
+
+-  `#62 <https://github.com/donnemartin/haxor-news/pull/62>`__ - Fix
+   prompt-toolkit v1.0.0 hanging while autocompleting the hn view
+   command. This bug only happens on Windows.
+
+0.4.0 (2016-05-30)
 
 Features
 --------
@@ -44,7 +53,8 @@ Bug Fixes
 Updates
 -------
 
--  `#48 <https://github.com/donnemartin/haxor-news/issues/48>`__ -
+-  `#48 <https://github.com/donnemartin/haxor-news/issues/48>`__,
+   `#50 <https://github.com/donnemartin/haxor-news/issues/50>`__ -
    Update latest monthly hiring post ids.
 -  `#56 <https://github.com/donnemartin/haxor-news/issues/48>`__ -
    Update packaging dependencies based on semantic versioning.
