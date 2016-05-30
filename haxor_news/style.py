@@ -14,7 +14,6 @@
 # language governing permissions and limitations under the License.
 
 from pygments.token import Token
-from pygments.style import Style
 from pygments.util import ClassNotFound
 from prompt_toolkit.styles import default_style_extensions, style_from_dict
 import pygments.styles
