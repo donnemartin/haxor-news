@@ -139,7 +139,7 @@ class Haxor(object):
         toolbar = Toolbar(lambda: self.paginate_comments)
         layout = create_default_layout(
             message=u'haxor> ',
-            reserve_space_for_menu=True,
+            reserve_space_for_menu=8,
             get_bottom_toolbar_tokens=toolbar.handler,
         )
         cli_buffer = Buffer(
@@ -212,6 +212,6 @@ class Haxor(object):
         click.echo('Version: ' + __version__)
         click.echo('Syntax: hn <command> [params] [options]')
         while True:
-            document = self.cli.run()
+            document = self.cli.run(reset_current_buffer=True)
             self.handle_exit(document)
             self.run_command(document)
