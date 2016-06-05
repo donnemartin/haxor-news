@@ -98,6 +98,7 @@ class Config(object):
     CONFIG_FREELANCE_ID = 'freelance_id'
     CONFIG_SHOW_TIP = 'show_tip'
     MAX_ITEM_CACHE_SIZE = 20000
+    CONFIG_TOP_COUNT = 'top_story'
 
     def __init__(self):
         self.item_ids = []
@@ -111,6 +112,7 @@ class Config(object):
             self.load_config_item_cache,
             self.load_config_colors,
             self.load_config_show_tip,
+            self.load_config_top_count
         ])
 
     def _init_colors(self):
@@ -205,6 +207,16 @@ class Config(object):
         """
         self.item_ids = self.load_section_list(parser,
                                                self.CONFIG_IDS)
+
+    def load_config_top_count(self, parser):
+        """Load the rank of top story that are already shown 
+            from ~/.haxornewsconfig.
+
+        :type parser: :class:`ConfigParser.RawConfigParser`
+        :param parser: An instance of `ConfigParser.RawConfigParser`.
+        """
+        self.top_count = parser.getint(self.CONFIG_SECTION, 
+                                                self.CONFIG_TOP_COUNT)
 
     def load_config_show_tip(self, parser):
         """Load the show tip config from ~/.haxornewsconfig.
@@ -432,5 +444,8 @@ class Config(object):
         parser.set(self.CONFIG_SECTION,
                    self.CONFIG_CACHE,
                    self.item_cache)
+        parser.set(self.CONFIG_SECTION,
+                   self.CONFIG_TOP_COUNT,
+                   self.top_count)        
         with open(config_file_path, 'w+') as config_file:
             parser.write(config_file)

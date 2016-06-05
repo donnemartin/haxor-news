@@ -156,6 +156,18 @@ class HackerNewsApi(object):
         """
         return self._get_page('topstories').json()[:limit]
 
+    def next_x_top_stories(self, start=None, end=None):
+        """Returns list of top stories that are ranked between start and end 
+
+        Args:
+            start (int): rank of the first story to be returned
+            end (int): rank of the last story to be returned
+
+        Returns:
+            `list` object containing ids of next top stories that are ranked between start and end.
+        """
+        return self._get_page('topstories').json()[start:end]
+
     def new_stories(self, limit=None):
         """Returns list of item ids of current new stories
 

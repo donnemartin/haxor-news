@@ -466,9 +466,30 @@ class HackerNews(object):
         :type limit: int
         :param limit: the number of items to show, optional, defaults to 10.
         """
+        self.config.top_count = limit
         self.print_items(
             message=self.headlines_message('Top'),
             item_ids=self.hacker_news_api.top_stories(limit))
+
+    def next_x_top(self, x):
+        """Display the next x top posts.
+
+        :type x: int
+        :param x: the number of items to show, optional, defaults to 10.
+        """
+        start = self.config.top_count
+        end = self.config.top_count + x
+        item_ids = self.hacker_news_api.next_x_top_stories(start, end)
+
+        if len(item_ids) < 1:
+            click.secho('Exceeds total top stories count. Browse from first.',
+                        fg='red')
+            self.config.top_count = 0
+        else:
+            self.config.top_count = self.config.top_count + x
+        self.print_items(
+            message=self.headlines_message('Next x'), item_ids=item_ids)
+        
 
     def user(self, user_id, submission_limit):
         """Display basic user info and submitted posts.
