@@ -94,8 +94,8 @@ class HackerNewsCliTest(unittest.TestCase):
         mock_hn_call.assert_called_with(self.limit)
         assert result.exit_code == 0
 
-    @mock.patch('haxor_news.hacker_news_cli.HackerNews.next_x_top')
-    def test_next_x_top(self, mock_hn_call):
+    @mock.patch('haxor_news.hacker_news_cli.HackerNews.next')
+    def test_next(self, mock_hn_call):
         result = self.runner.invoke(self.hacker_news_cli.cli, ['next'])
         mock_hn_call.assert_called_with(self.limit)
         assert result.exit_code == 0

@@ -138,5 +138,5 @@ class MockHackerNewsApi(object):
     def job_stories(self, limit=None):
         return self.item_ids(limit)
 
-    def next_x_top_stories(self, start=None, end=None):
+    def next_x_stories(self, start=None, end=None, post_type=None):
         return self.all_item_ids()[start:end]

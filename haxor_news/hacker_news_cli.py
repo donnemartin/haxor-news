@@ -263,7 +263,7 @@ class HackerNewsCli(object):
                         items to show.
             Optional, defaults to 10.
         """
-        hacker_news.next_x_top(x)
+        hacker_news.next(x)
 
     @cli.command()
     @click.argument('user_id')
