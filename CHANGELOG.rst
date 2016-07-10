@@ -21,18 +21,21 @@ Changelog
 =========
 
 0.4.1 (2016-05-30)
+------------------
 
 Bug Fixes
----------
+~~~~~~~~~
 
 -  `#62 <https://github.com/donnemartin/haxor-news/pull/62>`__ - Fix
-   prompt-toolkit v1.0.0 hanging while autocompleting the hn view
-   command. This bug only happens on Windows.
+   ``prompt-toolkit`` v1.0.0 hanging while autocompleting the hn view
+   command. Revert back to ``prompt-toolkit`` v0.52. This bug only
+   happens on Windows.
 
 0.4.0 (2016-05-30)
+------------------
 
 Features
---------
+~~~~~~~~
 
 -  `#52 <https://github.com/donnemartin/haxor-news/issues/52>`__ - Add
    ``exit`` and ``quit`` commands, which can be used instead of
@@ -41,7 +44,7 @@ Features
    clicking of urls in some terminals to open in a browser.
 
 Bug Fixes
----------
+~~~~~~~~~
 
 -  `#36 <https://github.com/donnemartin/haxor-news/issues/36>`__ - Fix
    crash caused by Unicode comments on Windows.
@@ -51,7 +54,7 @@ Bug Fixes
 -  Fix some comments and docstrings.
 
 Updates
--------
+~~~~~~~
 
 -  `#48 <https://github.com/donnemartin/haxor-news/issues/48>`__,
    `#50 <https://github.com/donnemartin/haxor-news/issues/50>`__ -
