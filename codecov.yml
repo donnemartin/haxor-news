@@ -1,0 +1,7 @@
+comment:
+    layout: header, changes, diff
+
+coverage:
+    ignore:
+        - haxor_news/lib/*
+        - haxor_news/compat.py
