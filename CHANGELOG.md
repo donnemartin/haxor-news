@@ -18,6 +18,13 @@ https://github.com/donnemartin/haxor-news/issues
 Changelog
 =========
 
+0.4.2 (2017-04-08)
+------------------
+
+### Bug Fixes
+
+* [#94](https://github.com/donnemartin/haxor-news/pull/94) - Update to `prompt-toolkit` 1.0.0, which includes a number of performance improvements (especially noticeable on Windows) and bug fixes.
+
 0.4.1 (2016-05-30)
 ------------------
 
