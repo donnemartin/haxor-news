@@ -32,9 +32,11 @@ class KeysTest(unittest.TestCase):
 
     def test_F2(self):
         # orig_paginate = self.haxor.paginate_comments
-        self.processor.feed_key(KeyPress(Keys.F2, ''))
+        self.processor.feed(KeyPress(Keys.F2, u''))
+        self.processor.process_keys()
         # assert orig_paginate != self.haxor.paginate_comments
 
     def test_F10(self):
         with self.assertRaises(EOFError):
-            self.processor.feed_key(KeyPress(Keys.F10, ''))
+            self.processor.feed(KeyPress(Keys.F10, u''))
+            self.processor.process_keys()
