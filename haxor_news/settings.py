@@ -14,5 +14,5 @@
 # language governing permissions and limitations under the License.
 
 # Updated monthly, see HackerNewsCli.hiring docstring.
-who_is_hiring_post_id = 14238005
-freelancer_post_id = 14238006
+who_is_hiring_post_id = 14460777
+freelancer_post_id = 14460778
