@@ -57,3 +57,6 @@ target/
 
 # Misc
 scratch/
+
+# Idea
+.idea/
