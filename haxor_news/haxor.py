@@ -78,6 +78,8 @@ class Haxor(object):
     CMDS_NO_PAGINATE = [
         '-b',
         '--browser',
+        '-r',
+        '--reader',
         '>',
         '<',
     ]

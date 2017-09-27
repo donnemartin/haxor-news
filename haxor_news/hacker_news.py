@@ -20,6 +20,10 @@ import platform
 import re
 import sys
 import webbrowser
+import requests
+import os
+from readability import Document
+import subprocess
 
 import click
 from .compat import HTMLParser
@@ -494,7 +498,7 @@ class HackerNews(object):
             self.print_item_not_found(user_id)
 
     def view(self, index, comments_query, comments,
-             comments_hide_non_matching, browser):
+             comments_hide_non_matching, browser, reader):
         """View the given index contents.
 
         Uses ids from ~/.haxornewsconfig stored in self.config.item_ids.
@@ -555,6 +559,33 @@ class HackerNews(object):
                 except IOError:
                     sys.stderr.close()
                 self.config.save_cache()
+        if reader:
+            click.secho('\nReader view opening ' + item.url + ' ...',
+                        fg=self.config.clr_general)
+            response = requests.get(item.url)
+            doc = Document(response.text)
+
+            content = doc.summary()
+            temp_file_name = 'tmp.html'
+            temproray_file = open(temp_file_name, 'w')
+            temproray_file.write(content.encode('utf-8'))
+            temproray_file.close()
+
+            proc = subprocess.Popen('w3m -dump ' + temp_file_name, stdout=subprocess.PIPE, shell=True)
+            (contents, err) = proc.communicate()
+            contents = re.sub(r'[^\x00-\x7F]+', '', contents)
+            header = click.style('Viewing ' + item.url + '\n\n',
+                                 fg=self.config.clr_general)
+            contents = header + contents
+            contents += click.style(('\nView this article in a browser with'
+                                     ' the -b/--browser flag.\n'),
+                                    fg=self.config.clr_general)
+            contents += click.style(('\nPress q to quit viewing this '
+                                     'article.\n'),
+                                    fg=self.config.clr_general)
+            click.echo_via_pager(contents)
+            os.remove(temp_file_name)
+            # click.echo('')
         else:
             click.secho('\nOpening ' + item.url + ' ...',
                         fg=self.config.clr_general)
@@ -585,7 +616,7 @@ class HackerNews(object):
 
     def view_setup(self, index, comments_regex_query, comments,
                    comments_recent, comments_unseen,
-                   comments_hide_non_matching, clear_cache, browser):
+                   comments_hide_non_matching, clear_cache, browser, reader):
         """Set up the call to view the given index comments or url.
 
         This method is meant to be called after a command that outputs a
@@ -635,4 +666,5 @@ class HackerNews(object):
                   comments_regex_query,
                   comments,
                   comments_hide_non_matching,
-                  browser)
+                  browser,
+                  reader)

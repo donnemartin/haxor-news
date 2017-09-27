@@ -278,12 +278,13 @@ class HackerNewsCli(object):
     @click.option('-cr', '--comments_recent', is_flag=True)
     @click.option('-cu', '--comments_unseen', is_flag=True)
     @click.option('-b', '--browser', is_flag=True)
+    @click.option('-r', '--reader', is_flag=True)
     @click.option('-cc', '--clear_cache', is_flag=True)
     @click.option('-ch', '--comments_hide_non_matching', is_flag=True)
     @pass_hacker_news
     def view(hacker_news, index, comments_regex_query, comments,
              comments_recent, comments_unseen,
-             comments_hide_non_matching, clear_cache, browser):
+             comments_hide_non_matching, clear_cache, browser, reader):
         """View the post index or id, hn view --help.
 
         Example(s):
@@ -298,6 +299,7 @@ class HackerNewsCli(object):
             hn view 3 -cu -ch
             hn view 3 --comments_unseen --comments_hide_non_matching
             hn view 3 --browser
+            hn view 3 --reader
             hn view 3 -b -c
             hn view 3 -comments -clear_cache
             hn view 3 "(?i)case insensitive match" --comments
@@ -364,4 +366,5 @@ class HackerNewsCli(object):
                                    comments_unseen,
                                    comments_hide_non_matching,
                                    clear_cache,
-                                   browser)
+                                   browser,
+                                   reader)

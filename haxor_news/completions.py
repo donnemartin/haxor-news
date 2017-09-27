@@ -70,6 +70,8 @@ ARGS_OPTS_LOOKUP = {
             '-cc',
             '--browser',
             '-b',
+            '--reader',
+            '-r',
         ],
     },
 }
@@ -96,6 +98,8 @@ META_LOOKUP = {
     '-cc': 'Clear the comment cache before executing.',
     '--browser': 'View in a browser instead of the terminal (flag)',
     '-b': 'View in a browser instead of the terminal (flag)',
+    '--reader': 'View in a reader mode inside the terminal (flag)',
+    '-r': 'View in a reader mode inside the terminal (flag)',
     '--id_post ' + WHO_IS_HIRING_POST_ID: ('View matching comments from '
                                            'the (optional) post id instead'
                                            ' of the latest post (int)'),
