@@ -83,12 +83,13 @@ class ConfigTest(unittest.TestCase):
         comments_hide_non_matching = False
         comments_clear_cache = True
         browser = False
+        reader = False
         self.hn.view_setup(
             index, self.query, comments, comments_recent,
             comments_unseen, comments_hide_non_matching,
-            comments_clear_cache, browser)
+            comments_clear_cache, browser, reader)
         comments_expected = True
         mock_clear_item_cache.assert_called_with()
         mock_view.assert_called_with(
             index, self.hn.QUERY_UNSEEN, comments_expected,
-            comments_hide_non_matching, browser)
+            comments_hide_non_matching, browser, reader)
