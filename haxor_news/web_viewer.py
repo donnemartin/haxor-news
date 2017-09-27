@@ -19,6 +19,7 @@ import re
 
 from .compat import HTMLParser
 from .lib.html2text.html2text import HTML2Text
+from readability import Document
 import click
 import requests
 
@@ -91,7 +92,7 @@ class WebViewer(object):
         text = re.sub(r'(\s*\r?\n\s*){2,}', r'\n\n', text)
         return text
 
-    def generate_url_contents(self, url):
+    def generate_url_contents(self, url, reader):
         """Generate the formatted contents of the given item's url.
 
         Converts the HTML to text using HTML2Text, colors it, then displays
@@ -99,6 +100,9 @@ class WebViewer(object):
 
         :type url: str
         :param url: The url whose contents to fetch.
+
+        :type reader: bool
+        :param reader: determines whether to view the url in a reader mode.
 
         :rtype: str
         :return: The string representation of the formatted url contents.
@@ -111,7 +115,11 @@ class WebViewer(object):
             contents = 'Error: ' + str(e) + '\n'
             contents += 'Try running hn view # with the --browser/-b flag\n'
             return contents
-        text = raw_response.text
+        if reader:
+            doc = Document(raw_response.text)
+            text = doc.summary()
+        else:
+            text = raw_response.text
         contents = self.html_to_text.handle(text)
         # Strip out Unicode, which seems to have issues when html2txt is
         # coupled with click.echo_via_pager.

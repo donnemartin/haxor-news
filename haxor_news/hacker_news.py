@@ -20,10 +20,6 @@ import platform
 import re
 import sys
 import webbrowser
-import requests
-import os
-from readability import Document
-import subprocess
 
 import click
 from .compat import HTMLParser
@@ -519,6 +515,9 @@ class HackerNews(object):
 
         :type browser: bool
         :param browser: determines whether to view the url in a browser.
+
+        :type reader: bool
+        :param reader: determines whether to view the url in a reader mode.
         """
         if self.config.item_ids is None:
             click.secho('There are no posts indexed, run a command such as '
@@ -559,40 +558,13 @@ class HackerNews(object):
                 except IOError:
                     sys.stderr.close()
                 self.config.save_cache()
-        if reader:
-            click.secho('\nReader view opening ' + item.url + ' ...',
-                        fg=self.config.clr_general)
-            response = requests.get(item.url)
-            doc = Document(response.text)
-
-            content = doc.summary()
-            temp_file_name = 'tmp.html'
-            temproray_file = open(temp_file_name, 'w')
-            temproray_file.write(content.encode('utf-8'))
-            temproray_file.close()
-
-            proc = subprocess.Popen('w3m -dump ' + temp_file_name, stdout=subprocess.PIPE, shell=True)
-            (contents, err) = proc.communicate()
-            contents = re.sub(r'[^\x00-\x7F]+', '', contents)
-            header = click.style('Viewing ' + item.url + '\n\n',
-                                 fg=self.config.clr_general)
-            contents = header + contents
-            contents += click.style(('\nView this article in a browser with'
-                                     ' the -b/--browser flag.\n'),
-                                    fg=self.config.clr_general)
-            contents += click.style(('\nPress q to quit viewing this '
-                                     'article.\n'),
-                                    fg=self.config.clr_general)
-            click.echo_via_pager(contents)
-            os.remove(temp_file_name)
-            # click.echo('')
         else:
             click.secho('\nOpening ' + item.url + ' ...',
                         fg=self.config.clr_general)
             if browser:
                 webbrowser.open(item.url)
             else:
-                contents = self.web_viewer.generate_url_contents(item.url)
+                contents = self.web_viewer.generate_url_contents(item.url, reader)
                 header = click.style('Viewing ' + item.url + '\n\n',
                                      fg=self.config.clr_general)
                 contents = header + contents
@@ -650,6 +622,9 @@ class HackerNews(object):
 
         :type browser: bool
         :param browser: Determines whether to clear the comment cache before
+
+        :type reader: bool
+        :param reader: determines whether to view the url in a reader mode.
             running the view command.
         """
         if comments_regex_query is not None:
