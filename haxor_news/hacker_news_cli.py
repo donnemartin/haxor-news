@@ -353,6 +353,10 @@ class HackerNewsCli(object):
         :type browser: bool
         :param browser: Determines whether to view the url
                 in a browser.
+
+        :type reader: bool
+        :param reader: Determines whether to view the url
+                in reader mode.
         """
         try:
             post_index = int(index)
