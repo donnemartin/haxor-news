@@ -21,6 +21,7 @@ setup(
         'pygments>=2.0.2,<3.0.0',
         'prompt-toolkit>=1.0.0,<1.1.0',
         'six>=1.9.0,<2.0.0',
+        'readability-lxml>=0.6.2',
     ],
     extras_require={
         'testing': [
