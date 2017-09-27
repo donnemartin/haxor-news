@@ -117,7 +117,13 @@ class WebViewer(object):
             return contents
         if reader:
             doc = Document(raw_response.text)
-            text = doc.summary()
+            # if we have a title we are formatting the title as a first header
+            text = doc.title()
+            if text is not None:
+                text = '# ' + text
+            else:
+                text = ''
+            text += doc.summary()
             # limiting the body width to 80 in order to get better reading view
             self.html_to_text.body_width = 80
         else:
