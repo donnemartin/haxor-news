@@ -118,6 +118,8 @@ class WebViewer(object):
         if reader:
             doc = Document(raw_response.text)
             text = doc.summary()
+            # limiting the body width to 80 in order to get better reading view
+            self.html_to_text.body_width = 80
         else:
             text = raw_response.text
         contents = self.html_to_text.handle(text)
