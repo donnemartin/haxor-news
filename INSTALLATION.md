@@ -52,3 +52,9 @@ If you want to activate the `haxor-news` `virtualenv` again later, run:
 There is a known issue with Apple and its included python package dependencies (more info at https://github.com/pypa/pip/issues/3165). We are investigating ways to fix this issue but in the meantime, to install haxor-news, you can run:
 
     $ sudo pip install haxor-news --upgrade --ignore-installed six
+  
+## Nix/NixOS installation
+
+Nix is a package manager default to the NixOS distribution, but it can also be used on any Linux distribution. In order to install `haxor-news` with it run:
+
+    $ nix-env -i haxor-news
