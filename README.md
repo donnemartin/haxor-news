@@ -400,6 +400,12 @@ There is a known issue with Apple and its included python package dependencies (
 * Windows
     * Tested on Windows 10
 
+## Nix/NixOS installation
+
+Nix is a package manager default to the NixOS distribution, but it can also be used on any Linux distribution. In order to install `haxor-news` with it:
+
+    $ nix-env -i haxor-news
+
 ## Developer Installation
 
 If you're interested in contributing to `haxor-news`, run the following commands:
