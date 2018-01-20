@@ -1,7 +1,7 @@
 .. figure:: http://i.imgur.com/C4mkc3L.gif
    :alt:
 
-|Build Status| |Codecov|
+|Build Status| |Dependency Status|
 
 |PyPI version| |PyPI| |License|
 
@@ -92,8 +92,8 @@ Updates
 
 .. |Build Status| image:: https://travis-ci.org/donnemartin/haxor-news.svg?branch=master
    :target: https://travis-ci.org/donnemartin/haxor-news
-.. |Codecov| image:: https://img.shields.io/codecov/c/github/donnemartin/haxor-news.svg
-   :target: https://codecov.io/github/donnemartin/haxor-news/haxor-news
+.. |Dependency Status| image:: https://gemnasium.com/donnemartin/haxor-news.svg
+   :target: https://gemnasium.com/donnemartin/haxor-news
 .. |PyPI version| image:: https://badge.fury.io/py/haxor-news.svg
    :target: http://badge.fury.io/py/haxor-news
 .. |PyPI| image:: https://img.shields.io/pypi/pyversions/haxor-news.svg
