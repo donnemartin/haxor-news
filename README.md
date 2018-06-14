@@ -416,12 +416,6 @@ If you're interested in contributing to `haxor-news`, run the following commands
 
 Continuous integration details are available on [Travis CI](https://travis-ci.org/donnemartin/haxor-news).
 
-### Dependencies Management
-
-[![Dependency Status](https://gemnasium.com/donnemartin/haxor-news.svg)](https://gemnasium.com/donnemartin/haxor-news)
-
-Dependencies management details are available on [Gemnasium](https://gemnasium.com/donnemartin/haxor-news).
-
 ### Unit Tests and Code Coverage
 
 Run unit tests in your active Python environment:
