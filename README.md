@@ -81,7 +81,6 @@ Combine `haxor-news` with pipes, redirects, and other command line utilities.  O
     * [Supported Platforms](#supported-platforms)
 * [Developer Installation](#developer-installation)
     * [Continuous Integration](#continuous-integration)
-    * [Dependencies Management](#dependencies-management)
     * [Unit Tests and Code Coverage](#unit-tests-and-code-coverage)
     * [Documentation](#documentation)
 
