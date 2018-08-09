@@ -117,12 +117,11 @@ class Completer(Completer):
 
         Called by completing_subcommand_option as a utility method.
 
+        :type option: str
+        :param option: The subcommand in the elements of ARGS_OPTS_LOOKUP.
+
         :type words: list
         :param words: The input text broken into word tokens.
-
-        :type word_before_cursor: str
-        :param word_before_cursor: The current word before the cursor,
-            which might be one or more blank spaces.
 
         :rtype: bool
         :return: Specifies whether we are currently completing an option.
