@@ -187,6 +187,7 @@ class HackerNewsCli(object):
         :type hacker_news: :class:`hacker_news.HackerNews`
         :param hacker_news: An instance of `hacker_news.HackerNews`.
 
+        :type limit: int
         :param limit: specifies the number of items to show.
             Optional, defaults to 10.
         """
@@ -205,6 +206,7 @@ class HackerNewsCli(object):
         :type hacker_news: :class:`hacker_news.HackerNews`
         :param hacker_news: An instance of `hacker_news.HackerNews`.
 
+        :type limit: int
         :param limit: specifies the number of items to show.
             Optional, defaults to 10.
         """
@@ -223,6 +225,7 @@ class HackerNewsCli(object):
         :type hacker_news: :class:`hacker_news.HackerNews`
         :param hacker_news: An instance of `hacker_news.HackerNews`.
 
+        :type limit: int
         :param limit: specifies the number of items to show.
             Optional, defaults to 10.
         """
@@ -241,6 +244,7 @@ class HackerNewsCli(object):
         :type hacker_news: :class:`hacker_news.HackerNews`
         :param hacker_news: An instance of `hacker_news.HackerNews`.
 
+        :type limit: int
         :param limit: specifies the number of items to show.
             Optional, defaults to 10.
         """
@@ -263,11 +267,9 @@ class HackerNewsCli(object):
         :type user_id: str
         :param user_id: The user name/id.
 
+        :type limit: int
         :param limit: specifies the number of items to show.
             Optional, defaults to 10.
-
-        Returns:
-            None.
         """
         hacker_news.user(user_id, limit)
 
