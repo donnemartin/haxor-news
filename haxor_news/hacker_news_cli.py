@@ -36,7 +36,7 @@ class HackerNewsCli(object):
         :param ctx: An instance of click.core.Context that stores an instance
             of `hacker_news.HackerNews`.
         """
-        # Create a HackerNews object and remember it as as the context object.
+        # Create a HackerNews object and remember it as the context object.
         # From this point onwards other commands can refer to it by using the
         # @pass_hacker_news decorator.
         ctx.obj = HackerNews()
