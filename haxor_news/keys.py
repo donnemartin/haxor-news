@@ -37,16 +37,16 @@ class KeyManager(object):
     def _create_key_manager(self, set_paginate_comments, get_paginate_comments):
         """Create and initialize the keybinding manager.
 
-        :type foo: callable
-        :param foo: Sets the paginate comments config.
+        :type set_paginate_comments: callable
+        :param set_paginate_comments: Sets the paginate comments config.
 
-        :type foo: callable
-        :param foo: Gets the paginate comments config.
+        :type get_paginate_comments: callable
+        :param get_paginate_comments: Gets the paginate comments config.
 
         :rtype: :class:`prompt_toolkit.key_binding.manager.
-        KeyBindingManager`
+            KeyBindingManager`
         :return: An instance of `prompt_toolkit.key_binding.manager.
-        KeyBindingManager`.
+            KeyBindingManager`.
         """
         assert callable(set_paginate_comments)
         assert callable(get_paginate_comments)
