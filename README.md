@@ -134,7 +134,7 @@ For no color, set the value(s) to `None`.
 
 ## View Posts
 
-View the Top, Best, Show, Show, Ask, Jobs, New, and Onion posts.
+View the Top, Best, Show, Ask, Jobs, New, and Onion posts.
 
 Usage:
 
