@@ -264,13 +264,13 @@ Hacker News hosts a monthly freelancers post where employers and freelancers pos
 
 Usage:
 
-    $ hn freelancer [regex filter]
+    $ hn freelance [regex filter]
 
 Examples:
 
-    $ hn freelancer ""
-    $ hn freelancer "(?i)JavaScript|Node"
-    $ hn freelancer "(?i)(Node|JavaScript).*(remote)" > remote_jobs.txt
+    $ hn freelance ""
+    $ hn freelance "(?i)JavaScript|Node"
+    $ hn freelance "(?i)(Node|JavaScript).*(remote)" > remote_jobs.txt
 
 *Case insensitive regex: `(?i)`*
 
@@ -280,7 +280,7 @@ To search a different monthly hiring post other than the latest, use the hiring 
 
 Usage:
 
-    $ hn freelancer [regex filter] [post id]
+    $ hn freelance [regex filter] [post id]
 
 ## Combine With Pipes and Redirects
 
@@ -289,7 +289,7 @@ Output to pagers, write to files, automate with cron, etc.
 Examples:
 
     $ hn view 1 -c | less
-    $ hn freelancer "(?i)(Node|JavaScript).*(remote)" > remote_jobs.txt
+    $ hn freelance "(?i)(Node|JavaScript).*(remote)" > remote_jobs.txt
 
 ![Imgur](http://i.imgur.com/x2aj7SM.png)
 
