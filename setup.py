@@ -15,7 +15,7 @@ setup(
     version=__version__,
     license='Apache License 2.0',
     install_requires=[
-        'click>=5.1,<7.0',
+        'click>=5.1,<8.0',
         'colorama>=0.3.3,<1.0.0',
         'requests>=2.4.3,<3.0.0',
         'pygments>=2.0.2,<3.0.0',
