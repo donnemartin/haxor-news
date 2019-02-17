@@ -21,7 +21,6 @@ import os
 from tests.compat import unittest
 
 from haxor_news.hacker_news import HackerNews
-from haxor_news.settings import freelancer_post_id, who_is_hiring_post_id
 from tests.mock_hacker_news_api import MockHackerNewsApi
 
 
@@ -47,22 +46,6 @@ class ConfigTest(unittest.TestCase):
         assert self.hn.config.item_ids == item_ids
         assert self.hn.config.item_cache == []
         mock_save_cache.assert_called_with()
-
-    def test_load_hiring_and_freelance_ids(self):
-        self.hn.config.load_hiring_and_freelance_ids()
-        assert self.hn.config.hiring_id != who_is_hiring_post_id
-        assert self.hn.config.freelance_id != freelancer_post_id
-
-    def test_load_hiring_and_freelance_ids_invalid_url(self):
-        self.hn.config.load_hiring_and_freelance_ids(url='https://example.com')
-        assert self.hn.config.hiring_id == who_is_hiring_post_id
-        assert self.hn.config.freelance_id == freelancer_post_id
-        os.remove('./downloaded_settings.py')
-
-    def test_load_hiring_and_freelance_ids_from_cache_or_defaults(self):
-        self.hn.config.load_hiring_and_freelance_ids_from_cache_or_defaults()
-        assert self.hn.config.hiring_id == who_is_hiring_post_id
-        assert self.hn.config.freelance_id == freelancer_post_id
 
     def test_save_and_load_item_ids(self):
         self.hn.config.item_ids = [0, 1, 2]
