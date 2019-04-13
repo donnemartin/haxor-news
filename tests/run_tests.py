@@ -23,6 +23,7 @@ from test_haxor import HaxorTest  # NOQA
 from test_keys import KeysTest  # NOQA
 from test_toolbar import ToolbarTest  # NOQA
 from test_config import ConfigTest  # NOQA
+# from test_config_integration import ConfigTestIntegration  # NOQA
 try:
     from test_cli import CliTest  # NOQA
 except:
