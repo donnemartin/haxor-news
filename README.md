@@ -383,6 +383,8 @@ There is a known issue with Apple and its included python package dependencies (
 * Python 3.3
 * Python 3.4
 * Python 3.5
+* Python 3.6
+* Python 3.7
 
 ### Supported Platforms
 
